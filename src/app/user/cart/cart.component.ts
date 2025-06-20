@@ -63,17 +63,13 @@ export class CartComponent {
   increaseQuantity(item: CartItem) {
     // Use CartItem if you defined the interface
     item.quantity++;
-    // يمكنك إضافة استدعاء لـ this.updateTotal() هنا إذا كنت تريد تحديث إجمالي الأسعار/الكميات فورًا
-    // على الرغم من أن Angular سيعيد تقييم الدوال في الـ template تلقائيًا
   }
 
   decreaseQuantity(item: CartItem) {
     // Use CartItem if you defined the interface
     if (item.quantity > 1) {
-      // نضمن أن الكمية لا تقل عن 1
       item.quantity--;
     }
-    // يمكنك إضافة استدعاء لـ this.updateTotal() هنا إذا كنت تريد تحديث إجمالي الأسعار/الكميات فورًا
   }
 
   updateTotal() {}
