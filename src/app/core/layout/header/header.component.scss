@@ -1,0 +1,63 @@
+.navbar-container {
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f6f2;
+    padding: 0 40px;
+    height: 80px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-logo .brand {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #a06c3b;
+    letter-spacing: 2px;
+    font-family: "Cormorant Garamond", serif;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 32px;
+    flex: 1;
+    justify-content: center;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #222;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.navbar-links a:hover {
+    background: #e9e4db;
+    color: #a06c3b;
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.icon {
+    color: #222;
+    font-size: 1.5rem;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon:hover {
+    background: #e9e4db;
+    color: #a06c3b;
+}
