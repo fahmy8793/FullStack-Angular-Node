@@ -1,1 +1,70 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-box">
+    <!-- Header Tabs -->
+    <div class="tabs">
+      <!-- <a routerLink="/login" class="tab">Login</a> -->
+      <span class="tab active">Register</span>
+      <span class="close">×</span>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" formControlName="userName" placeholder="Enter your name" />
+        <div *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched" class="text-danger">
+          Username is required
+        </div>
+      </div>
+
+
+
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" formControlName="email" placeholder="name@example.com" />
+
+          <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched" class="text-danger">
+            Email is required
+          </div>
+          <div *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched" class="text-danger">
+            Invalid email format
+          </div>
+      </div>
+
+
+      <div class="form-group">
+        <label>Password</label>
+        <input  [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="********" />
+        <span class="toggle-password" (click)="showPassword = !showPassword">
+          <i [class]="showPassword ? 'fas fa-eye' :'fas fa-eye-slash' "></i>
+        </span>
+
+
+        <div *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched" class="text-danger">
+          Password is required
+        </div>
+        <div *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched" class="text-danger">
+          Password must contain uppercase, lowercase, number, and special character
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input [type]="showPassword ? 'text' : 'password'"  formControlName="confirmPassword" placeholder="********" />
+         <span class="toggle-password" (click)="showPassword = !showPassword">
+          <i [class]="showPassword ? 'fas fa-eye' :'fas fa-eye-slash' "></i>
+        </span>
+        <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required'] && registerForm.get('confirmPassword')?.touched" class="text-danger">
+          Please confirm password!
+        </div>
+        <div *ngIf="passwordsDoNotMatch" class="text-danger">
+          ❌ Password and Confirm Password do not match
+        </div>
+      </div>
+
+        
+
+      <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">Register</button>
+    </form>
+  </div>
+</div>
