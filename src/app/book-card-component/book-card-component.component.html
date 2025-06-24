@@ -1,0 +1,9 @@
+<div class="card" style="width: 18rem;">
+  <img [src]="getBookImagePath()" class="card-img-top" [alt]="bookData.title">
+  <!-- <img src="../../assets/books_Imgs/" class="card-img-top" [alt]="bookData.title"> -->
+  <div class="card-body">
+    <h5 class="card-title">{{bookData.title}}</h5>
+    <p class="card-text text-danger">{{bookData.auther}}</p>
+    <a href="#" class="text-bg-secondary">{{bookData.price}}</a>
+  </div>
+</div>

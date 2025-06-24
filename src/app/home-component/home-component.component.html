@@ -1,0 +1,31 @@
+<section class="img-bg">
+    <div class="container p-5">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="w-75">We collect all books in one place. read the best seller books</h1>
+                <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia.</p>
+                <button class="btn btn-primary">Shop Now</button>
+            </div>
+            <div class="col-6 position-relative">
+                <img src="../../assets/decor-image01.svg" class="decorator w-100" alt="">
+                <img src="../../assets/image30-copyright.webp" class="img-fluid w-75" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container p-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Best Seller Books</h1>
+        </div>
+    </div>
+    <div class="row">
+        @for(book of booksData; track book.id){
+            <div class="col-3 mb-4">
+                <app-book-card-component [bookData]="book"></app-book-card-component>
+            </div>
+        }
+        <!-- <app-book-card-component *ngFor="let book of books" [bookData]="book"></app-book-card-component> -->
+    </div>
+</section>
