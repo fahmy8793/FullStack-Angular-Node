@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import {ReactiveFormsModule, FormBuilder,FormGroup,Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule,CommonModule,RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -20,7 +21,7 @@ export class LoginComponent {
   // using FormBuilder to make the form with its form controls (inputs) and validation
   constructor(private fb:FormBuilder , private router:Router){
     this.loginForm = this.fb.group({
-      userName : ['',Validators.required],
+      email : ['',Validators.required],
       password: ['', [Validators.required]],
     })
   }
@@ -36,4 +37,14 @@ export class LoginComponent {
       alert('❌ Invalid email or password');
     }
   }
+
+goToRegister() {
+  this.router.navigate(['/register']);
+}
+
+loginWithGoogle() {
+  console.log('🔔 Google login clicked');
+}
+
+
 }
