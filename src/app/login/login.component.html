@@ -4,7 +4,7 @@
     <div class="tabs">
       <!-- <a routerLink="/login" class="tab">Login</a> -->
       <span class="tab active">Login</span>
-      <span class="close">×</span>
+      <!-- <span class="close">×</span> -->
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="handleSubmitForm()">
@@ -36,13 +36,26 @@
         </div>
       </div>
 
+      <!-- <div>
+        <a href="/register">Create new account</a>
+      </div>
       <div class="forgot-link">
         <a routerLink="/forgot-password">Forgot Password?</a>
-      </div>
-<div>
-        login with google account
-</div>
+      </div> -->
+
       <button type="submit" class="submit-btn" >Login</button>
     </form>
+       <div class="auth-links">
+        <a routerLink="/register">Create new account</a>
+        <a routerLink="/forgot-password">Forgot Password?</a>
+      </div>
+
+      <div class="google-login">
+        <button type="button" (click)="loginWithGoogle()" class="google-btn">
+          <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google Logo" />
+          Login with Google
+        </button>
+      </div>
+
   </div>
 </div>
