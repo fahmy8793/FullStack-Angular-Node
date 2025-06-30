@@ -3,6 +3,7 @@ import {ReactiveFormsModule, FormBuilder,FormGroup,Validators } from '@angular/f
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-forget-password',
   standalone: true,
