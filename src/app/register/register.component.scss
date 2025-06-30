@@ -107,3 +107,22 @@
     color: #000;
   }
 }
+
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* مسافة بينهم */
+  margin-top: 15px;
+}
+
+.auth-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
