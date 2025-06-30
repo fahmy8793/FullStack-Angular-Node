@@ -6,13 +6,17 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { authGuard } from './guards/auth.guard';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 
+import { CheckoutComponent } from './users/checkout/checkout.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, title: 'home ' },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'cart', component: CartComponent ,canActivate: [authGuard]},
-  { path: 'forgot-password' , component: ForgetPasswordComponent},
-    { path: 'admin', component: AdminLayoutComponent },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  { path: 'forgot-password', component: ForgetPasswordComponent },
+  { path: 'admin', component: AdminLayoutComponent },
 
+  { path: 'checkout', component: CheckoutComponent, title: 'checkout' },
 ];

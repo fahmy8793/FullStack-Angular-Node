@@ -11,9 +11,21 @@
   </nav>
 
   <div class="navbar-icons">
-    <a *ngIf="!authService.isLoggedIn()"  routerLink="/login" class="icon"><i class="fas fa-user"></i></a>
-    <a routerLink="/cart" class="icon"><i class="fas fa-shopping-bag"></i></a>
-    <a *ngIf="authService.isLoggedIn()"  (click)="logout()" class="icon" title="Logout"><i class="fas fa-right-from-bracket"></i></a>
-
+    <a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="icon"
+      ><i class="fas fa-user"></i
+    ></a>
+    <a routerLink="/cart" class="icon cart-icon-with-count">
+      <i class="fas fa-shopping-bag"></i>
+      <span *ngIf="cartItemCount > 0" class="cart-badge">
+        {{ cartItemCount }}
+      </span>
+    </a>
+    <a
+      *ngIf="authService.isLoggedIn()"
+      (click)="logout()"
+      class="icon"
+      title="Logout"
+      ><i class="fas fa-right-from-bracket"></i
+    ></a>
   </div>
 </header>

@@ -1,0 +1,497 @@
+<div class="checkout-page container my-5">
+  <h2 class="mb-4 text-center">Checkout</h2>
+
+  <div class="checkout-progress mb-4 d-flex justify-content-around">
+    <span [class.active]="currentStep === 1" class="p-2 border rounded"
+      >1. Shipping & Billing</span
+    >
+    <span [class.active]="currentStep === 2" class="p-2 border rounded"
+      >2. Payment</span
+    >
+    <span [class.active]="currentStep === 3" class="p-2 border rounded"
+      >3. Review & Place Order</span
+    >
+  </div>
+
+  <div class="row">
+    <div class="col-lg-7 col-md-12 mb-4">
+      <div class="card p-4 h-100" *ngIf="currentStep === 1">
+        <h3 class="mb-4">Shipping & Billing Details</h3>
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label required-label"
+                >First name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                placeholder=""
+                required
+                name="firstName"
+                [(ngModel)]="billingDetails.firstName"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label required-label"
+                >Last name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                placeholder=""
+                required
+                name="lastName"
+                [(ngModel)]="billingDetails.lastName"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label required-label"
+              >Email address</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="you@example.com"
+              required
+              name="email"
+              [(ngModel)]="billingDetails.email"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label required-label"
+              >Phone number</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              placeholder="e.g., +201001234567"
+              required
+              name="phone"
+              [(ngModel)]="billingDetails.phone"
+            />
+          </div>
+
+          <h5 class="mt-4 mb-3">Shipping Address</h5>
+          <div class="mb-3">
+            <label for="streetAddress" class="form-label required-label"
+              >Street address</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="streetAddress"
+              placeholder="House number and street name, apartment, suite, unit"
+              required
+              name="streetAddress"
+              [(ngModel)]="billingDetails.streetAddress"
+            />
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="townCity" class="form-label required-label"
+                >Town / City</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="townCity"
+                placeholder=""
+                required
+                name="townCity"
+                [(ngModel)]="billingDetails.townCity"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label required-label">State</label>
+              <select
+                class="form-select"
+                id="state"
+                required
+                name="state"
+                [(ngModel)]="billingDetails.state"
+              >
+                <option value="">Select State...</option>
+                <option value="sinai">NorthSina</option>
+                <option value="isamlia">Ismalia</option>
+                <option value="Cairo">Cairo</option>
+                <option value="Alexandria">Alexandria</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="zipCode" class="form-label required-label"
+                >Zip Code</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="zipCode"
+                placeholder=""
+                required
+                name="zipCode"
+                [(ngModel)]="billingDetails.zipCode"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="country" class="form-label required-label"
+                >Country / Region</label
+              >
+              <select
+                class="form-select"
+                id="country"
+                required
+                name="country"
+                [(ngModel)]="billingDetails.country"
+              >
+                <option value="EG">Egypt</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-check mb-3">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="shipToDifferentAddress"
+              name="shipToDifferentAddress"
+              [(ngModel)]="billingDetails.shipToDifferentAddress"
+            />
+            <label class="form-check-label" for="shipToDifferentAddress"
+              >Ship to a different address?</label
+            >
+          </div>
+
+          <div *ngIf="billingDetails.shipToDifferentAddress">
+            <h5 class="mt-4 mb-3">Billing Address (if different)</h5>
+            <div class="mb-3">
+              <label
+                for="billingStreetAddress"
+                class="form-label required-label"
+                >Billing Street address</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="billingStreetAddress"
+                placeholder="House number and street name, apartment, suite, unit"
+                required
+                name="billingStreetAddress"
+                [(ngModel)]="billingDetails.billingStreetAddress"
+              />
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="billingTownCity" class="form-label required-label"
+                  >Billing Town / City</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="billingTownCity"
+                  required
+                  name="billingTownCity"
+                  [(ngModel)]="billingDetails.billingTownCity"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="billingState" class="form-label required-label"
+                  >Billing State</label
+                >
+                <select
+                  class="form-select"
+                  id="billingState"
+                  required
+                  name="billingState"
+                  [(ngModel)]="billingDetails.billingState"
+                >
+                  <option value="">Select State...</option>
+                  <option value="NY">New York</option>
+                  <option value="CA">California</option>
+                  <option value="Cairo">Cairo</option>
+                  <option value="Alexandria">Alexandria</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="billingZipCode" class="form-label required-label"
+                  >Billing Zip Code</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="billingZipCode"
+                  required
+                  name="billingZipCode"
+                  [(ngModel)]="billingDetails.billingZipCode"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="billingCountry" class="form-label required-label"
+                  >Billing Country / Region</label
+                >
+                <select
+                  class="form-select"
+                  id="billingCountry"
+                  required
+                  name="billingCountry"
+                  [(ngModel)]="billingDetails.billingCountry"
+                >
+                  <option value="">Select Country...</option>
+                  <option value="US">United States (US)</option>
+                  <option value="EG">Egypt</option>
+                  <option value="SA">Saudi Arabia</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="orderNotes" class="form-label"
+              >Order notes (optional)</label
+            >
+            <textarea
+              type="text"
+              class="form-control"
+              id="orderNotes"
+              rows="3"
+              placeholder="Notes about your order, e.g. special notes for delivery."
+              name="orderNotes"
+              [(ngModel)]="billingDetails.orderNotes"
+            ></textarea>
+          </div>
+
+          <button class="btn btn-primary w-100 py-2 mt-3" (click)="nextStep()">
+            Continue to Payment
+          </button>
+        </form>
+      </div>
+
+      <div class="card p-4 h-100" *ngIf="currentStep === 2">
+        <h3 class="mb-4">Payment Method</h3>
+        <div class="form-check mb-2">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="paymentMethod"
+            id="cashOnDelivery"
+            value="COD"
+            [(ngModel)]="billingDetails.paymentMethod"
+          />
+          <label class="form-check-label" for="cashOnDelivery"
+            >Cash on delivery</label
+          >
+          <div
+            *ngIf="billingDetails.paymentMethod === 'COD'"
+            class="cod-details p-3 border rounded mt-3"
+          >
+            <h5 class="mb-3">Cash on Delivery Notes</h5>
+            <div class="mb-3">
+              <label for="codNotes" class="form-label"
+                >Special instructions for delivery (optional)</label
+              >
+              <textarea
+                class="form-control"
+                id="codNotes"
+                rows="2"
+                placeholder="e.g., Please prepare exact change, or specific time for delivery."
+                name="codNotes"
+                [(ngModel)]="billingDetails.codNotes"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-check mb-3">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="paymentMethod"
+            id="paypal"
+            value="PayPal"
+            [(ngModel)]="billingDetails.paymentMethod"
+          />
+          <label class="form-check-label" for="paypal"
+            >PayPal
+            <img
+              src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg"
+              alt="PayPal Logo"
+              style="height: 23px; vertical-align: middle"
+          /></label>
+          <p class="text-muted small ms-4">
+            Pay via PayPal; you can pay with your credit card if you don’t have
+            a PayPal account.
+          </p>
+        </div>
+
+        <div class="form-check mb-3">
+          <input
+            type="radio"
+            class="form-check-input"
+            name="paymentMethod"
+            id="creditCard"
+            value="CreditCard"
+            [(ngModel)]="billingDetails.paymentMethod"
+          />
+          <label class="form-check-label" for="creditCard"
+            >Credit Card <i class="fab fa-cc-visa ms-1"></i>
+            <i class="fab fa-cc-mastercard ms-1"></i>
+            <i class="fab fa-cc-amex ms-1"></i
+          ></label>
+        </div>
+
+        <div
+          *ngIf="billingDetails.paymentMethod === 'CreditCard'"
+          class="credit-card-details p-3 border rounded mt-3"
+        >
+          <h5 class="mb-3">Credit Card Details</h5>
+          <div class="mb-3">
+            <label for="cardNumber" class="form-label required-label"
+              >Card Number</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="cardNumber"
+              placeholder="•••• •••• •••• ••••"
+              required
+              name="cardNumber"
+              [(ngModel)]="billingDetails.cardNumber"
+              maxlength="19"
+            />
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="expiryDate" class="form-label required-label"
+                >Expiry Date</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="expiryDate"
+                placeholder="MM/YY"
+                required
+                name="expiryDate"
+                [(ngModel)]="billingDetails.expiryDate"
+                maxlength="5"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="cvv" class="form-label required-label">CVV</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cvv"
+                placeholder="•••"
+                required
+                name="cvv"
+                [(ngModel)]="billingDetails.cvv"
+                maxlength="4"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn btn-secondary" (click)="prevStep()">Back</button>
+          <button class="btn btn-primary" (click)="nextStep()">
+            Review Order
+          </button>
+        </div>
+      </div>
+
+      <div class="card p-4 h-100" *ngIf="currentStep === 3">
+        <h3 class="mb-4">Review Your Order</h3>
+        <h5>Shipping To:</h5>
+        <p>{{ billingDetails.firstName }} {{ billingDetails.lastName }}</p>
+        <p>{{ billingDetails.email }} | {{ billingDetails.phone }}</p>
+        <p>{{ billingDetails.streetAddress }}</p>
+        <p>
+          {{ billingDetails.townCity }}, {{ billingDetails.state }}
+          {{ billingDetails.zipCode }}
+        </p>
+        <p>{{ billingDetails.country }}</p>
+
+        <ng-container *ngIf="billingDetails.shipToDifferentAddress">
+          <h5 class="mt-4">Billing Address:</h5>
+          <p>{{ billingDetails.billingStreetAddress }}</p>
+          <p>
+            {{ billingDetails.billingTownCity }},
+            {{ billingDetails.billingState }}
+            {{ billingDetails.billingZipCode }}
+          </p>
+          <p>{{ billingDetails.billingCountry }}</p>
+        </ng-container>
+
+        <h5 class="mt-4">Payment Method:</h5>
+        <p>
+          {{
+            billingDetails.paymentMethod === "COD"
+              ? "Cash on Delivery"
+              : billingDetails.paymentMethod === "PayPal"
+              ? "PayPal"
+              : "Credit Card"
+          }}
+        </p>
+
+        <ng-container *ngIf="billingDetails.paymentMethod === 'CreditCard'">
+          <p>
+            Card Number: **** **** ****
+            {{ billingDetails.cardNumber?.slice(-4) }}
+          </p>
+          <p>Expiry Date: {{ billingDetails.expiryDate }}</p>
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            billingDetails.paymentMethod === 'COD' && billingDetails.codNotes
+          "
+        >
+          <h5 class="mt-4">Cash on Delivery Notes:</h5>
+          <p>{{ billingDetails.codNotes }}</p>
+        </ng-container>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn btn-secondary" (click)="prevStep()">Back</button>
+          <button class="btn btn-success" (click)="placeOrder()">
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-md-12">
+      <div class="card p-4 mb-4 order-summary-card">
+        <h3 class="mb-4">Your order</h3>
+        <ul class="list-group list-group-flush mb-3">
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let item of orderSummaryItems"
+          >
+            <span>{{ item.name }} × {{ item.quantity }}</span>
+            <span>${{ item.price | number : "1.2-2" }}</span>
+          </li>
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center border-top"
+          >
+            <span>Subtotal</span>
+            <span>${{ getSubtotal() | number : "1.2-2" }}</span>
+          </li>
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <span>Total</span>
+            <span class="fw-bold">${{ getTotal() | number : "1.2-2" }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
