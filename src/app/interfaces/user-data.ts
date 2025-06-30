@@ -1,6 +1,9 @@
 export interface UserData {
   id: string;
   name: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -8,4 +11,3 @@ export interface UserData {
   createdAt?: string;
   updatedAt?: string;
 }
-
