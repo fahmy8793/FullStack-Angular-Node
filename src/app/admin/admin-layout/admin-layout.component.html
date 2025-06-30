@@ -1,0 +1,22 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+
+    <nav class="sidebar-nav">
+      <ul>
+        @for (link of adminLinks; track link.path) {
+          <li>
+            <a [routerLink]="link.path" routerLinkActive="active">{{ link.name }}</a>
+          </li>
+        }
+        </ul>
+    </nav>
+  </aside>
+  <main class="content-area">
+    <header class="navbar">
+      <h2>Welcome to Admin Panel!</h2>
+    
+    </header>
+    <div class="main-content">
+      <router-outlet></router-outlet> </div>
+  </main>
+</div>
