@@ -1,0 +1,54 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card p-4 shadow-sm">
+        <h3 class="mb-4 text-center">Your Orders</h3>
+        <div
+          *ngIf="userOrders.length === 0"
+          class="alert alert-info text-center"
+        >
+          You haven't placed any orders yet.
+        </div>
+        <div *ngIf="userOrders.length > 0">
+          <div class="list-group">
+            <div
+              *ngFor="let order of userOrders"
+              class="list-group-item list-group-item-action mb-2"
+            >
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Order ID: {{ order._id }}</h5>
+                <small class="text-muted">{{
+                  order.orderDate | date : "medium"
+                }}</small>
+              </div>
+              <p class="mb-1">
+                Total: ${{ order.totalAmount | number : "1.2-2" }}
+              </p>
+              <p class="mb-1">
+                Status:
+                <span
+                  [class.badge]="true"
+                  [class.bg-success]="order.status === 'Delivered'"
+                  [class.bg-warning]="
+                    order.status === 'Pending' || order.status === 'Processing'
+                  "
+                  [class.bg-danger]="order.status === 'Cancelled'"
+                  >{{ order.status }}</span
+                >
+              </p>
+              \
+              <small class="text-muted"
+                >Items:
+                <span *ngFor="let item of order.items; last as isLast">
+                  {{ item.name }} (x{{ item.quantity }})<span *ngIf="!isLast"
+                    >,
+                  </span>
+                </span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
