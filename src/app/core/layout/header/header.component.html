@@ -14,6 +14,14 @@
     <a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="icon"
       ><i class="fas fa-user"></i
     ></a>
+    <a
+      *ngIf="authService.isLoggedIn()"
+      routerLink="/profile"
+      class="icon"
+      title="Profile"
+      ><i class="fas fa-user-circle"></i
+    ></a>
+
     <a routerLink="/cart" class="icon cart-icon-with-count">
       <i class="fas fa-shopping-bag"></i>
       <span *ngIf="cartItemCount > 0" class="cart-badge">
