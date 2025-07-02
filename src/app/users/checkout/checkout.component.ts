@@ -27,8 +27,9 @@ export class CheckoutComponent implements OnInit {
   currentStep: number = 1;
 
   billingDetails = {
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
+    name: '',
     email: '',
     phone: '',
     companyName: '',
@@ -73,10 +74,11 @@ export class CheckoutComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       const currentUser = this.authService.getCurrentUser();
       if (currentUser) {
-        this.billingDetails.firstName = currentUser.firstName || '';
-        this.billingDetails.lastName = currentUser.lastName || '';
+        // this.billingDetails.firstName = currentUser.firstName || '';
+        // this.billingDetails.lastName = currentUser.lastName || '';
+        this.billingDetails.name = currentUser.name || '';
         this.billingDetails.email = currentUser.email || '';
-        this.billingDetails.phone = currentUser.phone || '';
+        // this.billingDetails.phone = currentUser.phone || '';
       }
     }
   }
