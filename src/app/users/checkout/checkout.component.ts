@@ -9,7 +9,7 @@ import { CartItem } from '../cart/cart.component';
 import { AuthService } from '../../services/auth.service';
 
 export interface OrderSummaryItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;
