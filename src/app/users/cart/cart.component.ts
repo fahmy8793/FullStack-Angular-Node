@@ -1,13 +1,13 @@
 // src/app/users/cart/cart.component.ts
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CartService } from '../../services/cartService.service'; 
+import { CartService } from '../../services/cartService.service';
 
 export interface CartItem {
-  id: number;
+  id: string;
   title: string;
   author: string;
   image: string;
@@ -23,18 +23,18 @@ export interface CartItem {
   styleUrl: './cart.component.scss',
 })
 export class CartComponent implements OnInit {
-  cartItems: CartItem[] = []; 
+  cartItems: CartItem[] = [];
 
-  constructor(private router: Router, private cartService: CartService) {} 
+  constructor(private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe((items) => {
-      this.cartItems = items; 
+      this.cartItems = items;
     });
   }
 
   removeItem(itemToRemove: CartItem) {
-    this.cartService.removeItem(itemToRemove); 
+    this.cartService.removeItem(itemToRemove);
   }
 
   getTotalItems(): number {
@@ -49,13 +49,13 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(item: CartItem) {
-    this.cartService.increaseQuantity(item); 
+    this.cartService.increaseQuantity(item);
   }
 
   decreaseQuantity(item: CartItem) {
     if (item.quantity > 1) {
-     
-      this.cartService.decreaseQuantity(item); 
+
+      this.cartService.decreaseQuantity(item);
     }
   }
 
@@ -65,10 +65,10 @@ export class CartComponent implements OnInit {
   checkout() {
     if (this.cartItems.length > 0) {
       console.log('Proceeding to checkout');
-      this.router.navigate(['/checkout']); 
+      this.router.navigate(['/checkout']);
     } else {
       console.log('Cart is empty, cannot proceed to checkout.');
-      alert('Your cart is empty .');  
+      alert('Your cart is empty .');
     }
   }
 }
