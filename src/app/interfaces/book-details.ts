@@ -1,10 +1,12 @@
 export interface Book {
-  id: number;
+  id: string;
   title: string;
   author: string;
-  category : string;
-  description :string;
   image: string;
   price: number;
   rate: number;
+  category : string;
+  description :string;
+  inventoryStatus?: 'INSTOCK' | 'LOWSTOCK' | 'OUTOFSTOCK';
+   isWishListed? : boolean;
 }

@@ -9,7 +9,7 @@
           Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
           aspernatur aut odit aut fugit, sed quia.
         </p>
-        <button class="btn btn-primary">Shop Now</button>
+<button class="btn btn-primary" (click)="goToShop()">Shop Now</button>
       </div>
       <div class="col-6 position-relative">
         <img
@@ -33,12 +33,17 @@
       <h1 class="text-center">Best Seller Books</h1>
     </div>
   </div>
-  <div class="row">
-    @for(book of booksData; track book.id){
-    <div class="col-3 mb-4">
-      <app-cardbook [bookData]="book"></app-cardbook>
+
+
+  <section class="best-sellers">
+    <h2>Best Seller Books</h2>
+    <div class="books-grid">
+      <app-cardbook
+        *ngFor="let book of booksData"
+        [bookData]="book"
+      ></app-cardbook>
     </div>
-    }
-    <!-- <app-book-card-component *ngFor="let book of books" [bookData]="book"></app-book-card-component> -->
-  </div>
+  </section>
+
+
 </section>

@@ -21,8 +21,16 @@ export class CardbookComponent {
   }
 
   getBookImagePath(): string {
-    return '../../assets/books_Imgs/' + this.bookData.image;
+    const img = this.bookData.image || this.bookData.image;
+
+      if (img?.startsWith('http')) {
+        return img;
   }
+
+  return '../../assets/books_Imgs/' + img;
+}
+
+
   addToCart() {
     const itemToAdd = {
       id: this.bookData.id,

@@ -1,1 +1,6 @@
-<app-cardbook *ngFor="let book of books" [bookData]="book" />
+<section class="book-list">
+  <app-cardbook
+    *ngFor ="let book of books"
+    [bookData] ="book"
+  ></app-cardbook>
+</section>
