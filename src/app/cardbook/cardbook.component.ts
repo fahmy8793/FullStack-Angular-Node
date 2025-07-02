@@ -1,14 +1,8 @@
 import { CartService } from './../services/cartService.service';
 import { Component, Input } from '@angular/core';
+import { Book } from '../interfaces/book-details';
 // import { CartService } from '../services/cartService.service';
-interface BookData {
-  id: number;
-  title: string;
-  auther: string;
-  img: string;
-  price: number;
-  rate: number;
-}
+
 @Component({
   selector: 'app-cardbook',
   standalone: true,
@@ -17,7 +11,7 @@ interface BookData {
   styleUrl: './cardbook.component.scss',
 })
 export class CardbookComponent {
-  @Input() bookData!: any;
+  @Input() bookData!: Book;
   // fullPath: any;
   // bookData.img = '' + this.bookData.img;
   constructor(private CartService: CartService) {}
@@ -26,14 +20,14 @@ export class CardbookComponent {
     // this.bookData.img = this.fullPath;
   }
 
-  getBookImagePath() {
-    return '../../assets/books_Imgs/' + this.bookData.img;
+  getBookImagePath(): string {
+    return '../../assets/books_Imgs/' + this.bookData.image;
   }
   addToCart() {
     const itemToAdd = {
       id: this.bookData.id,
       title: this.bookData.title,
-      author: this.bookData.auther,
+      author: this.bookData.author,
       image: this.bookData.image,
       price: this.bookData.price,
       quantity: 1,
