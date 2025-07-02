@@ -45,10 +45,10 @@ export class ProfileComponent implements OnInit {
       const currentUser: UserData | null = this.authService.getCurrentUser();
       if (currentUser) {
         this.profileForm.patchValue({
-          firstName: currentUser.firstName,
-          lastName: currentUser.lastName,
+          // firstName: currentUser.firstName,
+          // lastName: currentUser.lastName,
           email: currentUser.email,
-          phone: currentUser.phone,
+          // phone: currentUser.phone,
         });
 
         this.orderService.getMyOrders().subscribe({
