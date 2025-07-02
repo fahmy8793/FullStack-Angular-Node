@@ -1,61 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CardbookComponent } from '../cardbook/cardbook.component';
-interface BookData {
-  id: number;
-  title: string;
-  auther: string;
-  img: string;
-  price: number;
-  rate: number;
-}
+import { Book } from '../interfaces/book-details';
+import { BookService } from '../services/book.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardbookComponent],
+  imports: [CardbookComponent,CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  booksData: BookData[] = [
-    {
-      id: 1,
-      title: 'The Great Gatsby',
-      auther: 'F. Scott Fitzgerald',
-      img: 'book1.jpg',
-      price: 10.99,
-      rate: 4.5,
-    },
-    {
-      id: 2,
-      title: 'To Kill a Mockingbird',
-      auther: 'Harper Lee',
-      img: 'book2.jpg',
-      price: 12.99,
-      rate: 4.8,
-    },
-    {
-      id: 3,
-      title: '1984',
-      auther: 'George Orwell',
-      img: 'book3.jpg',
-      price: 15.99,
-      rate: 4.7,
-    },
-    {
-      id: 4,
-      title: 'Pride and Prejudice',
-      auther: 'Jane Austen',
-      img: 'book4.jpg',
-      price: 9.99,
-      rate: 4.6,
-    },
-    {
-      id: 5,
-      title: 'The Catcher in the Rye',
-      auther: 'J.D. Salinger',
-      img: 'book5.jpg',
-      price: 11.99,
-      rate: 4.4,
-    },
-  ];
+  booksData: Book[] = [];
+  constructor(private bookService:BookService, private router:Router){}
+
+  ngOnInit(): void {
+  this.bookService.getAllBooks().subscribe((books) => {
+    this.booksData = books.sort((a, b) => (b.rate || 0) - (a.rate || 0)).slice(0, 5);
+  });
+}
+
+  goToShop(): void {
+    this.router.navigate(['/shop']);
+  }
 }

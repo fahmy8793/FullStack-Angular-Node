@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient , } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Book } from '../interfaces/book-details';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ getAllBooks(): Observable<any[]> {
 }
 
   getBookById(id: string): Observable<any> {
-    return this.getAllBooks().pipe(
+    return this.getAllBooks()
+    .pipe(
       map((books) => books.find((book) => book.id == id))
     );
   }
