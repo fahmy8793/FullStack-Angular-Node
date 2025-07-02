@@ -21,7 +21,7 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="firstName" class="form-label required-label"
-                >First name</label
+                >user name</label
               >
               <input
                 type="text"
@@ -30,21 +30,7 @@
                 placeholder=""
                 required
                 name="firstName"
-                [(ngModel)]="billingDetails.firstName"
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="lastName" class="form-label required-label"
-                >Last name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="lastName"
-                placeholder=""
-                required
-                name="lastName"
-                [(ngModel)]="billingDetails.lastName"
+                [(ngModel)]="billingDetails.name"
               />
             </div>
           </div>
@@ -410,7 +396,7 @@
       <div class="card p-4 h-100" *ngIf="currentStep === 3">
         <h3 class="mb-4">Review Your Order</h3>
         <h5>Shipping To:</h5>
-        <p>{{ billingDetails.firstName }} {{ billingDetails.lastName }}</p>
+        <p>{{ billingDetails.name }} {{ billingDetails.name }}</p>
         <p>{{ billingDetails.email }} | {{ billingDetails.phone }}</p>
         <p>{{ billingDetails.streetAddress }}</p>
         <p>
