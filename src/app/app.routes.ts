@@ -9,6 +9,7 @@ import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.componen
 
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './users/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,6 +21,6 @@ export const routes: Routes = [
   { path: 'password/reset/done', component:ResetPasswordDoneComponent},
 
   { path: 'admin', component: AdminLayoutComponent },
-
+  { path: 'profile', component: ProfileComponent },
   { path: 'checkout', component: CheckoutComponent, title: 'checkout' },
 ];
