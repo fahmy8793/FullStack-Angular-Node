@@ -26,7 +26,7 @@ export class ForgetPasswordComponent {
     handleSubmitForm(){
     const email = this.forgotPasswordForm.value.email;
     console.log('🔔 Reset password request for email:', email);
-    this.router.navigate(['login']);
+    this.router.navigate(['password/reset/done']);
 
    }
 
