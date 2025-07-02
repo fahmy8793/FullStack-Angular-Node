@@ -23,7 +23,7 @@ export class CartService {
       } else {
         this.cartItemsSubject.next([
           {
-            id: 1,
+            id: '1',
             title: 'book One',
             author: 'Osama',
             image: 'assets/book1.webp',
@@ -31,7 +31,7 @@ export class CartService {
             quantity: 1,
           },
           {
-            id: 2,
+            id: '2',
             title: 'book Two',
             author: 'Osama',
             image: 'assets/book2.webp',
@@ -39,7 +39,7 @@ export class CartService {
             quantity: 2,
           },
           {
-            id: 3,
+            id: '3',
             title: 'book Three',
             author: 'Osama',
             image: 'assets/book3.webp',
