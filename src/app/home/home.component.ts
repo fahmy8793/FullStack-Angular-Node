@@ -27,9 +27,9 @@ export class HomeComponent implements OnInit {
       perPage: 4,
       gap: '1rem',
       autoplay: true,
-      interval: 3000,     // السرعة بين كل شريحة والتانية (بالملي ثانية)
-      pauseOnHover: false, // ما يوقفش لو الماوس فوق السلايدر
-      pauseOnFocus: false, // ما يوقفش لو العنصر خَد focus
+      interval: 3000,
+      pauseOnHover: true,
+      pauseOnFocus: true, 
       breakpoints: {
         768: { perPage: 2 },
         480: { perPage: 1 },
