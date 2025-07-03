@@ -16,9 +16,7 @@ import { OrderListComponent } from './admin/orders/order-list/order-list.compone
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './users/profile/profile.component';
-import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
-import { UserListComponent } from './admin/users/user-list/user-list.component';
-import { SettingsComponent } from './admin/settings/settings.component';
+import { BookListComponent } from './book-list/book-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,15 +26,8 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component:ResetPasswordDoneComponent},
+
   { path: 'shop', component:BookListComponent},
-  { path: 'dashboard', component:DashboardComponent},
-  { path: 'book-detail', component:BookDetailComponent},
-  { path: 'book-list', component:BookListComponent},
-  { path: 'order-detail', component: OrderDetailComponent },
-  { path: 'order-list', component: OrderListComponent },
-  { path: 'user-list', component: UserListComponent },
-  { path: 'user-detail', component: UserDetailComponent },
-  { path: 'setting', component: SettingsComponent },
 
   { path: 'admin', component: AdminLayoutComponent },
   { path: 'profile', component: ProfileComponent },
