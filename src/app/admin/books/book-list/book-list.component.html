@@ -1,0 +1,38 @@
+<div class="list-container">
+  <div class="list-header">
+    <h1>Books Management</h1>
+    <button class="add-btn" routerLink="new">Add New Book</button>
+  </div>
+
+  @if (books.length > 0) {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books; track book.id) {
+          <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>${{ book.price | number:'1.2-2' }}</td>
+            <td>{{ book.stock }}</td>
+            <td class="actions">
+              <!-- <button class="edit-btn" [routerLink]="book.id">Edit</button> -->
+              <button class="delete-btn">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="no-data">No books found. Add a new book to get started!</p>
+  }
+</div>
