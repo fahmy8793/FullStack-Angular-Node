@@ -10,7 +10,9 @@ import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.componen
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './users/profile/profile.component';
+
 import { BookListComponent } from './book-list/book-list.component';
+import { BookDetailsComponent } from './book-details/book-details.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,7 +22,9 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component:ResetPasswordDoneComponent},
+
   { path: 'shop', component:BookListComponent},
+  { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent },
   { path: 'profile', component: ProfileComponent },

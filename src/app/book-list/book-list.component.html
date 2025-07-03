@@ -1,6 +1,16 @@
-<section class="book-list">
+<section class="books-grid">
   <app-cardbook
     *ngFor ="let book of books"
     [bookData] ="book"
-  ></app-cardbook>
+    class="book-item"  >
+</app-cardbook>
 </section>
+
+
+ <!-- <div class="books-grid">
+    <app-cardbook
+      *ngFor="let book of displayedBooks; trackBy: trackByBook"
+      [bookData]="book"
+      class="book-item">
+    </app-cardbook>
+  </div> -->
