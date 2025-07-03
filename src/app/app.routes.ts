@@ -6,11 +6,19 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { ResetPasswordDoneComponent } from './reset-password-done/reset-password-done.component';
 import { authGuard } from './guards/auth.guard';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { BookListComponent } from './admin/books/book-list/book-list.component';
+import { BookDetailComponent } from './admin/books/book-detail/book-detail.component';
+import { OrderDetailComponent } from './admin/orders/order-detail/order-detail.component';
+import { OrderListComponent } from './admin/orders/order-list/order-list.component';
+
 
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './users/profile/profile.component';
-import { BookListComponent } from './book-list/book-list.component';
+import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
+import { UserListComponent } from './admin/users/user-list/user-list.component';
+import { SettingsComponent } from './admin/settings/settings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +29,14 @@ export const routes: Routes = [
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component:ResetPasswordDoneComponent},
   { path: 'shop', component:BookListComponent},
+  { path: 'dashboard', component:DashboardComponent},
+  { path: 'book-detail', component:BookDetailComponent},
+  { path: 'book-list', component:BookListComponent},
+  { path: 'order-detail', component: OrderDetailComponent },
+  { path: 'order-list', component: OrderListComponent },
+  { path: 'user-list', component: UserListComponent },
+  { path: 'user-detail', component: UserDetailComponent },
+  { path: 'setting', component: SettingsComponent },
 
   { path: 'admin', component: AdminLayoutComponent },
   { path: 'profile', component: ProfileComponent },

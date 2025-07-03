@@ -1,8 +1,44 @@
-<div class="order-detail-container">
-  <h2>Order Details</h2>
-  <p>This page will display details for a specific order.</p>
-  <p>Order ID: {{ orderId }}</p>
-  <p>Customer Name: Placeholder Name</p>
-  <p>Total Amount: Placeholder Amount</p>
-  <button routerLink="../">Back to Order List</button>
+<div class="detail-container">
+  @if (order) {
+    <h1>Order Details (ID: {{ order.id }})</h1>
+
+    <div class="order-summary">
+      <p><strong>Customer:</strong> {{ order.customerName }} ({{ order.customerEmail }})</p>
+      <p><strong>Order Date:</strong> {{ order.orderDate }}</p>
+      <p><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
+      <p><strong>Total Amount:</strong> ${{ order.totalAmount | number:'1.2-2' }}</p>
+      <p><strong>Status:</strong> <span class="status-badge status-{{ order.status | lowercase }}">{{ order.status }}</span></p>
+    </div>
+
+    <h2>Order Items</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Book Title</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of order.items; track item.bookTitle) {
+          <tr>
+            <td>{{ item.bookTitle }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price | number:'1.2-2' }}</td>
+            <td>${{ (item.quantity * item.price) | number:'1.2-2' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="order-actions">
+      <button class="action-btn" (click)="updateOrderStatus('Shipped')" @if (order.status === 'Pending')>Mark as Shipped</button>
+      <button class="action-btn" (click)="updateOrderStatus('Delivered')" @if (order.status === 'Shipped')>Mark as Delivered</button>
+      <button class="action-btn cancel-btn" (click)="updateOrderStatus('Cancelled')" @if (order.status !== 'Cancelled')>Cancel Order</button>
+      <button class="back-btn" (click)="backToList()">Back to Orders</button>
+    </div>
+  } @else {
+    <p class="no-data">Order not found.</p>
+  }
 </div>

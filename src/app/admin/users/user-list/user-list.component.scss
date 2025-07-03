@@ -1,0 +1,13 @@
+// Reusing .list-container, .detail-container, .data-table, form styles from books
+
+.role-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.role-customer { background-color: #007bff; } // Blue
+.role-admin { background-color: #6f42c1; } // Purple
