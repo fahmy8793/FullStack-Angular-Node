@@ -1,12 +1,24 @@
-<div class="card" style="width: 18rem">
-  <img [src]="getBookImagePath()" class="card-img-top" [alt]="bookData.title" />
-  <!-- <img src="../../assets/books_Imgs/" class="card-img-top" [alt]="bookData.title"> -->
-  <div class="card-body">
-    <h5 class="card-title">{{ bookData.title }}</h5>
-    <p class="card-text text-danger">{{ bookData.author }}</p>
-    <a href="#" class="text-bg-secondary">{{ bookData.price }}</a>
-    <button class="btn btn-primary mt-3 w-100" (click)="addToCart()">
-      Show Book Details
-    </button>
+<div class="book-card" (mouseenter)="hover = true" (mouseleave)="hover = false">
+  <div class="img-container">
+    <img [src]="bookData.image" alt="Book" />
+    <div class="overlay" [class.show]="hover">
+      <div class="icon-buttons">
+        <button class="icon-btn"  [routerLink]="['/shop', bookData.id]"  title="Quick View">
+          <i class="fa fa-eye"></i>
+        </button>
+        <button class="icon-btn" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </button>
+        <button class="icon-btn" title="Add to Wishlist">
+          <i class="fa fa-heart"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="book-info">
+    <p class="category">{{ bookData.category }}</p>
+    <h5 class="title">{{ bookData.title }}</h5>
+    <p class="author">{{ bookData.author }}</p>
+    <span class="price">${{ bookData.price }}</span>
   </div>
 </div>

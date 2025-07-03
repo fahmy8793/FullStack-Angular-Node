@@ -8,5 +8,5 @@ export interface Book {
   category : string;
   description :string;
   inventoryStatus?: 'INSTOCK' | 'LOWSTOCK' | 'OUTOFSTOCK';
-   isWishListed? : boolean;
+  isWishListed? : boolean;
 }

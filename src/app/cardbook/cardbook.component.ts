@@ -1,16 +1,20 @@
 import { CartService } from './../services/cartService.service';
 import { Component, Input } from '@angular/core';
 import { Book } from '../interfaces/book-details';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 // import { CartService } from '../services/cartService.service';
 
 @Component({
   selector: 'app-cardbook',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,RouterModule],
   templateUrl: './cardbook.component.html',
   styleUrl: './cardbook.component.scss',
 })
 export class CardbookComponent {
+  hover = false;
+
   @Input() bookData!: Book;
   // fullPath: any;
   // bookData.img = '' + this.bookData.img;
