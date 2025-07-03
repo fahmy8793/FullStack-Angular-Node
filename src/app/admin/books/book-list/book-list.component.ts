@@ -17,7 +17,7 @@ interface Book {
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss']
 })
-export class BookListComponent implements OnInit {
+export class BookListsComponent implements OnInit {
   books: Book[] = [];
 
   ngOnInit(): void {

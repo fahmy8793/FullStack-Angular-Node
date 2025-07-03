@@ -7,7 +7,7 @@ import { ResetPasswordDoneComponent } from './reset-password-done/reset-password
 import { authGuard } from './guards/auth.guard';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
-import { BookListComponent } from './admin/books/book-list/book-list.component';
+import { BookListsComponent } from './admin/books/book-list/book-list.component';
 import { BookDetailComponent } from './admin/books/book-detail/book-detail.component';
 import { OrderDetailComponent } from './admin/orders/order-detail/order-detail.component';
 import { OrderListComponent } from './admin/orders/order-list/order-list.component';
