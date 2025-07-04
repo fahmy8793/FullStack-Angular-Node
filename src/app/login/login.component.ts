@@ -33,36 +33,36 @@ export class LoginComponent {
       })
     }
 
-    ngOnInit(): void {
-      (window as any)['handleCredentialResponse'] = this.handleCredentialResponse.bind(this);
+    // ngOnInit(): void {
+    //   (window as any)['handleCredentialResponse'] = this.handleCredentialResponse.bind(this);
 
-        google.accounts.id.initialize({
-        client_id: '594089926182-nsq0trk9rmnvpcek7mmeukmjmgg5c3s9.apps.googleusercontent.com', // اكتبي Client ID الحقيقي بتاعك هنا
-        callback: this.handleCredentialResponse.bind(this),
-      });
+    //     google.accounts.id.initialize({
+    //     client_id: '594089926182-nsq0trk9rmnvpcek7mmeukmjmgg5c3s9.apps.googleusercontent.com', // اكتبي Client ID الحقيقي بتاعك هنا
+    //     callback: this.handleCredentialResponse.bind(this),
+    //   });
 
-      google.accounts.id.renderButton(
-        document.getElementById('googleBtn'),
-        { theme: 'outline', size: 'large' }
-      );
-    }
+    //   google.accounts.id.renderButton(
+    //     document.getElementById('googleBtn'),
+    //     { theme: 'outline', size: 'large' }
+    //   );
+    // }
 
 
-    handleCredentialResponse(response: any) {
-      const credential = response.credential;
-      // console.log('✅ Google credential:', credential);
+    // handleCredentialResponse(response: any) {
+    //   const credential = response.credential;
+    //   // console.log('✅ Google credential:', credential);
 
-      // simulate extracting user info from token (we're not decoding JWT here)
-      const dummyUser = {
-        email: 'user@gmail.com',
-        name: 'Google User',
-        token: credential
-      };
+    //   // simulate extracting user info from token (we're not decoding JWT here)
+    //   const dummyUser = {
+    //     email: 'user@gmail.com',
+    //     name: 'Google User',
+    //     token: credential
+    //   };
 
-      localStorage.setItem('currentUser', JSON.stringify(dummyUser));
-      alert('✅ Logged in with Google (simulated)');
-      this.router.navigate(['/']);
-    }
+    //   localStorage.setItem('currentUser', JSON.stringify(dummyUser));
+    //   alert('✅ Logged in with Google (simulated)');
+    //   this.router.navigate(['/']);
+    // }
 
 
     handleSubmitForm () {
