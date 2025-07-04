@@ -1,16 +1,34 @@
 <section class="books-grid">
   <app-cardbook
-    *ngFor ="let book of books"
-    [bookData] ="book"
-    class="book-item"  >
-</app-cardbook>
+    *ngFor="let book of books"
+    [bookData]="book"
+    class="book-item"
+    (addToCartEvent)="addToCart(book)"
+    (wishlistToggleEvent)="addToWishlist(book)"
+    (showDetailsEvent)="openBookDetails(book)"
+  ></app-cardbook>
 </section>
 
-
- <!-- <div class="books-grid">
-    <app-cardbook
-      *ngFor="let book of displayedBooks; trackBy: trackByBook"
-      [bookData]="book"
-      class="book-item">
-    </app-cardbook>
-  </div> -->
+<p-dialog
+  [(visible)]="showBookDetails"
+  [modal]="true"
+  [closable]="true"
+  header="Book Details"
+  [dismissableMask]="true"
+  (onHide)="closeBookDetails()"
+>
+  <div *ngIf="selectedBook">
+    <h4>{{ selectedBook.title }}</h4>
+    <p><strong>Author:</strong> {{ selectedBook.author }}</p>
+    <p><strong>Description:</strong> {{ selectedBook.description }}</p>
+    <p><strong>Category:</strong> {{ selectedBook.category }}</p>
+    <p>
+      <strong>Price:</strong>
+      {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
+    </p>
+    <p>
+      <strong>Rating:</strong>
+      <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
+    </p>
+  </div>
+</p-dialog>

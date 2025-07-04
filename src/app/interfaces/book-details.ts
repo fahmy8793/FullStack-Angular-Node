@@ -5,8 +5,11 @@ export interface Book {
   image: string;
   price: number;
   rate: number;
-  category : string;
-  description :string;
+  category: string;
+  description: string;
   inventoryStatus?: 'INSTOCK' | 'LOWSTOCK' | 'OUTOFSTOCK';
-  isWishListed? : boolean;
+  isWishListed?: boolean;
+}
+export interface CartItem extends Book {
+  quantity: number;
 }
