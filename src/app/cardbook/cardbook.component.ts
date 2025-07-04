@@ -1,52 +1,79 @@
-import { CartService } from './../services/cartService.service';
-import { Component, Input } from '@angular/core';
-import { Book } from '../interfaces/book-details';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-// import { CartService } from '../services/cartService.service';
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
+import { Book } from '../interfaces/book-details';
+import { WishlistService } from './../services/wishlist.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cardbook',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, ButtonModule, TagModule],
   templateUrl: './cardbook.component.html',
-  styleUrl: './cardbook.component.scss',
+  styleUrls: ['./cardbook.component.scss'],
 })
-export class CardbookComponent {
-  hover = false;
-
+export class CardbookComponent implements OnInit, OnDestroy {
   @Input() bookData!: Book;
-  // fullPath: any;
-  // bookData.img = '' + this.bookData.img;
-  constructor(private CartService: CartService) {}
-  onInit() {
-    // this.fullPath =  + this.bookData.img; // Base path for book images
-    // this.bookData.img = this.fullPath;
+  @Output() addToCartEvent = new EventEmitter<Book>();
+  @Output() addToWishlistEvent = new EventEmitter<Book>();
+  @Output() showDetailsEvent = new EventEmitter<Book>();
+  @Output() wishlistToggleEvent = new EventEmitter<Book>();
+
+  isWishlisted = false;
+  private wishlistSub!: Subscription;
+
+  constructor(private wishlistService: WishlistService) {}
+
+  ngOnInit(): void {
+    this.wishlistSub = this.wishlistService.wishlist$.subscribe((items) => {
+      this.isWishlisted = items.some((item) => item.id === this.bookData.id);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.wishlistSub) {
+      this.wishlistSub.unsubscribe();
+    }
+  }
+
+  onAddToCart() {
+    this.addToCartEvent.emit(this.bookData);
+  }
+
+  onWishlistToggle() {
+    this.wishlistToggleEvent.emit(this.bookData);
+    this.addToWishlistEvent.emit(this.bookData);
+  }
+
+  onShowDetails() {
+    this.showDetailsEvent.emit(this.bookData);
   }
 
   getBookImagePath(): string {
-    const img = this.bookData.image || this.bookData.image;
-
-      if (img?.startsWith('http')) {
-        return img;
+    const img = this.bookData.image;
+    if (img?.startsWith('http')) {
+      return img;
+    }
+    return `../../assets/books_Imgs/${img}`;
   }
-
-  return '../../assets/books_Imgs/' + img;
-}
-
-
-  addToCart() {
-    const itemToAdd = {
-      id: this.bookData.id,
-      title: this.bookData.title,
-      author: this.bookData.author,
-      image: this.bookData.image,
-      price: this.bookData.price,
-      quantity: 1,
-    };
-
-    this.CartService.addItem(itemToAdd);
-    alert(`"${this.bookData.title}" has been added to your cart!`);
-    console.log('Book added to cart:', itemToAdd);
+  getSeverity(book: Book): string {
+    switch (book.inventoryStatus) {
+      case 'INSTOCK':
+        return 'success';
+      case 'LOWSTOCK':
+        return 'warning';
+      case 'OUTOFSTOCK':
+        return 'danger';
+      default:
+        return '';
+    }
   }
 }

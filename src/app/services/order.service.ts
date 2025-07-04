@@ -22,6 +22,15 @@ export class OrderService {
 
     return this.http.get<Order[]>(`${this.apiUrl}/my-orders`, { headers });
   }
+  rateBook(data: { rating: number; bookId: string; orderId: string }) {
+    return this.http.post(
+      `http://localhost:3000/books/${data.bookId}/reviews`,
+      {
+        rating: data.rating,
+        orderId: data.orderId,
+      }
+    );
+  }
 
   // getOrderById(orderId: string): Observable<Order> { ... }
   // cancelOrder(orderId: string): Observable<any> { ... }

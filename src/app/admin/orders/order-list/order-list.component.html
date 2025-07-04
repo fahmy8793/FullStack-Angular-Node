@@ -1,10 +1,38 @@
-<div class="orders-list-container">
-  <h2>Order List</h2>
-  <p>This page will display a list of all customer orders.</p>
+<div class="list-container">
+  <div class="list-header">
+    <h1>Orders Management</h1>
+    <!-- No "Add New Order" button as orders are typically created by customers -->
+  </div>
 
-  <ul>
-    <li><a routerLink="1">Order #1 - John Doe - $120.00</a></li>
-    <li><a routerLink="2">Order #2 - Jane Smith - $75.50</a></li>
-    <li><a routerLink="3">Order #3 - Peter Jones - $210.00</a></li>
-  </ul>
+  @if (orders.length > 0) {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Order Date</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order.id) {
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.customerName }}</td>
+            <td>{{ order.orderDate }}</td>
+            <td>${{ order.totalAmount | number:'1.2-2' }}</td>
+            <td><span class="status-badge status-{{ order.status | lowercase }}">{{ order.status }}</span></td>
+            <td class="actions">
+              <!-- <button class="edit-btn" [routerLink]="order.id">View Details</button> -->
+              <button class="delete-btn">Cancel Order</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="no-data">No orders found.</p>
+  }
 </div>

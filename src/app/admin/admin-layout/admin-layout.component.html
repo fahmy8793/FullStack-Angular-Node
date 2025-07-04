@@ -1,22 +1,41 @@
-<div class="admin-layout">
+<div class="admin-layout" [class.collapsed]="isSidebarCollapsed">
   <aside class="sidebar">
-
+    <div class="sidebar-header">
+         <h5 *ngIf="!isSidebarCollapsed">Bookstore Admin</h5>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        @if (isSidebarCollapsed) {
+          <span>&#9776;</span> <!-- Hamburger icon -->
+        } @else {
+          <span>&times;</span> <!-- Close icon -->
+        }
+      </button>
+    </div>
     <nav class="sidebar-nav">
       <ul>
         @for (link of adminLinks; track link.path) {
           <li>
-            <a [routerLink]="link.path" routerLinkActive="active">{{ link.name }}</a>
+            <a [routerLink]="link.path" routerLinkActive="active">
+              <span class="icon">{{ link.icon }}</span>
+              @if (!isSidebarCollapsed) {
+                <span class="link-name">{{ link.name }}</span>
+              }
+            </a>
           </li>
         }
-        </ul>
+      </ul>
     </nav>
   </aside>
+
   <main class="content-area">
     <header class="navbar">
-      <h2>Welcome to Admin Panel!</h2>
-    
+      <h2 class="navbar-title">Welcome to Bookstore Admin!</h2>
+      <div class="user-info">
+        <span>Admin User</span>
+        <button class="logout-btn">Logout</button>
+      </div>
     </header>
     <div class="main-content">
-      <router-outlet></router-outlet> </div>
+      <router-outlet></router-outlet> <!-- Child routes will render here -->
+    </div>
   </main>
 </div>

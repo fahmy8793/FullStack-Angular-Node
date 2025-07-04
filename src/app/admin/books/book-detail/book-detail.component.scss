@@ -1,0 +1,178 @@
+// Common styles for list and detail pages
+.list-container, .detail-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-align: center;
+  }
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .add-btn {
+    background-color: #28a745; // Green
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    &:hover {
+      background-color: #218838;
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    color: #555;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .actions {
+    white-space: nowrap; // Keep buttons on one line
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-size: 0.9em;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .edit-btn {
+      background-color: #007bff; // Blue
+      color: white;
+      &:hover {
+        background-color: #0056b3;
+        transform: translateY(-1px);
+      }
+    }
+
+    .delete-btn {
+      background-color: #dc3545; // Red
+      color: white;
+      &:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+  font-style: italic;
+  font-size: 1.1em;
+}
+
+// Form styles (for detail components)
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: calc(100% - 22px); // Account for padding and border
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; // Include padding and border in the element's total width and height
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+  }
+
+  textarea {
+    resize: vertical; // Allow vertical resizing
+  }
+}
+
+.form-actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px; // Space between buttons
+  justify-content: flex-end; // Align buttons to the right
+
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &.save-btn {
+      background-color: #007bff; // Primary blue
+      color: white;
+      &:hover {
+        background-color: #0056b3;
+        transform: translateY(-1px);
+      }
+    }
+
+    &.cancel-btn {
+      background-color: #6c757d; // Grey
+      color: white;
+      &:hover {
+        background-color: #5a6268;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}

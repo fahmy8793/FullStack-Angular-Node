@@ -1,0 +1,35 @@
+<div class="detail-container">
+  <h1>@if (isNewUser) { Add New User } @else { Edit User (ID: {{ userId }}) }</h1>
+
+  <form (ngSubmit)="saveUser()">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" [(ngModel)]="user.name" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <select id="role" [(ngModel)]="user.role" name="role" required>
+        <option value="Customer">Customer</option>
+        <option value="Admin">Admin</option>
+      </select>
+    </div>
+
+    @if (isNewUser) {
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" [(ngModel)]="user.password" name="password" required>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="submit" class="save-btn">Save User</button>
+      <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
