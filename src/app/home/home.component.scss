@@ -1,0 +1,15 @@
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0px;
+  margin-bottom: 40px;
+}
+
+.book-item {
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.book-item:hover {
+  transform: translateY(-5px);
+}

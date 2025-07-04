@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cartService.service';
 import { CartItem } from '../cart/cart.component';
 import { AuthService } from '../../services/auth.service';
+import { DialogModule } from 'primeng/dialog';
+import { RatingModule } from 'primeng/rating';
+import { HttpClient } from '@angular/common/http';
 
 export interface OrderSummaryItem {
   id: string;
@@ -18,7 +21,7 @@ export interface OrderSummaryItem {
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, DecimalPipe],
+  imports: [CommonModule, FormsModule, DecimalPipe, DialogModule, RatingModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
@@ -58,7 +61,8 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private router: Router,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -120,12 +124,24 @@ export class CheckoutComponent implements OnInit {
   }
 
   placeOrder() {
-    console.log('Order placed (UI only)');
-    console.log('Collected Billing Details:', this.billingDetails);
-    console.log('Order Summary to be sent:', this.orderSummaryItems);
+    const orderData = {
+      books: this.orderSummaryItems.map((item) => ({
+        book: item.id,
+        quantity: item.quantity,
+      })),
+      total: this.getTotal(),
+    };
 
-    this.cartService.clearCart();
-    alert('Order cleared!');
-    this.router.navigate(['/order-confirmation']);
+    this.http
+      .post('http://localhost:3000/orders/checkout', orderData)
+      .subscribe({
+        next: (res) => {
+          this.cartService.clearCart();
+          this.router.navigate(['/profile']);
+        },
+        error: (err) => {
+          console.error('Error placing order:', err);
+        },
+      });
   }
 }
