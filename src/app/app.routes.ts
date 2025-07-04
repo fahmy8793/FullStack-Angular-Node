@@ -12,16 +12,12 @@ import { BookDetailComponent } from './admin/books/book-detail/book-detail.compo
 import { OrderDetailComponent } from './admin/orders/order-detail/order-detail.component';
 import { OrderListComponent } from './admin/orders/order-list/order-list.component';
 
-
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './users/profile/profile.component';
 import { BookListComponent } from './book-list/book-list.component';
-<<<<<<< HEAD
-=======
 import { BookDetailsComponent } from './book-details/book-details.component';
 import { WishlistComponent } from './wish-list/wish-list.component';
->>>>>>> backup-before-pull-osama
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,13 +28,10 @@ export const routes: Routes = [
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
 
-<<<<<<< HEAD
-  { path: 'shop', component:BookListComponent},
-=======
+  { path: 'shop', component: BookListComponent },
   { path: 'shop', component: BookListComponent },
   { path: 'shop/:id', component: BookDetailsComponent },
   { path: 'wish', component: WishlistComponent, title: 'wish list' },
->>>>>>> backup-before-pull-osama
 
   { path: 'admin', component: AdminLayoutComponent },
   { path: 'profile', component: ProfileComponent, title: 'profile' },
