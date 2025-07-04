@@ -50,6 +50,7 @@ export class CardbookComponent implements OnInit, OnDestroy {
 
   onWishlistToggle() {
     this.wishlistToggleEvent.emit(this.bookData);
+    this.addToWishlistEvent.emit(this.bookData);
   }
 
   onShowDetails() {
