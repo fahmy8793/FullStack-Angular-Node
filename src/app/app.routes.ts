@@ -13,6 +13,7 @@ import { ProfileComponent } from './users/profile/profile.component';
 
 import { BookListComponent } from './book-list/book-list.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
+import { VerifyOtpComponent } from './verify-otp/verify-otp.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,7 +21,9 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+
   { path: 'password/reset', component: ForgetPasswordComponent },
+  { path :'verify-otp', component: VerifyOtpComponent},
   { path: 'password/reset/done', component:ResetPasswordDoneComponent},
 
   { path: 'shop', component:BookListComponent},

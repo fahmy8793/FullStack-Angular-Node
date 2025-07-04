@@ -10,7 +10,7 @@
     <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
       <div class="form-group">
         <label>Username</label>
-        <input type="text" formControlName="userName" placeholder="Enter your name" />
+        <input type="text" formControlName="name" placeholder="Enter your name" />
         <div *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched" class="text-danger">
           Username is required
         </div>
