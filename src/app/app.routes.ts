@@ -13,6 +13,7 @@ import { ProfileComponent } from './users/profile/profile.component';
 
 import { BookListComponent } from './book-list/book-list.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
+import { WishlistComponent } from './wish-list/wish-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,12 +22,13 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'password/reset', component: ForgetPasswordComponent },
-  { path: 'password/reset/done', component:ResetPasswordDoneComponent},
+  { path: 'password/reset/done', component: ResetPasswordDoneComponent },
 
-  { path: 'shop', component:BookListComponent},
+  { path: 'shop', component: BookListComponent },
   { path: 'shop/:id', component: BookDetailsComponent },
+  { path: 'wish', component: WishlistComponent, title: 'wish list' },
 
   { path: 'admin', component: AdminLayoutComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, title: 'profile' },
   { path: 'checkout', component: CheckoutComponent, title: 'checkout' },
 ];

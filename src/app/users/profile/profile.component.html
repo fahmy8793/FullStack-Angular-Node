@@ -1,54 +1,53 @@
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10">
-      <div class="card p-4 shadow-sm">
-        <h3 class="mb-4 text-center">Your Orders</h3>
-        <div
-          *ngIf="userOrders.length === 0"
-          class="alert alert-info text-center"
-        >
-          You haven't placed any orders yet.
-        </div>
-        <div *ngIf="userOrders.length > 0">
-          <div class="list-group">
-            <div
-              *ngFor="let order of userOrders"
-              class="list-group-item list-group-item-action mb-2"
+<div class="container mt-5">
+  <h2 class="mb-4">My Profile</h2>
+  <div class="mb-3"><strong>User Name:</strong> {{ userName }}</div>
+
+  <hr class="my-5" />
+
+  <h3 class="mb-3">My Orders</h3>
+
+  <div *ngIf="userOrders.length === 0">No orders yet.</div>
+
+  <div *ngFor="let order of userOrders" class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Order #{{ order._id }}</h5>
+      <p class="card-text">Total: {{ order.totalAmount | currency : "EGP" }}</p>
+      <p class="card-text">Status: {{ order.status }}</p>
+      <p class="card-text">Date: {{ order.orderDate | date : "short" }}</p>
+
+      <small class="text-muted">
+        Items:
+        <span *ngFor="let item of order.items; let i = index">
+          {{ item.name }} (x{{ item.quantity }})
+          <span *ngIf="!item.rating">
+            |
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="openRatingDialog(order._id, item.productId)"
             >
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Order ID: {{ order._id }}</h5>
-                <small class="text-muted">{{
-                  order.orderDate | date : "medium"
-                }}</small>
-              </div>
-              <p class="mb-1">
-                Total: ${{ order.totalAmount | number : "1.2-2" }}
-              </p>
-              <p class="mb-1">
-                Status:
-                <span
-                  [class.badge]="true"
-                  [class.bg-success]="order.status === 'Delivered'"
-                  [class.bg-warning]="
-                    order.status === 'Pending' || order.status === 'Processing'
-                  "
-                  [class.bg-danger]="order.status === 'Cancelled'"
-                  >{{ order.status }}</span
-                >
-              </p>
-              \
-              <small class="text-muted"
-                >Items:
-                <span *ngFor="let item of order.items; last as isLast">
-                  {{ item.name }} (x{{ item.quantity }})<span *ngIf="!isLast"
-                    >,
-                  </span>
-                </span>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
+              Rate
+            </button>
+          </span>
+          <span *ngIf="item.rating"> | Rated: {{ item.rating }} ⭐ </span>
+          <span *ngIf="i < order.items.length - 1">, </span>
+        </span>
+      </small>
     </div>
   </div>
+
+  <p-dialog
+    [(visible)]="ratingVisible"
+    [modal]="true"
+    [closable]="false"
+    header="Rate This Book"
+  >
+    <div class="text-center">
+      <p class="mb-2">How would you rate this book?</p>
+      <p-rating [(ngModel)]="userRating" [cancel]="false"></p-rating>
+      <br />
+      <button class="btn btn-success mt-3" (click)="submitRating()">
+        Submit
+      </button>
+    </div>
+  </p-dialog>
 </div>

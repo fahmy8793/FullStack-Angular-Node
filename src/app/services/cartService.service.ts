@@ -1,5 +1,3 @@
-// src/app/services/cart.service.ts
-
 import { Injectable, PLATFORM_ID } from '@angular/core';
 import { inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';

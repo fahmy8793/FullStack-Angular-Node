@@ -1,53 +1,34 @@
-<section class="img-bg">
-  <div class="container p-5">
-    <div class="row">
-      <div class="col-6">
-        <h1 class="w-75">
-          We collect all books in one place. read the best seller books
-        </h1>
-        <p>
-          Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-          aspernatur aut odit aut fugit, sed quia.
-        </p>
-       <a routerLink="/shop" class="btn btn-primary">Shop Now</a>
-      </div>
-      <div class="col-6 position-relative">
-        <img
-          src="../../assets/decor-image01.svg"
-          class="decorator w-100"
-          alt=""
-        />
-        <img
-          src="../../assets/image30-copyright.webp"
-          class="img-fluid w-75"
-          alt=""
-        />
-      </div>
-    </div>
-  </div>
+<section class="books-grid gap-3">
+  <app-cardbook
+    *ngFor="let item of booksData"
+    [bookData]="item"
+    (addToCartEvent)="addToCart(item)"
+    (addToWishlistEvent)="addToWishlist(item)"
+    (showDetailsEvent)="openBookDetails(item)"
+    class="book-item"
+  ></app-cardbook>
 </section>
 
-<section class="container p-5">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="text-center">Best Seller Books</h1>
-    </div>
+<p-dialog
+  [(visible)]="showBookDetails"
+  [modal]="true"
+  [closable]="true"
+  header="Book Details"
+  [dismissableMask]="true"
+  (onHide)="closeBookDetails()"
+>
+  <div *ngIf="selectedBook">
+    <h4>{{ selectedBook.title }}</h4>
+    <p><strong>Author:</strong> {{ selectedBook.author }}</p>
+    <p><strong>Description:</strong> {{ selectedBook.description }}</p>
+    <p><strong>Category:</strong> {{ selectedBook.category }}</p>
+    <p>
+      <strong>Price:</strong>
+      {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
+    </p>
+    <p>
+      <strong>Rating:</strong>
+      <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
+    </p>
   </div>
-
-
-  <section class="best-sellers">
-    <h2>Best Seller Books</h2>
-    <div id="book-slider" class="splide" aria-label="Best Seller Books">
-      <div class="splide__track">
-        <ul class="splide__list">
-          <li *ngFor="let book of booksData" class="splide__slide">
-            <app-cardbook [bookData]="book"></app-cardbook>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-  </section>
-
-
-</section>
+</p-dialog>
