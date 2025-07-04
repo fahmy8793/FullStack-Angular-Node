@@ -10,13 +10,17 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'; //
   styleUrls: ['./admin-layout.component.scss']
 })
 export class AdminLayoutComponent {
-adminLinks = [
-  { path: 'dashboard', name: 'Dashboard' },
-  { path: 'products', name: 'Products' },
-  { path: 'orders', name: 'Orders' },
-  { path: 'customers', name: 'Customers' },
-  { path: 'categories', name: 'Categories' },
-  { path: 'settings', name: 'Settings' },
-  { path: 'orders', name: 'Orders' } // <-- NEW: Added this link
+ adminLinks = [
+    { path: 'dashboard', name: 'Dashboard', icon: '📊' },
+    { path: 'books', name: 'Books', icon: '📚' },
+    { path: 'orders', name: 'Orders', icon: '📦' },
+    { path: 'users', name: 'Users', icon: '👥' },
+    { path: 'settings', name: 'Settings', icon: '⚙️' }
+  ];
 
-];}
+  isSidebarCollapsed = false; // State to manage sidebar collapse/expand
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+}

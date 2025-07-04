@@ -11,55 +11,53 @@ import { AuthService } from '../../services/auth.service';
 import { UserData } from '../../interfaces/user-data';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../interfaces/order-data.interface';
+import { DialogModule } from 'primeng/dialog';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    DialogModule,
+    RatingModule,
+    FormsModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
-  profileForm: FormGroup;
   userOrders: Order[] = [];
+  userName: string = '';
+
+  ratingVisible = false;
+  selectedOrderId = '';
+  selectedBookId = '';
+  userRating = 0;
 
   constructor(
-    private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private orderService: OrderService
-  ) {
-    this.profileForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: [
-        { value: '', disabled: true },
-        [Validators.required, Validators.email],
-      ],
-      phone: ['', Validators.required],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
       const currentUser: UserData | null = this.authService.getCurrentUser();
       if (currentUser) {
-        this.profileForm.patchValue({
-          name: currentUser.name,
-          email: currentUser.email,
-        });
-
+        this.userName = currentUser.name || '';
         this.orderService.getMyOrders().subscribe({
           next: (orders) => {
             this.userOrders = orders;
-            console.log('User Orders:', this.userOrders);
           },
           error: (err) => {
             console.error('Failed to load user orders:', err);
           },
         });
       } else {
-        console.warn('User is logged in but no current user data found.');
         this.router.navigate(['/login']);
       }
     } else {
@@ -67,21 +65,36 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  saveProfile(): void {
-    if (this.profileForm.valid) {
-      const updatedUserData = this.profileForm.getRawValue();
-      delete updatedUserData.email;
-
-      console.log('Updated Profile Data:', updatedUserData);
-      alert('Profile update simulated!');
-    } else {
-      this.profileForm.markAllAsTouched();
-      alert('Please correct the errors in the form.');
-      console.log('Form is invalid:', this.profileForm.errors);
-    }
+  openRatingDialog(orderId: string, bookId: string) {
+    this.selectedOrderId = orderId;
+    this.selectedBookId = bookId;
+    this.userRating = 0;
+    this.ratingVisible = true;
   }
 
-  getFormControl(name: string) {
-    return this.profileForm.get(name);
+  submitRating() {
+    const ratingPayload = {
+      rating: this.userRating,
+      orderId: this.selectedOrderId,
+      bookId: this.selectedBookId,
+    };
+
+    this.orderService.rateBook(ratingPayload).subscribe({
+      next: () => {
+        const order = this.userOrders.find(
+          (o) => o._id === this.selectedOrderId
+        );
+        const item = order?.items.find(
+          (i) => i.productId === this.selectedBookId
+        );
+
+        this.ratingVisible = false;
+        alert('Thanks for your rating!');
+      },
+      error: (err) => {
+        console.error('Error submitting rating:', err);
+        alert('Failed to submit rating.');
+      },
+    });
   }
 }

@@ -1,0 +1,35 @@
+<div class="detail-container">
+  <h1>@if (isNewBook) { Add New Book } @else { Edit Book (ID: {{ bookId }}) }</h1>
+
+  <form (ngSubmit)="saveBook()">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" id="title" [(ngModel)]="book.title" name="title" required>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author:</label>
+      <input type="text" id="author" [(ngModel)]="book.author" name="author" required>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input type="number" id="price" [(ngModel)]="book.price" name="price" required step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label for="stock">Stock:</label>
+      <input type="number" id="stock" [(ngModel)]="book.stock" name="stock" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="book.description" name="description" rows="5"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="save-btn">Save Book</button>
+      <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

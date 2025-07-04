@@ -1,0 +1,38 @@
+<div class="list-container">
+  <div class="list-header">
+    <h1>Users Management</h1>
+    <button class="add-btn" routerLink="new">Add New User</button>
+  </div>
+
+  @if (users.length > 0) {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Registered Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td><span class="role-badge role-{{ user.role | lowercase }}">{{ user.role }}</span></td>
+            <td>{{ user.registeredDate }}</td>
+            <td class="actions">
+              <!-- <button class="edit-btn" [routerLink]="user.id">Edit</button> -->
+              <button class="delete-btn">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="no-data">No users found.</p>
+  }
+</div>

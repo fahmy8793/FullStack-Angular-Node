@@ -1,0 +1,72 @@
+// Reusing .list-container, .detail-container, .data-table from books styles
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.status-pending { background-color: #ffc107; color: #333; } // Yellow
+.status-shipped { background-color: #17a2b8; } // Cyan
+.status-delivered { background-color: #28a745; } // Green
+.status-cancelled { background-color: #dc3545; } // Red
+
+.order-summary {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  p {
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    color: #495057;
+    strong {
+      color: #343a40;
+    }
+  }
+}
+
+.order-actions {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap; // Allow buttons to wrap
+  gap: 15px;
+  justify-content: flex-end;
+
+  .action-btn, .back-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background-color: #007bff; // Default action button color
+    color: white;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .cancel-btn {
+    background-color: #dc3545; // Red for cancel
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  .back-btn {
+    background-color: #6c757d; // Grey for back
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}

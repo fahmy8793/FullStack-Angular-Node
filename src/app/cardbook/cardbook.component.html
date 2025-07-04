@@ -1,24 +1,52 @@
-<div class="book-card" (mouseenter)="hover = true" (mouseleave)="hover = false">
-  <div class="img-container">
-    <img [src]="bookData.image" alt="Book" />
-    <div class="overlay" [class.show]="hover">
-      <div class="icon-buttons">
-        <button class="icon-btn"  [routerLink]="['/shop', bookData.id]"  title="Quick View">
-          <i class="fa fa-eye"></i>
-        </button>
-        <button class="icon-btn" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </button>
-        <button class="icon-btn" title="Add to Wishlist">
-          <i class="fa fa-heart"></i>
-        </button>
-      </div>
+<div class="book-card" (click)="onShowDetails()">
+  <img [src]="getBookImagePath()" [alt]="bookData.title" class="book-image" />
+
+  <div class="book-info" (click)="$event.stopPropagation()">
+    <h5 class="book-title">{{ bookData.title }}</h5>
+    <p class="book-author">{{ bookData.author }}</p>
+
+    <p-tag
+      [value]="bookData.inventoryStatus"
+      [severity]="getSeverity(bookData)"
+    ></p-tag>
+
+    <div class="book-price-rating">
+      <span class="price">
+        {{ bookData.price | currency : "USD" : "symbol" : "1.2-2" }}
+      </span>
+      <span class="rating">
+        <i class="pi pi-star-fill text-warning"></i> {{ bookData.rate }}
+      </span>
     </div>
-  </div>
-  <div class="book-info">
-    <p class="category">{{ bookData.category }}</p>
-    <h5 class="title">{{ bookData.title }}</h5>
-    <p class="author">{{ bookData.author }}</p>
-    <span class="price">${{ bookData.price }}</span>
+
+    <div class="book-actions">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-shopping-cart"
+        label="Add to Cart"
+        (click)="onAddToCart(); $event.stopPropagation()"
+        [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'"
+      ></button>
+
+      <button
+        pButton
+        type="button"
+        class="p-button-outlined"
+        (click)="onWishlistToggle(); $event.stopPropagation()"
+        [ngClass]="{
+          'p-button-danger': !isWishlisted,
+          'wishlist-active': isWishlisted
+        }"
+      >
+        <i
+          class="pi"
+          [ngClass]="{
+            'pi-heart': !isWishlisted,
+            'pi-heart-fill': isWishlisted
+          }"
+        ></i>
+      </button>
+    </div>
   </div>
 </div>

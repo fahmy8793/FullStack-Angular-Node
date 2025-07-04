@@ -2,15 +2,31 @@
   <div class="navbar-logo">
     <span class="brand">Booky</span>
   </div>
+  <!-- فقط في login أو register -->
+  <nav
+    class="navbar-links"
+    *ngIf="currentRoute === '/login' || currentRoute === '/register'"
+  >
+    <a routerLink="/login"><i class="fa-solid fa-right-to-bracket"></i></a>
+    <a routerLink="/register"><i class="fa-solid fa-user-plus"></i></a>
+  </nav>
 
-  <nav class="navbar-links">
+  <!-- باقي الصفحات -->
+  <nav
+    class="navbar-links"
+    *ngIf="currentRoute !== '/login' && currentRoute !== '/register'"
+  >
     <a routerLink="/">Home</a>
     <a routerLink="/shop">Shop</a>
     <a routerLink="/cart">Cart</a>
-    <a routerLink="/watchlist">Watch List</a>
+    <a routerLink="/wish">Wish List</a>
   </nav>
 
-  <div class="navbar-icons">
+  <!-- إخفاء الأيقونات في login/register -->
+  <div
+    class="navbar-icons"
+    *ngIf="currentRoute !== '/login' && currentRoute !== '/register'"
+  >
     <a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="icon"
       ><i class="fas fa-user"></i
     ></a>
