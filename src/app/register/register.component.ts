@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -6,29 +6,31 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { RegisterRequest } from '../interfaces/register-request';
-import { RouterModule } from '@angular/router';
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrls: ['./register.component.scss'],
+  providers: [MessageService],
 })
 export class RegisterComponent {
-  passwordsDoNotMatch: boolean = false;
-  showPassword: boolean = false;
-  showConfirmPassword: boolean = false;
-
-  // Initialize form name whose type is FormGroup
   registerForm: FormGroup;
+  passwordsDoNotMatch: boolean = false;
 
-  // using FormBuilder to make the form with its form controls (inputs) and validation
-  constructor(private fb: FormBuilder , private router:Router, private authService :AuthService) {
+  showPassword: boolean = false;
+  showConfirmPassword = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -47,34 +49,36 @@ export class RegisterComponent {
   }
 
   handleSubmitForm() {
-    const password = this.registerForm.value.password;
-    const confirmPassword = this.registerForm.value.confirmPassword;
-    const data: RegisterRequest = this.registerForm.value;
+    this.passwordsDoNotMatch = false;
 
     if (this.registerForm.invalid) {
-      // If no field of the form is entered
-
-      this.registerForm.markAllAsTouched(); //  display all errors
-      console.log('Form not valid');
-    } else {
-      console.log(this.registerForm.value);
+      this.registerForm.markAllAsTouched();
+      return;
     }
+
+    const { password, confirmPassword } = this.registerForm.value;
 
     if (password !== confirmPassword) {
       this.passwordsDoNotMatch = true;
       return;
     }
 
-      this.authService.register(data).subscribe({
+    this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
-        console.log('✅ Registered:', res);
-        this.router.navigate(['login']);    // Navigate To Login Page After Registration
+        console.log('✅ Registered successfully:', res);
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('❌ Registration failed:', err);
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Registration Failed',
+          detail: err.error.message || 'An unknown error occurred.',
+        });
+      },
     });
-
-
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

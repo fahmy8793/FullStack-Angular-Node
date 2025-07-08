@@ -1,30 +1,34 @@
+// اذهب إلى ملف الواجهات الخاص بالطلبات (مثلاً order-data.interface.ts)
+// واستبدل محتواه بالكامل بهذا الكود
+
+import { Book } from './book-details'; // تأكد من استيراد واجهة Book
+
+/**
+ * يمثل عنصراً واحداً داخل الطلب.
+ * الـ Backend يرسل تفاصيل الكتاب ككائن متداخل.
+ */
 export interface OrderItem {
-  productId: string;
-  name: string;
-  price: number;
+  book: Book; // ✅ تصحيح: العنصر يحتوي على كائن 'book'
   quantity: number;
-  rating?: number;
+  rating?: number; // التقييم يكون على العنصر داخل الطلب
+  _id: string; // كل عنصر له ID خاص به
 }
 
+/**
+ * يمثل كائن الطلب الكامل كما يأتي من الـ Backend.
+ */
 export interface Order {
   _id: string;
-  userId: string;
-  orderDate: string;
-  totalAmount: number;
-  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled'; //  order status
-  items: OrderItem[];
-  shippingAddress: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    streetAddress: string;
-    townCity: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  paymentMethod: string; //   payment method ('COD', 'PayPal', 'CreditCard')
-  // last4Digits?: string;
-  // expiryDate?: string;
+  user: string; // معرّف المستخدم
+
+  books: OrderItem[]; // ✅ تصحيح: اسم الخاصية هو 'books'
+
+  total: number; // ✅ تصحيح: اسم الخاصية هو 'total'
+
+  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+  paymentMethod: string;
+
+  // ✅ تصحيح: Mongoose يضيف هذه الحقول تلقائياً
+  createdAt: string;
+  updatedAt: string;
 }

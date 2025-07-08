@@ -1,145 +1,136 @@
-import { WishlistService } from './../services/wishlist.service';
-import { CartService } from './../services/cartService.service';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CardbookComponent } from '../cardbook/cardbook.component';
+// src/app/home/home.component.ts
+
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+// Services
+import { BookService, PaginatedBookResponse } from '../services/book.service'; // Import the new response type
+import { CartService } from '../services/cartService.service';
+import { WishlistService } from '../services/wishlist.service';
+
+// Interfaces
 import { Book } from '../interfaces/book-details';
-import { DataViewModule } from 'primeng/dataview';
+
+// PrimeNG Modules
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { BookService } from '../services/book.service';
-import { Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { DialogModule } from 'primeng/dialog';
-import Splide from '@splidejs/splide';
+
+// Other
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  query,
+  stagger,
+} from '@angular/animations';
+import { CardbookComponent } from '../cardbook/cardbook.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CardbookComponent,
     CommonModule,
+    FormsModule,
+    RouterModule,
+    CardbookComponent,
     ButtonModule,
-    TagModule,
-    DataViewModule,
     ToastModule,
     DialogModule,
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrls: ['./home.component.scss'],
   providers: [MessageService],
+  animations: [
+    trigger('cardAnimation', [
+      transition('* => *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateY(20px)' }),
+            stagger(100, [
+              animate(
+                '0.4s ease-out',
+                style({ opacity: 1, transform: 'translateY(0)' })
+              ),
+            ]),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
+  ],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  booksData: Book[] = [];
-  splideSlider: Splide | null = null;
+export class HomeComponent implements OnInit {
+  bestSellerBooks: Book[] = [];
+  featuredBooks: Book[] = [];
 
-  // Popup book details
   showBookDetails = false;
   selectedBook: Book | null = null;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private bookService: BookService,
     private router: Router,
-    private CartService: CartService,
-    private wishlistService: WishlistService,
-    private messageService: MessageService
+    private cartService: CartService,
+    private wishlistService: WishlistService
   ) {}
 
   ngOnInit(): void {
-    this.bookService.getAllBooks().subscribe((books) => {
-      this.booksData = books
-        .sort((a, b) => (b.rate || 0) - (a.rate || 0))
-        .slice(0, 8);
-      this.initSlider();
+    this.bookService.getAllBooks({ limit: 20 }).subscribe({
+      next: (response: PaginatedBookResponse) => {
+        const allBooks = response.data;
+
+        // Sort all received books by rating
+        const sortedByRating = [...allBooks].sort(
+          (a, b) => (b.rate || 0) - (a.rate || 0)
+        );
+
+        // Assign to the different sections
+        this.bestSellerBooks = sortedByRating.slice(0, 8);
+        this.featuredBooks = sortedByRating.slice(0, 5);
+      },
+      error: (err) => {
+        console.error('Failed to fetch books for homepage:', err);
+      },
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.initSlider();
-  }
-
-  initSlider() {
-    if (
-      document.querySelector('#book-slider') &&
-      this.booksData.length > 0 &&
-      !this.splideSlider
-    ) {
-      this.splideSlider = new Splide('#book-slider', {
-        type: 'loop',
-        perPage: 4,
-        gap: '1rem',
-        autoplay: true,
-        interval: 3000,
-        pauseOnHover: true,
-        breakpoints: {
-          992: { perPage: 3 },
-          768: { perPage: 2 },
-          480: { perPage: 1 },
-        },
-      }).mount();
-    }
   }
 
   goToShop(): void {
     this.router.navigate(['/shop']);
   }
 
-  getSeverity(book: Book) {
-    switch (book.inventoryStatus) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return '';
-    }
+  addToCart(book: Book): void {
+    this.cartService.addItem({ bookId: book._id, quantity: 1 });
   }
 
-  addToCart(book: Book) {
-    const itemToAdd = {
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      image: book.image,
-      price: Number(book.price),
-      quantity: 1,
-    };
-    this.CartService.addItem(itemToAdd);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: `"${book.title}" added to your cart!`,
-    });
+  toggleWishlist(book: Book): void {
+    this.wishlistService.toggleWishlist(book);
   }
 
-  addToWishlist(book: Book) {
-    const isAlreadyAdded = this.wishlistService.isInWishlist(book.id);
-    if (isAlreadyAdded) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Already Exists',
-        detail: `"${book.title}" is already in your wishlist.`,
-      });
-    } else {
-      this.wishlistService.addItem(book);
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Wishlist',
-        detail: `"${book.title}" added to your wishlist!`,
-      });
-    }
-  }
-
-  // Popup book details
-  openBookDetails(book: Book) {
+  openBookDetails(book: Book): void {
     this.selectedBook = book;
     this.showBookDetails = true;
   }
-  closeBookDetails() {
+
+  closeBookDetails(): void {
     this.showBookDetails = false;
     this.selectedBook = null;
+  }
+
+  getBookImagePath(book: Book): string {
+    if (!book || !book.image) return 'assets/books_Imgs/default-book.png';
+    if (book.image.startsWith('http')) return book.image;
+    return `assets/books_Imgs/${book.image}`;
   }
 }

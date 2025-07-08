@@ -8,14 +8,18 @@
     <p-tag
       [value]="bookData.inventoryStatus"
       [severity]="getSeverity(bookData)"
-    ></p-tag>
+      >{{ bookData.category }}</p-tag
+    >
 
     <div class="book-price-rating">
       <span class="price">
         {{ bookData.price | currency : "USD" : "symbol" : "1.2-2" }}
       </span>
-      <span class="rating">
-        <i class="pi pi-star-fill text-warning"></i> {{ bookData.rate }}
+      <!-- check if rate greater than 0 and show it  -->
+      <span class="rating" *ngIf="bookData.rate && bookData.rate > 0">
+        <i class="pi pi-star-fill text-warning"></i>
+        <!-- The number pipe formats the rating to one decimal place (e.g., 4.7) -->
+        {{ bookData.rate | number : "1.1-1" }}
       </span>
     </div>
 

@@ -1,37 +1,32 @@
-// src/app/services/order.service.ts
-
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Order } from '../interfaces/order-data.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:3000/api/orders';
+  private apiUrl = `${environment.apiUrl}/order`;
 
   constructor(private http: HttpClient) {}
 
+  placeOrder(orderData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/checkout`, orderData);
+  }
+
   getMyOrders(): Observable<Order[]> {
-    const token = localStorage.getItem('authToken');
-    let headers = new HttpHeaders();
-    if (token) {
-      headers = headers.set('Authorization', 'Bearer ' + token);
-    }
-
-    return this.http.get<Order[]>(`${this.apiUrl}/my-orders`, { headers });
+    return this.http.get<Order[]>(`${this.apiUrl}/my-orders`);
   }
-  rateBook(data: { rating: number; bookId: string; orderId: string }) {
-    return this.http.post(
-      `http://localhost:3000/books/${data.bookId}/reviews`,
-      {
-        rating: data.rating,
-        orderId: data.orderId,
-      }
-    );
+  rateBook(payload: {
+    rating: number;
+    bookId: string;
+    orderId: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/review/${payload.bookId}`, {
+      rating: payload.rating,
+      comment: `Order ID: ${payload.orderId}`,
+    });
   }
-
-  // getOrderById(orderId: string): Observable<Order> { ... }
-  // cancelOrder(orderId: string): Observable<any> { ... }
 }

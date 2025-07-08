@@ -1,12 +1,37 @@
-<section class="books-grid gap-3">
-  <app-cardbook
-    *ngFor="let item of booksData"
-    [bookData]="item"
-    (addToCartEvent)="addToCart(item)"
-    (addToWishlistEvent)="addToWishlist(item)"
-    (showDetailsEvent)="openBookDetails(item)"
-    class="book-item"
-  ></app-cardbook>
+<section class="hero-section">
+  <div class="hero-content">
+    <h1 class="hero-title">Online Book Store</h1>
+    <p class="hero-subtitle">Featured Books</p>
+    <div class="hero-books">
+      <div
+        class="hero-book-item"
+        *ngFor="let book of featuredBooks"
+        (click)="openBookDetails(book)"
+      >
+        <img [src]="getBookImagePath(book)" [alt]="book.title" />
+        <p class="hero-book-title">{{ book.title }}</p>
+      </div>
+    </div>
+    <button pButton class="shop-now-btn" (click)="goToShop()">Shop Now</button>
+  </div>
+</section>
+
+<section class="bestseller-section">
+  <div class="section-title">
+    <h2>Best Seller Books</h2>
+    <p>Discover our most popular and highest-rated books.</p>
+  </div>
+  <div class="bestseller-grid" [@cardAnimation]>
+    <app-cardbook
+      *ngFor="let book of bestSellerBooks"
+      [bookData]="book"
+      (addToCartEvent)="addToCart(book)"
+      (wishlistToggleEvent)="toggleWishlist(book)"
+      (showDetailsEvent)="openBookDetails(book)"
+      class="book-item"
+    >
+    </app-cardbook>
+  </div>
 </section>
 
 <p-dialog
@@ -16,19 +41,28 @@
   header="Book Details"
   [dismissableMask]="true"
   (onHide)="closeBookDetails()"
+  [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
 >
-  <div *ngIf="selectedBook">
-    <h4>{{ selectedBook.title }}</h4>
-    <p><strong>Author:</strong> {{ selectedBook.author }}</p>
-    <p><strong>Description:</strong> {{ selectedBook.description }}</p>
-    <p><strong>Category:</strong> {{ selectedBook.category }}</p>
-    <p>
-      <strong>Price:</strong>
-      {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
-    </p>
-    <p>
-      <strong>Rating:</strong>
-      <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
-    </p>
+  <div *ngIf="selectedBook" class="book-details-content">
+    <div class="dialog-image-container">
+      <img [src]="getBookImagePath(selectedBook)" [alt]="selectedBook.title" />
+    </div>
+    <div class="dialog-info-container">
+      <h4>{{ selectedBook.title }}</h4>
+      <p><strong>Author:</strong> {{ selectedBook.author }}</p>
+      <p><strong>Category:</strong> {{ selectedBook.category }}</p>
+      <p>
+        <strong>Rating:</strong>
+        <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
+      </p>
+      <p class="price-details">
+        <strong>Price:</strong>
+        {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
+      </p>
+      <p class="description">
+        <strong>Description:</strong> {{ selectedBook.description }}
+      </p>
+    </div>
   </div>
 </p-dialog>

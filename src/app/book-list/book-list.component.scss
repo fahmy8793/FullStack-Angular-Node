@@ -1,15 +1,140 @@
-.books-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0px;
+:host {
+  display: block;
+  background-color: var(--page-bg, #f8f7f2);
+  min-height: 100vh;
+}
+
+.shop-container {
+  max-width: var(--container-width, 1200px);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.controls-container {
+  background-color: var(--bg-white, #ffffff);
+  padding: 25px;
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
   margin-bottom: 40px;
 }
 
-.book-item {
-  width: 100%;
-  transition: transform 0.3s ease;
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-primary, "Playfair Display");
+    font-size: 2rem;
+    color: var(--text-color, #1a1a1a);
+  }
+
+  .total-results {
+    font-family: var(--font-secondary, "Inter");
+    color: var(--text-light, #6c757d);
+  }
 }
 
-.book-item:hover {
-  transform: translateY(-5px);
+.controls {
+  display: flex;
+  gap: 20px;
+
+  input,
+  select {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: var(--border-radius, 8px);
+    font-size: 16px;
+    font-family: var(--font-secondary, "Inter");
+    flex-grow: 1;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color, #b9976f);
+      box-shadow: 0 0 0 3px rgba(185, 151, 111, 0.25);
+    }
+  }
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 30px;
+  min-height: 400px;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-light, #6c757d);
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-family: var(--font-secondary, "Inter");
+  }
+}
+
+.paginator-container {
+  margin-top: 40px;
+}
+.book-details-content {
+  display: flex;
+  gap: 25px;
+
+  .dialog-image-container {
+    flex-shrink: 0;
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: var(--border-radius, 8px);
+      box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+    }
+  }
+
+  .dialog-info-container {
+    h4 {
+      font-size: 1.8rem;
+      margin: 0 0 10px 0;
+      font-family: var(--font-primary, "Playfair Display");
+      color: var(--text-color, #1a1a1a);
+    }
+    p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: var(--text-light, #6c757d);
+      strong {
+        color: var(--text-color, #1a1a1a);
+      }
+    }
+    .price-details {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-color, #b9976f);
+      margin-top: 15px;
+    }
+    .description {
+      line-height: 1.6;
+    }
+  }
+}
+// تصميم متجاوب
+@media (max-width: 768px) {
+  .controls-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .controls {
+    flex-direction: column;
+  }
+  .book-details-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 }

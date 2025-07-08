@@ -1,14 +1,70 @@
-<section class="books-grid">
-  <app-cardbook
-    *ngFor="let book of books"
-    [bookData]="book"
-    class="book-item"
-    (addToCartEvent)="addToCart(book)"
-    (wishlistToggleEvent)="addToWishlist(book)"
-    (showDetailsEvent)="openBookDetails(book)"
-  ></app-cardbook>
-</section>
+<div class="shop-container">
+  <!-- Controls Section -->
+  <section class="controls-container">
+    <div class="controls-header">
+      <h2>Explore Our Books</h2>
+      <span class="total-results" *ngIf="totalRecords > 0"
+        >{{ totalRecords }} Books Found</span
+      >
+    </div>
+    <div class="controls">
+      <input
+        type="text"
+        placeholder="Search by title or author..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInput()"
+      />
 
+      <select
+        class="category-filter"
+        [(ngModel)]="selectedCategory"
+        (change)="onFilterChange()"
+      >
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">
+          {{ cat | titlecase }}
+        </option>
+      </select>
+
+      <select
+        class="sort-filter"
+        [(ngModel)]="sortOption"
+        (change)="onFilterChange()"
+      >
+        <option value="rating">Sort by Rating</option>
+        <option value="priceAsc">Price: Low to High</option>
+        <option value="priceDesc">Price: High to Low</option>
+      </select>
+    </div>
+  </section>
+  <!-- Books Grid -->
+  <section class="books-grid">
+    <div *ngIf="books.length === 0" class="no-results">
+      <h3>Loading books or no results found...</h3>
+    </div>
+    <app-cardbook
+      *ngFor="let book of books"
+      [bookData]="book"
+      (addToCartEvent)="addToCart(book)"
+      (wishlistToggleEvent)="toggleWishlist(book)"
+      (showDetailsEvent)="openBookDetails(book)"
+    >
+    </app-cardbook>
+  </section>
+
+  <!-- Paginator -->
+  <div class="paginator-container" *ngIf="totalRecords > rows">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[12, 24, 36]"
+    >
+    </p-paginator>
+  </div>
+</div>
+
+<!-- Details Dialog -->
 <p-dialog
   [(visible)]="showBookDetails"
   [modal]="true"
@@ -16,19 +72,28 @@
   header="Book Details"
   [dismissableMask]="true"
   (onHide)="closeBookDetails()"
+  [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
 >
-  <div *ngIf="selectedBook">
-    <h4>{{ selectedBook.title }}</h4>
-    <p><strong>Author:</strong> {{ selectedBook.author }}</p>
-    <p><strong>Description:</strong> {{ selectedBook.description }}</p>
-    <p><strong>Category:</strong> {{ selectedBook.category }}</p>
-    <p>
-      <strong>Price:</strong>
-      {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
-    </p>
-    <p>
-      <strong>Rating:</strong>
-      <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
-    </p>
+  <div *ngIf="selectedBook" class="book-details-content">
+    <div class="dialog-image-container">
+      <img [src]="getBookImagePath(selectedBook)" [alt]="selectedBook.title" />
+    </div>
+    <div class="dialog-info-container">
+      <h4>{{ selectedBook.title }}</h4>
+      <p><strong>Author:</strong> {{ selectedBook.author }}</p>
+      <p><strong>Category:</strong> {{ selectedBook.category }}</p>
+      <p>
+        <strong>Rating:</strong>
+        <i class="pi pi-star-fill text-warning"></i> {{ selectedBook.rate }}
+      </p>
+      <p class="price-details">
+        <strong>Price:</strong>
+        {{ selectedBook.price | currency : "USD" : "symbol" : "1.2-2" }}
+      </p>
+      <p class="description">
+        <strong>Description:</strong> {{ selectedBook.description }}
+      </p>
+    </div>
   </div>
 </p-dialog>

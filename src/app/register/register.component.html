@@ -2,72 +2,131 @@
   <div class="register-box">
     <!-- Header Tabs -->
     <div class="tabs">
-      <!-- <a routerLink="/login" class="tab">Login</a> -->
+      <a routerLink="/login" class="tab">Login</a>
       <span class="tab active">Register</span>
-      <span class="close">×</span>
     </div>
 
+    <!-- The form starts here -->
     <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
+      <!-- Username Field -->
       <div class="form-group">
-        <label>Username</label>
-        <input type="text" formControlName="name" placeholder="Enter your name" />
-        <div *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched" class="text-danger">
+        <label for="name">Username</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter your name"
+        />
+        <div
+          *ngIf="
+            registerForm.get('name')?.invalid &&
+            registerForm.get('name')?.touched
+          "
+          class="text-danger"
+        >
           Username is required
         </div>
       </div>
 
-
-
+      <!-- Email Field -->
       <div class="form-group">
-        <label>Email address</label>
-        <input type="email" formControlName="email" placeholder="name@example.com" />
-
-          <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched" class="text-danger">
-            Email is required
-          </div>
-          <div *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched" class="text-danger">
-            Invalid email format
-          </div>
+        <label for="email">Email address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="name@example.com"
+        />
+        <div
+          *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched"
+          class="text-danger"
+        >
+          Email is required
+        </div>
+        <div
+          *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched"
+          class="text-danger"
+        >
+          Invalid email format
+        </div>
       </div>
 
-
+      <!-- Password Field -->
       <div class="form-group">
-        <label>Password</label>
-        <input  [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="********" />
-        <span class="toggle-password" (click)="showPassword = !showPassword">
-          <i [class]="showPassword ? 'fas fa-eye' :'fas fa-eye-slash' "></i>
-        </span>
-
-
-        <div *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched" class="text-danger">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="********"
+          />
+          <!-- This icon toggles the 'showPassword' variable -->
+          <span class="toggle-password" (click)="showPassword = !showPassword">
+            <i
+              class="pi"
+              [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"
+            ></i>
+          </span>
+        </div>
+        <div
+          *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched"
+          class="text-danger"
+        >
           Password is required
         </div>
-        <div *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched" class="text-danger">
-          Password must contain uppercase, lowercase, number, and special character
+        <div
+          *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched"
+          class="text-danger"
+        >
+          Must contain uppercase, lowercase, number, and special character.
         </div>
       </div>
 
-
+      <!-- Confirm Password Field -->
       <div class="form-group">
-        <label>Confirm Password</label>
-        <input [type]="showPassword ? 'text' : 'password'"  formControlName="confirmPassword" placeholder="********" />
-         <span class="toggle-password" (click)="showPassword = !showPassword">
-          <i [class]="showPassword ? 'fas fa-eye' :'fas fa-eye-slash' "></i>
-        </span>
-        <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required'] && registerForm.get('confirmPassword')?.touched" class="text-danger">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-wrapper">
+          <!-- ✅ CORRECTION: This now uses its own variable 'showConfirmPassword' -->
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="********"
+          />
+          <!-- This icon now toggles its own variable -->
+          <span
+            class="toggle-password"
+            (click)="showConfirmPassword = !showConfirmPassword"
+          >
+            <i
+              class="pi"
+              [ngClass]="showConfirmPassword ? 'pi-eye-slash' : 'pi-eye'"
+            ></i>
+          </span>
+        </div>
+        <div
+          *ngIf="registerForm.get('confirmPassword')?.errors?.['required'] && registerForm.get('confirmPassword')?.touched"
+          class="text-danger"
+        >
           Please confirm password!
         </div>
         <div *ngIf="passwordsDoNotMatch" class="text-danger">
-          ❌ Password and Confirm Password do not match
+          Passwords do not match.
         </div>
       </div>
 
-
-
-      <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">Register</button>
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
     </form>
-      <div class="auth-links">
-        <a routerLink="/login">Already have an account? log in</a>
-      </div>
+
+    <div class="auth-links">
+      <a routerLink="/login">Already have an account? Log in</a>
+    </div>
   </div>
 </div>

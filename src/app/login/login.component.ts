@@ -1,97 +1,122 @@
-
-import { Component, OnInit } from '@angular/core';
-import {ReactiveFormsModule, FormBuilder,FormGroup,Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { error } from 'console';
-import { ToastrService } from 'ngx-toastr';
+import { MessageService } from 'primeng/api';
 
+// This is necessary for TypeScript to recognize the 'google' object
 declare const google: any;
-
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule,RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss'],
+  providers: [MessageService],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+  showPassword = false;
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
 
-    showPassword: boolean = false;
-  // Initialize form name whose type is FormGroup
-    loginForm : FormGroup;
+  ngOnInit(): void {
+    // Ensure Google's script only runs in the browser to avoid SSR errors
+    if (isPlatformBrowser(this.platformId)) {
+      (window as any)['handleCredentialResponse'] =
+        this.handleCredentialResponse.bind(this);
 
-    // using FormBuilder to make the form with its form controls (inputs) and validation
-    constructor(private fb:FormBuilder , private router:Router, private authService:AuthService,private toastr: ToastrService){
-      this.loginForm = this.fb.group({
-        email : ['',Validators.required],
-        password: ['', [Validators.required]],
-      })
-    }
+      google.accounts.id.initialize({
+        // IMPORTANT: This should be your actual Client ID from Google Cloud Console
+        client_id:
+          '594089926182-nsq0trk9rmnvpcek7mmeukmjmgg5c3s9.apps.googleusercontent.com',
+        callback: this.handleCredentialResponse.bind(this),
+      });
 
-    // ngOnInit(): void {
-    //   (window as any)['handleCredentialResponse'] = this.handleCredentialResponse.bind(this);
-
-    //     google.accounts.id.initialize({
-    //     client_id: '594089926182-nsq0trk9rmnvpcek7mmeukmjmgg5c3s9.apps.googleusercontent.com', // اكتبي Client ID الحقيقي بتاعك هنا
-    //     callback: this.handleCredentialResponse.bind(this),
-    //   });
-
-    //   google.accounts.id.renderButton(
-    //     document.getElementById('googleBtn'),
-    //     { theme: 'outline', size: 'large' }
-    //   );
-    // }
-
-
-    // handleCredentialResponse(response: any) {
-    //   const credential = response.credential;
-    //   // console.log('✅ Google credential:', credential);
-
-    //   // simulate extracting user info from token (we're not decoding JWT here)
-    //   const dummyUser = {
-    //     email: 'user@gmail.com',
-    //     name: 'Google User',
-    //     token: credential
-    //   };
-
-    //   localStorage.setItem('currentUser', JSON.stringify(dummyUser));
-    //   alert('✅ Logged in with Google (simulated)');
-    //   this.router.navigate(['/']);
-    // }
-
-
-    handleSubmitForm () {
-      const loginData = this.loginForm.value;
-
-      this.authService.login(loginData).subscribe({
-        next: (user) => {
-          this.toastr.success('Login successful!', 'Success', { positionClass: 'toast-top-center',timeOut: 2000, progressBar: true});
-          this.router.navigate(['/home']);
-        },
-        error: (err: any) => {
-          this.toastr.error('Invalid credentials', 'Login Failed',{ positionClass: 'toast-top-center',timeOut: 2000,});
-        }
+      google.accounts.id.renderButton(document.getElementById('googleBtn'), {
+        theme: 'outline',
+        size: 'large',
+        width: '300',
       });
     }
+  }
 
-  //  if (loginData.email === 'amira@email.com' && loginData.password === 'Amira!123') {
-  //     alert('✅ Login successful');
-  //     this.router.navigate(['/']);
-  //   } else {
-  //     alert('❌ Invalid email or password');
-  //   }
+  /**
+   * Handles the response from Google Sign-In
+   */
+  handleCredentialResponse(response: any) {
+    const googleToken = response.credential;
 
+    this.authService.loginWithGoogle(googleToken).subscribe({
+      next: (user) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Logged in with Google successfully!',
+        });
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Google Login Failed',
+          detail: err.error.message || 'An error occurred.',
+        });
+      },
+    });
+  }
 
-      goToRegister() {
-        this.router.navigate(['/register']);
-      }
+  /**
+   * Handles the regular email/password form submission
+   */
+  handleSubmitForm() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (user) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Login successful!',
+        });
+        this.router.navigate(['/']);
+      },
+      error: (err: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Login Failed',
+          detail: err.error.message || 'Invalid credentials',
+        });
+      },
+    });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
 }
-
-
-
-

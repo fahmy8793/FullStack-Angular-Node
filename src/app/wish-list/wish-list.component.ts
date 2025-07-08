@@ -1,60 +1,53 @@
+// src/app/users/wish-list/wish-list.component.ts
+
 import { Component, OnInit } from '@angular/core';
-import { WishlistService } from '../services/wishlist.service';
-import { Book } from '../interfaces/book-details';
-import { CartService } from '../services/cartService.service';
-import { CardbookComponent } from '../cardbook/cardbook.component';
 import { CommonModule } from '@angular/common';
-import { MessageService } from 'primeng/api';
+import { RouterModule } from '@angular/router';
+import { WishlistService } from '../services/wishlist.service';
+import { CartService } from '../services/cartService.service';
+import { Book } from '../interfaces/book-details';
+import { CardbookComponent } from '../cardbook/cardbook.component';
 
 @Component({
   selector: 'app-wishlist',
-  templateUrl: 'wish-list.component.html',
-  styleUrl: './wish-list.component.scss',
   standalone: true,
-  imports: [CardbookComponent, CommonModule],
-  providers: [MessageService],
+  imports: [CommonModule, RouterModule, CardbookComponent],
+  templateUrl: './wish-list.component.html',
+  styleUrls: ['./wish-list.component.scss'],
 })
 export class WishlistComponent implements OnInit {
+  // متغير لتخزين قائمة الأمنيات القادمة من الخدمة
   wishlist: Book[] = [];
 
   constructor(
     private wishlistService: WishlistService,
-    private cartService: CartService,
-    private messageService: MessageService
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    // اشترك في قائمة الأمنيات لعرضها
     this.wishlistService.wishlist$.subscribe((items: Book[]) => {
       this.wishlist = items;
     });
   }
 
-  removeFromWishlist(book: Book) {
-    this.wishlistService.removeItem(book.id);
-  }
-  addToCart(book: Book) {
-    this.cartService.addItem({
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      image: book.image,
-      price: Number(book.price),
-      quantity: 1,
-    });
-    this.removeFromWishlist(book);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Cart',
-      detail: `"${book.title}" added to cart!`,
-    });
+  /**
+   * دالة لإضافة كتاب من قائمة الأمنيات إلى السلة
+   * @param book الكتاب الذي سيتم إضافته
+   */
+  addToCart(book: Book): void {
+    // 1. أضف الكتاب إلى السلة
+    this.cartService.addItem({ bookId: book._id, quantity: 1 });
+    // 2. احذف الكتاب من قائمة الأمنيات
+    this.wishlistService.toggleWishlist(book);
   }
 
-  toggleWishlist(book: Book) {
-    this.wishlistService.removeItem(book.id);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Wishlist',
-      detail: `"${book.title}" removed from your wishlist!`,
-    });
+  /**
+   * دالة لحذف كتاب من قائمة الأمنيات عند الضغط على القلب
+   * @param book الكتاب الذي سيتم حذفه
+   */
+  toggleWishlist(book: Book): void {
+    // الخدمة ستقوم بكل المنطق
+    this.wishlistService.toggleWishlist(book);
   }
 }

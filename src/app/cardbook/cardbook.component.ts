@@ -34,7 +34,7 @@ export class CardbookComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.wishlistSub = this.wishlistService.wishlist$.subscribe((items) => {
-      this.isWishlisted = items.some((item) => item.id === this.bookData.id);
+      this.isWishlisted = items.some((item) => item._id === this.bookData._id);
     });
   }
 
