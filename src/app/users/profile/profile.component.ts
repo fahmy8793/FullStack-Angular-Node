@@ -1,99 +1,112 @@
+// src/app/users/profile/profile.component.ts
+
 import { Component, OnInit } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // نحتاجه لـ ngModel في p-rating
+
+// Services
 import { AuthService } from '../../services/auth.service';
-import { UserData } from '../../interfaces/user-data';
 import { OrderService } from '../../services/order.service';
-import { Order } from '../../interfaces/order-data.interface';
+
+// Interfaces
+import { Order, OrderItem } from '../../interfaces/order-data.interface';
+
+// PrimeNG
 import { DialogModule } from 'primeng/dialog';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     CommonModule,
     RouterModule,
     DialogModule,
     RatingModule,
-    FormsModule,
+    FormsModule, // ✅ تم الإبقاء عليه
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+  styleUrls: ['./profile.component.scss'],
+  providers: [MessageService],
 })
 export class ProfileComponent implements OnInit {
   userOrders: Order[] = [];
-  userName: string = '';
+  userName = ''; // متغير بسيط لتخزين اسم المستخدم
 
+  // خصائص النافذة المنبثقة للتقييم
   ratingVisible = false;
-  selectedOrderId = '';
-  selectedBookId = '';
+  selectedOrder?: Order;
+  selectedItem?: OrderItem;
   userRating = 0;
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      const currentUser: UserData | null = this.authService.getCurrentUser();
+    // استمع لحالة المستخدم
+    this.authService.currentUser$.subscribe((currentUser) => {
       if (currentUser) {
-        this.userName = currentUser.name || '';
-        this.orderService.getMyOrders().subscribe({
-          next: (orders) => {
-            this.userOrders = orders;
-          },
-          error: (err) => {
-            console.error('Failed to load user orders:', err);
-          },
-        });
-      } else {
-        this.router.navigate(['/login']);
+        // خزن الاسم واجلب الطلبات
+        this.userName = currentUser.name;
+        this.fetchUserOrders();
       }
-    } else {
-      this.router.navigate(['/login']);
-    }
+    });
   }
 
-  openRatingDialog(orderId: string, bookId: string) {
-    this.selectedOrderId = orderId;
-    this.selectedBookId = bookId;
+  fetchUserOrders(): void {
+    this.orderService.getMyOrders().subscribe({
+      next: (orders) => {
+        this.userOrders = orders;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load your orders.',
+        });
+      },
+    });
+  }
+
+  openRatingDialog(order: Order, item: OrderItem): void {
+    this.selectedOrder = order;
+    this.selectedItem = item;
     this.userRating = 0;
     this.ratingVisible = true;
   }
 
-  submitRating() {
+  submitRating(): void {
+    if (!this.selectedOrder || !this.selectedItem) return;
+
     const ratingPayload = {
       rating: this.userRating,
-      orderId: this.selectedOrderId,
-      bookId: this.selectedBookId,
+      orderId: this.selectedOrder._id,
+      bookId: this.selectedItem.book._id,
     };
 
     this.orderService.rateBook(ratingPayload).subscribe({
       next: () => {
-        const order = this.userOrders.find(
-          (o) => o._id === this.selectedOrderId
-        );
-        const item = order?.items.find(
-          (i) => i.productId === this.selectedBookId
-        );
-
+        if (this.selectedItem) {
+          this.selectedItem.rating = this.userRating;
+        }
         this.ratingVisible = false;
-        alert('Thanks for your rating!');
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Thank you for your rating!',
+        });
       },
       error: (err) => {
-        console.error('Error submitting rating:', err);
-        alert('Failed to submit rating.');
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message || 'Failed to submit rating.',
+        });
       },
     });
   }

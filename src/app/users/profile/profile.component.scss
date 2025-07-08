@@ -1,0 +1,128 @@
+// src/app/users/profile/profile.component.scss
+
+:host {
+  display: block;
+  background-color: var(--page-bg, #f8f7f2);
+  min-height: 100vh;
+}
+
+.profile-container {
+  max-width: var(--container-width, 1200px);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 40px;
+  h1 {
+    font-family: var(--font-primary, "Playfair Display");
+    font-size: 2.8rem;
+    margin: 0 0 10px 0;
+  }
+  p {
+    font-size: 1.2rem;
+    color: var(--text-light, #6c757d);
+  }
+}
+
+// ✅ تم تعديل هذا الجزء
+.profile-content {
+  // لم نعد بحاجة للـ grid هنا
+  max-width: 900px; // تحديد عرض أقصى لبطاقة الطلبات
+  margin: 0 auto; // توسيط البطاقة في الصفحة
+}
+
+.profile-card {
+  background-color: var(--bg-white, #ffffff);
+  padding: 30px;
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+
+  h3 {
+    font-family: var(--font-primary, "Playfair Display");
+    margin: 0 0 25px 0;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
+    padding-bottom: 15px;
+  }
+}
+
+// تنسيقات الطلبات (تبقى كما هي)
+.order-item {
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: var(--border-radius, 8px);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.order-summary {
+  background-color: var(--page-bg, #f8f7f2);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-light, #6c757d);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.order-books {
+  padding: 15px;
+}
+.book-in-order {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  &:not(:last-child) {
+    border-bottom: 1px dashed var(--border-color, #e0e0e0);
+  }
+}
+.book-title {
+  font-weight: 500;
+}
+.rated-text {
+  color: var(--accent-color, #b9976f);
+  font-weight: bold;
+}
+
+// رسالة عدم وجود طلبات
+.no-orders {
+  text-align: center;
+  padding: 40px 20px;
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+}
+
+// الأزرار (تبقى كما هي)
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius, 8px);
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-rate {
+  background-color: transparent;
+  color: var(--primary-color, #3498db);
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-color, #3498db);
+  border-radius: var(--border-radius, 8px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: var(--primary-color, #3498db);
+    color: white;
+  }
+}
+.btn-primary {
+  background-color: var(--primary-color, #3498db);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius, 8px);
+  cursor: pointer;
+}

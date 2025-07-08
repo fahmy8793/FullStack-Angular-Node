@@ -1,69 +1,84 @@
-import { Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, tap } from 'rxjs';
 import { Book } from '../interfaces/book-details';
+import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WishlistService {
-  private platformId = inject(PLATFORM_ID);
   private wishlistSubject = new BehaviorSubject<Book[]>([]);
-  wishlist$: Observable<Book[]> = this.wishlistSubject.asObservable();
+  wishlist$ = this.wishlistSubject.asObservable();
 
-  constructor(private messageService: MessageService) {
-    if (isPlatformBrowser(this.platformId)) {
-      const storedWishlist = localStorage.getItem('wishlist');
-      if (storedWishlist) {
-        this.wishlistSubject.next(JSON.parse(storedWishlist));
+  private apiUrl = `${environment.apiUrl}/wishlist`;
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {
+    this.authService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.loadInitialWishlist();
+      } else {
+        this.wishlistSubject.next([]);
       }
-    }
+    });
   }
 
-  private saveWishlist(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(
-        'wishlist',
-        JSON.stringify(this.wishlistSubject.value)
-      );
-    }
+
+  private loadInitialWishlist() {
+    this.http.get<{ data: Book[] }>(this.apiUrl).subscribe((response) => {
+      this.wishlistSubject.next(response.data || []);
+    });
   }
 
-  // --- دالة الإضافة التي تمنع التكرار ---
-  addItem(book: Book): void {
-    const currentItems = this.wishlistSubject.value;
-    const isAlreadyAdded = currentItems.some((i) => i.id === book.id);
+
+  toggleWishlist(book: Book): void {
+    const isAlreadyAdded = this.wishlistSubject
+      .getValue()
+      .some((item) => item._id === book._id);
 
     if (isAlreadyAdded) {
-      // إذا كان المنتج موجوداً، أظهر رسالة فقط
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Already Exists',
-        detail: `"${book.title}" is already in your wishlist.`,
+      this.http.delete<void>(`${this.apiUrl}/remove/${book._id}`).subscribe({
+        next: () => {
+          const updatedList = this.wishlistSubject
+            .getValue()
+            .filter((item) => item._id !== book._id);
+          this.wishlistSubject.next(updatedList);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Removed',
+            detail: `"${book.title}" removed from wishlist.`,
+          });
+        },
+        error: (err) => console.error('Failed to remove from wishlist', err),
       });
     } else {
-      // إذا لم يكن موجوداً، قم بإضافته
-      const updatedItems = [...currentItems, book];
-      this.wishlistSubject.next(updatedItems);
-      this.saveWishlist();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Added',
-        detail: `"${book.title}" added to your wishlist.`,
-      });
-    }
-  }
+      this.http
+        .post<any>(`${this.apiUrl}/add`, { bookId: book._id })
+        .subscribe({
+          next: (response) => {
 
-  // --- دالة الحذف (للتoggling من المكون) ---
-  removeItem(bookId: string): void {
-    const updatedItems = this.wishlistSubject.value.filter(
-      (i) => i.id !== bookId
-    );
-    this.wishlistSubject.next(updatedItems);
-    this.saveWishlist();
-  }
-  public isInWishlist(bookId: string): boolean {
-    return this.wishlistSubject.value.some((i) => i.id === bookId);
+            const updatedList = [...this.wishlistSubject.getValue(), book];
+            this.wishlistSubject.next(updatedList);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Added',
+              detail: `"${book.title}" added to wishlist.`,
+            });
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Could not add',
+              detail: err.error.message || 'Already in wishlist.',
+            });
+          },
+        });
+    }
   }
 }

@@ -21,8 +21,6 @@ import { BookDetailsComponent } from './book-details/book-details.component';
 import { VerifyOtpComponent } from './verify-otp/verify-otp.component';
 
 import { WishlistComponent } from './wish-list/wish-list.component';
-
-
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'home ' },
@@ -32,13 +30,11 @@ export const routes: Routes = [
 
   { path: 'password/reset', component: ForgetPasswordComponent },
 
-  { path :'verify-otp', component: VerifyOtpComponent},
-  { path: 'password/reset/done', component:ResetPasswordDoneComponent},
+  { path: 'verify-otp', component: VerifyOtpComponent },
+  { path: 'password/reset/done', component: ResetPasswordDoneComponent },
   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
 
-
-  { path: 'shop', component: BookListComponent },
-  { path: 'shop', component: BookListComponent },
+  { path: 'shop', component: BookListComponent, title: 'shop' },
   { path: 'shop/:id', component: BookDetailsComponent },
   { path: 'wish', component: WishlistComponent, title: 'wish list' },
 

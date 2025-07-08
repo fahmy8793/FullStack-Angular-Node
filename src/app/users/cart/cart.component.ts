@@ -1,31 +1,26 @@
-// src/app/users/cart/cart.component.ts
-
+import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cartService.service';
-
-export interface CartItem {
-  id: string;
-  title: string;
-  author: string;
-  image: string;
-  price: number;
-  quantity: number;
-}
+import { CartItem } from '../../interfaces/book-details';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss',
+  styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
 
-  constructor(private router: Router, private cartService: CartService) {}
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private MessageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe((items) => {
@@ -33,8 +28,8 @@ export class CartComponent implements OnInit {
     });
   }
 
-  removeItem(itemToRemove: CartItem) {
-    this.cartService.removeItem(itemToRemove);
+  removeItem(itemToRemove: CartItem): void {
+    this.cartService.removeItem(itemToRemove.book._id);
   }
 
   getTotalItems(): number {
@@ -43,32 +38,31 @@ export class CartComponent implements OnInit {
 
   getTotalPrice(): number {
     return this.cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      // ✅ تصحيح: نصل إلى السعر من خلال الكائن book
+      (total, item) => total + item.book.price * item.quantity,
       0
     );
   }
 
-  increaseQuantity(item: CartItem) {
+  increaseQuantity(item: CartItem): void {
     this.cartService.increaseQuantity(item);
   }
 
-  decreaseQuantity(item: CartItem) {
+  decreaseQuantity(item: CartItem): void {
     if (item.quantity > 1) {
-
       this.cartService.decreaseQuantity(item);
     }
   }
 
-  updateTotal() {
-  }
-
-  checkout() {
+  checkout(): void {
     if (this.cartItems.length > 0) {
-      console.log('Proceeding to checkout');
       this.router.navigate(['/checkout']);
     } else {
-      console.log('Cart is empty, cannot proceed to checkout.');
-      alert('Your cart is empty .');
+      this.MessageService.add({
+        severity: 'warn',
+        summary: 'Add at least one piece',
+        detail: 'Your cart is empty.',
+      });
     }
   }
 }

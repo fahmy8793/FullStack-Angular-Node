@@ -1,15 +1,190 @@
-.books-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0px;
-  margin-bottom: 40px;
+// نستخدم متغيرات لتسهيل تعديل الألوان والتنسيقات مستقبلاً
+:host {
+  --font-primary: "Playfair Display", serif;
+  --font-secondary: "Inter", sans-serif;
+  --accent-color: #d1b797; // لون بيج/ذهبي دافئ وأنيق
+  --white-color: #ffffff;
+  --text-light: #f0f0f0;
 }
 
-.book-item {
+.hero-section {
+  position: relative;
   width: 100%;
-  transition: transform 0.3s ease;
+  min-height: 90vh;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white-color);
+  background-image: url("https://videos.openai.com/vg-assets/assets%2Ftask_01jzgbajfwerv99wxymrzb5qs1%2F1751821697_img_0.webp?st=2025-07-06T15%3A41%3A33Z&se=2025-07-12T16%3A41%3A33Z&sks=b&skt=2025-07-06T15%3A41%3A33Z&ske=2025-07-12T16%3A41%3A33Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=3d249c53-07fa-4ba4-9b65-0bf8eb4ea46a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=8bsEQuv0xSoN2kcha1HKodE8eWTT3ir%2Fqvl2S64B%2BvU%3D&az=oaivgprodscus");
+
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.55;
+  }
 }
 
-.book-item:hover {
-  transform: translateY(-5px);
+.hero-content {
+  position: relative;
+  // border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-title {
+  font-family: var(--font-primary);
+  font-size: 5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-block: 10px 25px;
+  color: #f1c40f;
+  font-weight: 500;
+}
+.hero-books {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+.hero-book-item {
+  width: 180px; // عرض كل عنصر
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+.hero-book-item img {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: 15px;
+}
+
+.hero-book-title {
+  color: var(--text-light);
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.shop-now-btn {
+  background: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  font-family: var(--font-secondary);
+  padding: 14px 45px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--accent-color);
+    color: var(--white-color);
+  }
+}
+
+.bestseller-section {
+  padding: 80px 20px;
+  background-color: #fdfdfa;
+  text-align: center;
+}
+
+.section-title {
+  margin-bottom: 50px;
+
+  h2 {
+    font-family: var(--font-primary);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 10px 0;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.bestseller-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.book-details-content {
+  display: flex;
+  gap: 25px;
+
+  .dialog-image-container {
+    flex-shrink: 0;
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+  }
+
+  .dialog-info-container {
+    h4 {
+      font-size: 1.8rem;
+      margin: 0 0 10px 0;
+      color: var(--text-color);
+    }
+    p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: var(--text-color-light);
+      strong {
+        color: var(--text-color);
+      }
+    }
+    .price-details {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--secondary-color);
+      margin-top: 15px;
+    }
+    .description {
+      line-height: 1.6;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .book-details-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 }

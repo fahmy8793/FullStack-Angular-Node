@@ -1,110 +1,71 @@
-import { Injectable, PLATFORM_ID } from '@angular/core';
-import { inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CartItem } from '../users/cart/cart.component';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { CartItem } from '../interfaces/book-details';
+import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
-  cartItems$: Observable<CartItem[]> = this.cartItemsSubject.asObservable();
+  private cartItemsSource = new BehaviorSubject<CartItem[]>([]);
+  cartItems$ = this.cartItemsSource.asObservable();
 
-  private platformId = inject(PLATFORM_ID);
+  private apiUrl = `${environment.apiUrl}/cart`;
 
-  constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      const storedCart = localStorage.getItem('cartItems');
-      if (storedCart) {
-        this.cartItemsSubject.next(JSON.parse(storedCart));
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.authService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.loadInitialCart();
       } else {
-        this.cartItemsSubject.next([
-          {
-            id: '1',
-            title: 'book One',
-            author: 'Osama',
-            image: 'assets/book1.webp',
-            price: 15,
-            quantity: 1,
-          },
-          {
-            id: '2',
-            title: 'book Two',
-            author: 'Osama',
-            image: 'assets/book2.webp',
-            price: 20,
-            quantity: 2,
-          },
-          {
-            id: '3',
-            title: 'book Three',
-            author: 'Osama',
-            image: 'assets/book3.webp',
-            price: 30,
-            quantity: 3,
-          },
-        ]);
+        this.cartItemsSource.next([]);
       }
-    } else {
-      this.cartItemsSubject.next([]);
-    }
+    });
   }
 
-  private saveCart(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(
-        'cartItems',
-        JSON.stringify(this.cartItemsSubject.value)
-      );
-    }
+  private loadInitialCart() {
+    this.http.get<{ data: CartItem[] }>(this.apiUrl).subscribe((response) => {
+      this.cartItemsSource.next(response.data || []);
+    });
   }
 
-  getCartItems(): CartItem[] {
-    return this.cartItemsSubject.value;
+  addItem(item: { bookId: string; quantity: number }): void {
+    this.http
+      .post<{ data: CartItem[] }>(`${this.apiUrl}/add`, item)
+      .pipe(tap((response) => this.cartItemsSource.next(response.data)))
+      .subscribe();
   }
 
-  addItem(item: CartItem): void {
-    const currentItems = this.cartItemsSubject.value;
-    const existingItem = currentItems.find((i) => i.id === item.id);
-
-    if (existingItem) {
-      existingItem.quantity += item.quantity;
-    } else {
-      this.cartItemsSubject.next([...currentItems, item]);
-    }
-    this.saveCart();
-  }
-
-  removeItem(itemToRemove: CartItem): void {
-    const updatedItems = this.cartItemsSubject.value.filter(
-      (item) => item.id !== itemToRemove.id
-    );
-    this.cartItemsSubject.next(updatedItems);
-    this.saveCart();
+  removeItem(bookId: string): void {
+    this.http.delete<void>(`${this.apiUrl}/remove/${bookId}`).subscribe(() => {
+      const updatedCart = this.cartItemsSource
+        .getValue()
+        .filter((item) => item.book._id !== bookId);
+      this.cartItemsSource.next(updatedCart);
+    });
   }
 
   increaseQuantity(item: CartItem): void {
-    const updatedItems = this.cartItemsSubject.value.map((i) =>
-      i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-    );
-    this.cartItemsSubject.next(updatedItems);
-    this.saveCart();
+    const newQuantity = item.quantity + 1;
+    this.updateQuantity(item.book._id, newQuantity);
   }
 
   decreaseQuantity(item: CartItem): void {
-    const updatedItems = this.cartItemsSubject.value.map((i) => {
-      if (i.id === item.id && i.quantity > 1) {
-        return { ...i, quantity: i.quantity - 1 };
-      }
-      return i;
-    });
-    this.cartItemsSubject.next(updatedItems);
-    this.saveCart();
+    if (item.quantity > 1) {
+      const newQuantity = item.quantity - 1;
+      this.updateQuantity(item.book._id, newQuantity);
+    }
+  }
+
+  private updateQuantity(bookId: string, quantity: number): void {
+    this.http
+      .put<{ data: CartItem[] }>(`${this.apiUrl}/update`, { bookId, quantity })
+      .pipe(tap((response) => this.cartItemsSource.next(response.data)))
+      .subscribe();
   }
 
   clearCart(): void {
-    this.cartItemsSubject.next([]);
-    this.saveCart();
+    this.cartItemsSource.next([]);
   }
 }

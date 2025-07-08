@@ -1,4 +1,4 @@
-import { Component,OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,9 +14,9 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './reset-password-done.component.html',
-  styleUrl: './reset-password-done.component.scss'
+  styleUrl: './reset-password-done.component.scss',
 })
-export class ResetPasswordDoneComponent implements OnInit{
+export class ResetPasswordDoneComponent implements OnInit {
   resetForm!: FormGroup;
   email!: string;
   token!: string;
@@ -56,17 +56,20 @@ export class ResetPasswordDoneComponent implements OnInit{
       return;
     }
 
-    this.authService.resetPassword(this.email, newPassword, this.token).subscribe({
-      next: (res) => {
-        this.successMessage = res.message;
+    this.authService.resetPassword(this.token, newPassword).subscribe({
+      next: (res: any) => {
+        this.successMessage =
+          res.message || 'Password has been reset successfully!';
         this.errorMessage = '';
-        setTimeout(() => this.router.navigate(['login']), 2000);
+        // Redirect to login after a short delay
+        setTimeout(() => this.router.navigate(['/login']), 2500);
       },
-      error: (err) => {
-        this.errorMessage = err.error.message || 'Reset failed';
+      error: (err: any) => {
+        this.errorMessage =
+          err.error.message ||
+          'Password reset failed. The token may be invalid or expired.';
         this.successMessage = '';
       },
     });
   }
-
 }
