@@ -60,8 +60,8 @@ export class ProfileComponent implements OnInit {
 
   fetchUserOrders(): void {
     this.orderService.getMyOrders().subscribe({
-      next: (orders) => {
-        this.userOrders = orders;
+      next: (res) => {
+        this.userOrders = res.orders;
       },
       error: (err) => {
         this.messageService.add({

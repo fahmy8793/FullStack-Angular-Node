@@ -1,11 +1,11 @@
-<div class="checkout-container">
+<!-- <div class="checkout-container">
   <div class="checkout-header">
     <h1>Checkout</h1>
     <p>Please fill in the details below to complete your order.</p>
-  </div>
+  </div> -->
 
-  <!-- Progress Stepper -->
-  <div class="stepper">
+<!-- Progress Stepper -->
+<!-- <div class="stepper">
     <div
       class="step"
       [class.active]="currentStep >= 1"
@@ -30,25 +30,25 @@
     </div>
   </div>
 
-  <div class="row">
-    <!-- Left Column: Form -->
-    <div class="col-lg-7">
-      <form [formGroup]="checkoutForm">
-        <!-- Step 1: Shipping Details -->
-        <div class="form-step" *ngIf="currentStep === 1">
-          <h3>Shipping Address</h3>
+  <div class="row"> -->
+<!-- Left Column: Form -->
+<!-- <div class="col-lg-7">
+      <form [formGroup]="checkoutForm"> -->
+<!-- Step 1: Shipping Details -->
+<!-- <div class="form-step" *ngIf="currentStep === 1">
+          <h3>Shipping Address</h3> -->
 
-          <!-- Full Name -->
-          <div class="form-group">
+<!-- Full Name -->
+<!-- <div class="form-group">
             <label for="name">Full Name</label>
             <input
               type="text"
               id="name"
               class="form-control"
               formControlName="name"
-            />
-            <!-- ✅ CORRECTION: Use bracket notation f['name'] instead of f.name -->
-            <div
+            /> -->
+<!-- ✅ CORRECTION: Use bracket notation f['name'] instead of f.name -->
+<!-- <div
               *ngIf="
                 f['name'].invalid && (f['name'].dirty || f['name'].touched)
               "
@@ -58,10 +58,10 @@
                 Full Name is required.
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Email Address -->
-          <div class="form-group">
+<!-- Email Address -->
+<!-- <div class="form-group">
             <label for="email">Email Address</label>
             <input
               type="email"
@@ -82,10 +82,10 @@
                 Please enter a valid email address.
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Phone Number -->
-          <div class="form-group">
+<!-- Phone Number -->
+<!-- <div class="form-group">
             <label for="phone">Phone Number</label>
             <input
               type="tel"
@@ -106,10 +106,10 @@
                 Please enter a valid phone number.
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Street Address -->
-          <div class="form-group">
+<!-- Street Address -->
+<!-- <div class="form-group">
             <label for="streetAddress">Street Address</label>
             <input
               type="text"
@@ -130,9 +130,9 @@
             </div>
           </div>
 
-          <div class="form-row">
-            <!-- Town / City -->
-            <div class="form-group">
+          <div class="form-row"> -->
+<!-- Town / City -->
+<!-- <div class="form-group">
               <label for="townCity">Town / City</label>
               <input
                 type="text"
@@ -151,9 +151,9 @@
                   City is required.
                 </div>
               </div>
-            </div>
-            <!-- Zip Code -->
-            <div class="form-group">
+            </div> -->
+<!-- Zip Code -->
+<!-- <div class="form-group">
               <label for="zipCode">Zip Code</label>
               <input
                 type="text"
@@ -178,13 +178,13 @@
           <button type="button" class="btn-primary" (click)="nextStep()">
             Continue to Payment
           </button>
-        </div>
+        </div> -->
 
-        <!-- Step 2: Payment -->
-        <div class="form-step" *ngIf="currentStep === 2">
-          <h3>Payment Method</h3>
-          <!-- Payment options here -->
-          <div class="payment-options">
+<!-- Step 2: Payment -->
+<!-- <div class="form-step" *ngIf="currentStep === 2">
+          <h3>Payment Method</h3> -->
+<!-- Payment options here -->
+<!-- <div class="payment-options">
             <label class="payment-option">
               <input type="radio" value="COD" formControlName="paymentMethod" />
               <span>Cash on Delivery</span>
@@ -206,13 +206,13 @@
               Review Order
             </button>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Step 3: Review -->
-        <div class="form-step" *ngIf="currentStep === 3">
-          <h3>Review Your Order</h3>
-          <!-- Review details here -->
-          <div class="review-details">
+<!-- Step 3: Review -->
+<!-- <div class="form-step" *ngIf="currentStep === 3">
+          <h3>Review Your Order</h3> -->
+<!-- Review details here -->
+<!-- <div class="review-details">
             <p><strong>Name:</strong> {{ checkoutForm.value.name }}</p>
             <p><strong>Email:</strong> {{ checkoutForm.value.email }}</p>
             <p>
@@ -230,10 +230,10 @@
           </div>
         </div>
       </form>
-    </div>
+    </div> -->
 
-    <!-- Right Column: Order Summary -->
-    <div class="col-lg-5">
+<!-- Right Column: Order Summary -->
+<!-- <div class="col-lg-5">
       <div class="order-summary">
         <h4>Order Summary</h4>
         <div class="summary-item" *ngFor="let item of orderSummaryItems">
@@ -246,6 +246,113 @@
         <div class="summary-total">
           <strong>Total</strong>
           <strong>{{ getTotal() | currency : "USD" }}</strong>
+        </div>
+      </div>
+    </div> -->
+<!-- </div>
+</div> -->
+
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1>Checkout</h1>
+    <p>Please fill in the details below to complete your order.</p>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+      <div class="step-icon">1</div>
+      <div class="step-label">Shipping</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+      <div class="step-icon">2</div>
+      <div class="step-label">Review</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step" [class.active]="currentStep >= 3">
+      <div class="step-icon">3</div>
+      <div class="step-label">Pay with PayPal</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Left Column: Form -->
+    <div class="col-lg-7">
+      <form [formGroup]="checkoutForm">
+        <!-- Step 1: Shipping Info -->
+        <div class="form-step" *ngIf="currentStep === 1">
+          <h3>Shipping Address</h3>
+
+          <div class="form-group">
+            <label>Full Name</label>
+            <input class="form-control" type="text" formControlName="name" />
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-control" type="email" formControlName="email" />
+          </div>
+
+          <div class="form-group">
+            <label>Phone</label>
+            <input class="form-control" type="tel" formControlName="phone" />
+          </div>
+
+          <div class="form-group">
+            <label>Street Address</label>
+            <input class="form-control" type="text" formControlName="streetAddress" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Town / City</label>
+              <input class="form-control" type="text" formControlName="townCity" />
+            </div>
+            <div class="form-group col-md-6">
+              <label>Zip Code</label>
+              <input class="form-control" type="text" formControlName="zipCode" />
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" (click)="nextStep()">
+            Continue to Review
+          </button>
+        </div>
+
+        <!-- Step 2: Review -->
+        <div class="form-step" *ngIf="currentStep === 2">
+          <h3>Review Your Order</h3>
+          <p><strong>Name:</strong> {{ checkoutForm.value.name }}</p>
+          <p><strong>Email:</strong> {{ checkoutForm.value.email }}</p>
+          <p><strong>Address:</strong> {{ checkoutForm.value.streetAddress }}, {{ checkoutForm.value.townCity }}</p>
+
+          <button type="button" class="btn btn-secondary" (click)="prevStep()">Back</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()">Proceed to PayPal</button>
+        </div>
+
+        <!-- Step 3: PayPal -->
+        <div class="form-step" *ngIf="currentStep === 3">
+          <h3>Pay with PayPal</h3>
+          <p>You will be redirected to PayPal to complete your payment.</p>
+          <button type="button" class="btn btn-secondary" (click)="prevStep()">Back</button>
+          <button type="button" class="btn btn-success" (click)="placeOrder()">Pay with PayPal</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Column: Order Summary -->
+    <div class="col-lg-5">
+      <div class="order-summary">
+        <h4>Order Summary</h4>
+        <div *ngFor="let item of orderSummaryItems" class="summary-item">
+          <span>{{ item.name }} (x{{ item.quantity }})</span>
+          <span>{{ item.price * item.quantity | currency: 'USD' }}</span>
+        </div>
+        <hr />
+        <div class="summary-total">
+          <strong>Total:</strong>
+          <strong>{{ getTotal() | currency: 'USD' }}</strong>
         </div>
       </div>
     </div>
