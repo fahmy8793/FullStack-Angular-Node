@@ -1,0 +1,8 @@
+<!-- src/app/users/success/success.component.html -->
+<div class="success-page" *ngIf="!loading">
+    <h2>🎉 Thank you for your purchase!</h2>
+    <p>Your payment was successful. You’ll be redirected to your profile shortly.</p>
+</div>
+<div *ngIf="loading">
+    <p>Processing your payment, please wait...</p>
+</div>

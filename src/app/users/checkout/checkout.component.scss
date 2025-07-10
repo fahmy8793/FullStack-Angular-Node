@@ -1,3 +1,243 @@
+// :host {
+//   display: block;
+//   background-color: var(--page-bg, #f4f7f9);
+//   min-height: 100vh;
+//   padding: 40px 0;
+// }
+
+// .checkout-container {
+//   max-width: 1100px;
+//   margin: 0 auto;
+//   padding: 0 20px;
+//   font-family: var(--font-secondary, "Inter", sans-serif);
+// }
+
+// .checkout-header {
+//   text-align: center;
+//   margin-bottom: 40px;
+//   h1 {
+//     font-family: var(--font-primary, "Playfair Display", serif);
+//     font-size: 2.8rem;
+//     margin: 0 0 10px 0;
+//     color: var(--text-color, #333);
+//   }
+//   p {
+//     font-size: 1.1rem;
+//     color: var(--text-light, #777);
+//   }
+// }
+
+// // Stepper Styles
+// .stepper {
+//   display: flex;
+//   align-items: flex-start;
+//   justify-content: space-between;
+//   margin-bottom: 50px;
+//   width: 100%;
+// }
+// .step {
+//   display: flex;
+//   align-items: center;
+//   flex-direction: column;
+//   color: var(--text-light, #777);
+//   transition: color 0.3s ease;
+//   text-align: center;
+//   width: 100px;
+// }
+// .step-icon {
+//   width: 36px;
+//   height: 36px;
+//   border-radius: 50%;
+//   background-color: #fff;
+//   border: 2px solid var(--border-color, #e1e1e1);
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-weight: bold;
+//   transition: all 0.4s ease;
+// }
+// .step-label {
+//   margin-top: 10px;
+//   font-size: 0.9rem;
+//   font-weight: 500;
+// }
+// .step.active .step-icon {
+//   border-color: var(--primary-color, #3498db);
+//   color: var(--primary-color, #3498db);
+// }
+// .step.active .step-label {
+//   color: var(--text-color, #333);
+// }
+// .step.completed .step-icon {
+//   background-color: var(--primary-color, #3498db);
+//   border-color: var(--primary-color, #3498db);
+//   color: #fff;
+// }
+// .step-connector {
+//   flex-grow: 1;
+//   height: 2px;
+//   background-color: var(--border-color, #e1e1e1);
+//   margin: 0 10px;
+//   transform: translateY(18px); // Align with the middle of the icon
+// }
+
+// // Form Styles
+// .form-step {
+//   background: #fff;
+//   padding: 30px;
+//   border-radius: var(--border-radius, 8px);
+//   box-shadow: var(--shadow, 0 4px 15px rgba(0, 0, 0, 0.08));
+
+//   h3 {
+//     margin: 0 0 25px 0;
+//     font-family: var(--font-primary, "Playfair Display", serif);
+//   }
+// }
+// .form-group {
+//   margin-bottom: 20px;
+//   label {
+//     display: block;
+//     margin-bottom: 8px;
+//     font-weight: 500;
+//   }
+// }
+// .form-control {
+//   width: 100%;
+//   padding: 12px;
+//   border: 1px solid var(--border-color, #e1e1e1);
+//   border-radius: var(--border-radius, 8px);
+//   font-size: 1rem;
+//   &:focus {
+//     outline: none;
+//     border-color: var(--primary-color, #3498db);
+//     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+//   }
+// }
+// .form-row {
+//   display: flex;
+//   gap: 20px;
+//   > .form-group {
+//     flex: 1;
+//   }
+// }
+// .payment-options {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+// }
+// .payment-option {
+//   display: flex;
+//   align-items: center;
+//   padding: 15px;
+//   border: 1px solid var(--border-color, #e1e1e1);
+//   border-radius: var(--border-radius, 8px);
+//   cursor: pointer;
+
+//   input[type="radio"] {
+//     margin-right: 15px;
+//   }
+// }
+// .review-details p {
+//   margin: 10px 0;
+//   line-height: 1.6;
+// }
+
+// // Button Styles
+// button {
+//   padding: 12px 25px;
+//   border: none;
+//   border-radius: var(--border-radius, 8px);
+//   font-size: 1rem;
+//   font-weight: bold;
+//   cursor: pointer;
+//   transition: all 0.2s ease;
+// }
+// .btn-primary {
+//   background-color: var(--primary-color, #3498db);
+//   color: #fff;
+//   width: 100%;
+//   &:hover {
+//     background-color: darken(#3498db, 10%);
+//   }
+// }
+// .btn-secondary {
+//   background-color: #fff;
+//   color: var(--text-color, #333);
+//   border: 1px solid var(--border-color, #e1e1e1);
+//   &:hover {
+//     background-color: #f1f1f1;
+//   }
+// }
+// .btn-success {
+//   background-color: var(--secondary-color, #2ecc71);
+//   color: #fff;
+//   &:hover {
+//     background-color: darken(#2ecc71, 10%);
+//   }
+// }
+// .step-navigation {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: 30px;
+// }
+
+// // Order Summary Styles
+// .order-summary {
+//   background: #fff;
+//   padding: 30px;
+//   border-radius: var(--border-radius, 8px);
+//   box-shadow: var(--shadow, 0 4px 15px rgba(0, 0, 0, 0.08));
+//   position: sticky;
+//   top: 20px;
+
+//   h4 {
+//     margin: 0 0 20px 0;
+//     font-family: var(--font-primary, "Playfair Display", serif);
+//   }
+//   hr {
+//     border: none;
+//     border-top: 1px solid var(--border-color, #e1e1e1);
+//     margin: 20px 0;
+//   }
+// }
+// .summary-item,
+// .summary-total {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 15px;
+// }
+// .item-name {
+//   color: var(--text-light, #777);
+//   padding-right: 10px;
+// }
+// .summary-total {
+//   font-size: 1.2rem;
+//   font-weight: bold;
+// }
+// .validation-error {
+//   color: #e74c3c; // لون أحمر واضح
+//   font-size: 0.875rem;
+//   margin-top: 5px;
+//   font-weight: 500;
+// }
+
+// // تنسيق حقل الإدخال عندما يكون غير صالح وتم لمسه
+// .form-control.ng-invalid.ng-touched {
+//   border-color: #e74c3c;
+
+//   &:focus {
+//     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+//   }
+// }
+
+// // Responsive Design
+// @media (max-width: 768px) {
+//   .form-row {
+//     flex-direction: column;
+//     gap: 0;
+//   }
+// }
+
 :host {
   display: block;
   background-color: var(--page-bg, #f4f7f9);
@@ -15,12 +255,14 @@
 .checkout-header {
   text-align: center;
   margin-bottom: 40px;
+
   h1 {
     font-family: var(--font-primary, "Playfair Display", serif);
     font-size: 2.8rem;
     margin: 0 0 10px 0;
     color: var(--text-color, #333);
   }
+
   p {
     font-size: 1.1rem;
     color: var(--text-light, #777);
@@ -35,6 +277,7 @@
   margin-bottom: 50px;
   width: 100%;
 }
+
 .step {
   display: flex;
   align-items: center;
@@ -43,42 +286,52 @@
   transition: color 0.3s ease;
   text-align: center;
   width: 100px;
+
+  .step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid var(--border-color, #e1e1e1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.4s ease;
+  }
+
+  .step-label {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  &.active {
+    .step-icon {
+      border-color: var(--primary-color, #3498db);
+      color: var(--primary-color, #3498db);
+    }
+
+    .step-label {
+      color: var(--text-color, #333);
+    }
+  }
+
+  &.completed {
+    .step-icon {
+      background-color: var(--primary-color, #3498db);
+      border-color: var(--primary-color, #3498db);
+      color: #fff;
+    }
+  }
 }
-.step-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #fff;
-  border: 2px solid var(--border-color, #e1e1e1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  transition: all 0.4s ease;
-}
-.step-label {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-.step.active .step-icon {
-  border-color: var(--primary-color, #3498db);
-  color: var(--primary-color, #3498db);
-}
-.step.active .step-label {
-  color: var(--text-color, #333);
-}
-.step.completed .step-icon {
-  background-color: var(--primary-color, #3498db);
-  border-color: var(--primary-color, #3498db);
-  color: #fff;
-}
+
 .step-connector {
   flex-grow: 1;
   height: 2px;
   background-color: var(--border-color, #e1e1e1);
   margin: 0 10px;
-  transform: translateY(18px); // Align with the middle of the icon
+  transform: translateY(18px);
 }
 
 // Form Styles
@@ -93,38 +346,55 @@
     font-family: var(--font-primary, "Playfair Display", serif);
   }
 }
+
 .form-group {
   margin-bottom: 20px;
+
   label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
   }
 }
+
 .form-control {
   width: 100%;
   padding: 12px;
   border: 1px solid var(--border-color, #e1e1e1);
   border-radius: var(--border-radius, 8px);
   font-size: 1rem;
+
   &:focus {
     outline: none;
     border-color: var(--primary-color, #3498db);
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
   }
+
+  &.ng-invalid.ng-touched {
+    border-color: #e74c3c;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    }
+  }
 }
+
 .form-row {
   display: flex;
   gap: 20px;
-  > .form-group {
+
+  >.form-group {
     flex: 1;
   }
 }
+
+// Payment options (not shown now, but if needed later)
 .payment-options {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
+
 .payment-option {
   display: flex;
   align-items: center;
@@ -137,12 +407,23 @@
     margin-right: 15px;
   }
 }
-.review-details p {
-  margin: 10px 0;
-  line-height: 1.6;
+
+// Review section
+.review-details {
+  p {
+    margin: 10px 0;
+    line-height: 1.6;
+  }
 }
 
-// Button Styles
+.validation-error {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+// Buttons
 button {
   padding: 12px 25px;
   border: none;
@@ -152,36 +433,43 @@ button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .btn-primary {
   background-color: var(--primary-color, #3498db);
   color: #fff;
   width: 100%;
+
   &:hover {
-    background-color: darken(#3498db, 10%);
+    background-color: #2980b9;
   }
 }
+
 .btn-secondary {
   background-color: #fff;
   color: var(--text-color, #333);
   border: 1px solid var(--border-color, #e1e1e1);
+
   &:hover {
     background-color: #f1f1f1;
   }
 }
+
 .btn-success {
   background-color: var(--secondary-color, #2ecc71);
   color: #fff;
+
   &:hover {
-    background-color: darken(#2ecc71, 10%);
+    background-color: #27ae60;
   }
 }
+
 .step-navigation {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
 }
 
-// Order Summary Styles
+// Order Summary
 .order-summary {
   background: #fff;
   padding: 30px;
@@ -194,46 +482,40 @@ button {
     margin: 0 0 20px 0;
     font-family: var(--font-primary, "Playfair Display", serif);
   }
+
   hr {
     border: none;
     border-top: 1px solid var(--border-color, #e1e1e1);
     margin: 20px 0;
   }
 }
+
 .summary-item,
 .summary-total {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
 }
+
 .item-name {
   color: var(--text-light, #777);
   padding-right: 10px;
 }
+
 .summary-total {
   font-size: 1.2rem;
   font-weight: bold;
 }
-.validation-error {
-  color: #e74c3c; // لون أحمر واضح
-  font-size: 0.875rem;
-  margin-top: 5px;
-  font-weight: 500;
-}
 
-// تنسيق حقل الإدخال عندما يكون غير صالح وتم لمسه
-.form-control.ng-invalid.ng-touched {
-  border-color: #e74c3c;
-
-  &:focus {
-    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
-  }
-}
-
-// Responsive Design
+// Responsive
 @media (max-width: 768px) {
   .form-row {
     flex-direction: column;
     gap: 0;
+  }
+
+  .step-navigation {
+    flex-direction: column;
+    gap: 15px;
   }
 }

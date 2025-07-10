@@ -16,8 +16,8 @@ export class OrderService {
     return this.http.post(`${this.apiUrl}/checkout`, orderData);
   }
 
-  getMyOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/my-orders`);
+  getMyOrders(): Observable<any> {
+    return this.http.get<{ orders: any[] }>(`${this.apiUrl}/my-orders`);
   }
   rateBook(payload: {
     rating: number;
