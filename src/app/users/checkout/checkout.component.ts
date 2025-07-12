@@ -282,22 +282,65 @@ export class CheckoutComponent implements OnInit {
     return this.orderSummaryItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
 
+  stockWarning: string | null = null;
   placeOrder(): void {
-    const total = this.getTotal();
-    this.paypalService.createOrder(total).subscribe({
+    const cartSnapshot = this.cartService.getCartSnapshot();
+
+    if (cartSnapshot.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Empty Cart',
+        detail: 'Your cart is empty!',
+      });
+      return;
+    }
+
+    const books = cartSnapshot.map(item => ({
+      book: item.book._id,
+      quantity: item.quantity
+    }));
+
+    const total = cartSnapshot.reduce((sum, item) => sum + item.book.price * item.quantity, 0);
+
+    this.paypalService.createOrder(total, books).subscribe({
       next: (res) => {
-        localStorage.setItem('checkout_cart', JSON.stringify(this.cartService.getCartSnapshot()));
+        // ✅ التحقق من مشكلة المخزون
+        if (res.stockError && res.issues?.length) {
+          const msg = res.issues.map((i: { title: string; available: number; requested: number }) =>
+            `"${i.title}": Only ${i.available} in stock, but you requested ${i.requested}`
+          ).join('\n');
+
+          this.stockWarning = msg;
+
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Stock Issue',
+            detail: msg,
+            life: 7000
+          });
+
+          return;
+        }
+
+        // ✅ لو مفيش مشاكل مخزون
+        this.stockWarning = null;
+        localStorage.setItem('checkout_cart', JSON.stringify(cartSnapshot));
         window.location.href = res.approvalUrl;
       },
       error: (err) => {
+        console.error('PayPal create order error:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'PayPal Error',
-          detail: err.error.message || 'Failed to create PayPal order.',
+          detail: err.error?.message || 'Failed to create PayPal order.',
         });
       }
     });
   }
+  
+
+
+
   private captureOrder(orderID: string): void {
     const books = this.orderSummaryItems.map((item) => ({
       book: item.bookId,       // ← هنا لازم يكون .bookId مش ._id

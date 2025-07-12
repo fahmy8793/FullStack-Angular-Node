@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private orderService: OrderService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // استمع لحالة المستخدم
@@ -61,7 +61,13 @@ export class ProfileComponent implements OnInit {
   fetchUserOrders(): void {
     this.orderService.getMyOrders().subscribe({
       next: (res) => {
-        this.userOrders = res.orders;
+        this.userOrders = res.map((order) => {
+          // تأكد من أن كل طلب يحتوي على خاصية 'books'
+          return {
+            ...order,
+            books: order.books || [],
+          };
+        });
       },
       error: (err) => {
         this.messageService.add({
