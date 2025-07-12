@@ -133,10 +133,18 @@ export class CartService {
   }
 
   clearCart(): void {
-    this.cartItemsSource.next([]);
+    this.http.delete(`${this.apiUrl}/clear`).subscribe({
+      next: () => {
+        this.cartItemsSource.next([]);
+      },
+      error: () => {
+        console.error('Failed to clear cart');
+      }
+    });
   }
 
-  // ✅ ✅ ✅ This is what you need
+
+  //  This is what you need
   getCartSnapshot(): CartItem[] {
     return this.cartItemsSource.getValue();
   }

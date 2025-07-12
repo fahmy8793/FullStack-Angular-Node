@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Order } from '../interfaces/order-data.interface';
 
@@ -16,9 +16,12 @@ export class OrderService {
     return this.http.post(`${this.apiUrl}/checkout`, orderData);
   }
 
-  getMyOrders(): Observable<any> {
-    return this.http.get<{ orders: any[] }>(`${this.apiUrl}/my-orders`);
+  getMyOrders(): Observable<Order[]> {
+    return this.http.get<{ data: Order[] }>(`${this.apiUrl}/my-orders`).pipe(
+      map(res => res.data)
+    );
   }
+
   rateBook(payload: {
     rating: number;
     bookId: string;

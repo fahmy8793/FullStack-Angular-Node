@@ -8,9 +8,11 @@ import { HttpClient } from '@angular/common/http';
 export class PaypalService {
   private apiUrl = environment.apiUrl + '/paypal';
   constructor(private http: HttpClient) { }
-  createOrder(total: number) {
-    return this.http.post<any>(`${this.apiUrl}/create-order`, { total });
+
+  createOrder(total: number, books: any[]) {
+    return this.http.post<any>(`${this.apiUrl}/create-order`, { total, books });
   }
+  
   captureOrder(orderID: string, books: any[], total: number) {
     return this.http.post<any>(`${this.apiUrl}/capture-order`, {
       orderID, books, total

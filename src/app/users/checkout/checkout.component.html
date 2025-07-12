@@ -340,6 +340,10 @@
         </div>
       </form>
     </div>
+    <div *ngIf="stockWarning" class="stock-warning">
+      <p style="color: red; font-weight: bold;">{{ stockWarning }}</p>
+    </div>
+    
 
     <!-- Right Column: Order Summary -->
     <div class="col-lg-5">
