@@ -30,7 +30,7 @@ export class CardbookComponent implements OnInit, OnDestroy {
   isWishlisted = false;
   private wishlistSub!: Subscription;
 
-  constructor(private wishlistService: WishlistService) {}
+  constructor(private wishlistService: WishlistService) { }
 
   ngOnInit(): void {
     this.wishlistSub = this.wishlistService.wishlist$.subscribe((items) => {

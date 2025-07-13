@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Order } from '../interfaces/order-data.interface';
 
@@ -10,7 +10,7 @@ import { Order } from '../interfaces/order-data.interface';
 export class OrderService {
   private apiUrl = `${environment.apiUrl}/order`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   placeOrder(orderData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/checkout`, orderData);
@@ -27,9 +27,18 @@ export class OrderService {
     bookId: string;
     orderId: string;
   }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/review/${payload.bookId}`, {
+    return this.http.post(`${this.apiUrl}/${payload.bookId}/reviews`, {
       rating: payload.rating,
       comment: `Order ID: ${payload.orderId}`,
     });
+    return this.http.post(`${this.apiUrl}/${payload.bookId}/reviews`, {
+      rating: payload.rating,
+      comment: `Order ID: ${payload.orderId}`,
+    }).pipe(
+      catchError(error => {
+        console.error('Error submitting rating:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }
