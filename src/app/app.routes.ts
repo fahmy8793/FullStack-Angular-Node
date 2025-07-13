@@ -56,7 +56,7 @@ export const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, title: 'checkout', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, title: 'profile', canActivate: [authGuard] },
   { path: 'wish', component: WishlistComponent, title: 'wish list', canActivate: [authGuard] },
-  { path: 'success', component: SuccessComponent, canActivate: [authGuard] },
+  { path: 'success', loadComponent: () => import('./users/success/success.component').then(m => m.SuccessComponent) },
 
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
