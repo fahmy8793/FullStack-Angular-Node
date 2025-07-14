@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './not-found/not-found.component';
 import { Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -66,4 +67,5 @@ export const routes: Routes = [
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
+  { path: '**', component: NotFoundComponent }
 ];
