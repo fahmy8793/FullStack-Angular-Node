@@ -19,7 +19,7 @@ import { ProfileComponent } from './users/profile/profile.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
 
-import { VerifyOtpComponent } from './verify-otp/verify-otp.component';
+import { VerifyOtpComponent } from './auth/verify-otp.component';
 
 import { WishlistComponent } from './wish-list/wish-list.component';
 import { SuccessComponent } from './users/success/success.component';
@@ -51,6 +51,7 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'home' },
   { path: 'register', component: RegisterComponent },
+  { path: 'verify-otp', loadComponent: () => import('./auth/verify-otp.component').then(m => m.VerifyOtpComponent) },
   { path: 'login', component: LoginComponent },
 
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
