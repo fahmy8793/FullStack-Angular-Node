@@ -40,7 +40,7 @@ export class AuthService {
 
   loginWithGoogle(googleToken: string): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}/auth/google`, { token: googleToken })
+      .post<any>(`${this.apiUrl}/auth/google-login`, { tokenId: googleToken })
       .pipe(tap((response) => this.setSession(response)));
   }
 
