@@ -93,6 +93,11 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.searchSubscription.unsubscribe();
   }
 
+  onCategorySelect(category: string): void {
+    this.selectedCategory = category;
+    this.onFilterChange(); // نستدعي نفس الدالة ليعاد تحميل الكتب بالفئة الجديدة
+  }
+
   fetchBooks(page: number): void {
     const options: BookQueryOptions = {
       page: page,
