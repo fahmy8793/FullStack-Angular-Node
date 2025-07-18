@@ -27,11 +27,8 @@ export class OrderService {
     bookId: string;
     orderId: string;
   }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${payload.bookId}/reviews`, {
-      rating: payload.rating,
-      comment: `Order ID: ${payload.orderId}`,
-    });
-    return this.http.post(`${this.apiUrl}/${payload.bookId}/reviews`, {
+    const reviewUrl = `http://localhost:5000/api/book/${payload.bookId}/reviews`;
+    return this.http.post(reviewUrl, {
       rating: payload.rating,
       comment: `Order ID: ${payload.orderId}`,
     }).pipe(
