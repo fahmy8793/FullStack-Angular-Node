@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms'; // نحتاجه لـ ngModel في 
 // Services
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { BookService } from '../../services/book.service';
 
 // Interfaces
 import { Order, OrderItem } from '../../interfaces/order-data.interface';
@@ -25,7 +26,7 @@ import { MessageService } from 'primeng/api';
     RouterModule,
     DialogModule,
     RatingModule,
-    FormsModule, // ✅ تم الإبقاء عليه
+    FormsModule,
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
@@ -33,9 +34,8 @@ import { MessageService } from 'primeng/api';
 })
 export class ProfileComponent implements OnInit {
   userOrders: Order[] = [];
-  userName = ''; // متغير بسيط لتخزين اسم المستخدم
+  userName = '';
 
-  // خصائص النافذة المنبثقة للتقييم
   ratingVisible = false;
   selectedOrder?: Order;
   selectedItem?: OrderItem;
@@ -44,14 +44,13 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private orderService: OrderService,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private bookService: BookService
+  ) {}
 
   ngOnInit(): void {
-    // استمع لحالة المستخدم
     this.authService.currentUser$.subscribe((currentUser) => {
       if (currentUser) {
-        // خزن الاسم واجلب الطلبات
         this.userName = currentUser.name;
         this.fetchUserOrders();
       }
@@ -62,7 +61,6 @@ export class ProfileComponent implements OnInit {
     this.orderService.getMyOrders().subscribe({
       next: (res) => {
         this.userOrders = res.map((order) => {
-          // تأكد من أن كل طلب يحتوي على خاصية 'books'
           return {
             ...order,
             books: order.books || [],
@@ -87,18 +85,29 @@ export class ProfileComponent implements OnInit {
   }
 
   submitRating(): void {
-    if (!this.selectedOrder || !this.selectedItem) return;
+    if (this.userRating === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Invalid Rating',
+        detail: 'Please select at least one star.',
+      });
+      return; // This will stop the function from continuing
+    }
 
-    const ratingPayload = {
-      rating: this.userRating,
-      orderId: this.selectedOrder._id,
-      bookId: this.selectedItem.book._id,
-    };
+    // We only need the selectedItem, which contains the book ID
+    if (!this.selectedItem) return;
 
-    this.orderService.rateBook(ratingPayload).subscribe({
+    const bookId = this.selectedItem.book._id;
+    const rating = this.userRating;
+    const comment = ''; // Add a comment if you have a field for it
+
+    // Call the correct function from BookService
+    this.bookService.submitReview(bookId, rating, comment).subscribe({
       next: () => {
+        // Update the UI immediately
         if (this.selectedItem) {
           this.selectedItem.rating = this.userRating;
+          this.selectedItem.isReviewed = true; // Mark as reviewed
         }
         this.ratingVisible = false;
         this.messageService.add({
