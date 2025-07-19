@@ -13,8 +13,10 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserData | null>;
-  public currentUser$: Observable<UserData | null>;
+  // public currentUser$: Observable<UserData | null>;
   private apiUrl = environment.apiUrl;
+  private currentUserSource = new BehaviorSubject<any | null>(null);
+  public currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     const user = this.getUserFromLocalStorage();
@@ -51,9 +53,9 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  // OTP methods 
+  // OTP methods
   verifyRegisterOtp(email: string, otpCode: string) {
-    console.log("🟢 VERIFY REGISTER OTP CALLED");
+    console.log('🟢 VERIFY REGISTER OTP CALLED');
     return this.http.post<any>(`${this.apiUrl}/auth/verify-register-otp`, {
       email,
       otpCode,
@@ -65,7 +67,7 @@ export class AuthService {
   }
 
   verifyOtp(email: string, otpCode: string) {
-    console.log("🔴 VERIFY OTP (RESET) CALLED");
+    console.log('🔴 VERIFY OTP (RESET) CALLED');
     return this.http.post<any>(`${this.apiUrl}/auth/verify-otp`, {
       email,
       otpCode,
@@ -113,5 +115,21 @@ export class AuthService {
       return user ? JSON.parse(user) : null;
     }
     return null;
+  }
+  public updateUserName(newName: string): void {
+    // 1. Get the current user object
+    const currentUser = this.currentUserSource.getValue();
+
+    // 2. If a user is logged in, update their name
+    if (currentUser) {
+      // 3. Create a new user object with the updated name
+      const updatedUser = { ...currentUser, name: newName };
+
+      // 4. Broadcast the updated user object to the rest of the app
+      this.currentUserSource.next(updatedUser);
+
+      // 5. Also update the user info in localStorage to keep it synced
+      localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+    }
   }
 }

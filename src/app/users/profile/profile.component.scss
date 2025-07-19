@@ -5,6 +5,39 @@
   background-color: var(--page-bg, #f8f7f2);
   min-height: 100vh;
 }
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-light, #6c757d);
+  }
+
+  input {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: var(--border-radius, 8px);
+    font-size: 16px;
+    font-family: var(--font-secondary, "Inter");
+    width: 100%;
+    box-sizing: border-box; /* Important for padding */
+    transition: all 0.2s ease-in-out;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color, #b9976f);
+      box-shadow: 0 0 0 3px rgba(185, 151, 111, 0.25);
+    }
+  }
+}
 
 .profile-container {
   max-width: var(--container-width, 1200px);
