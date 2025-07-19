@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID,NgZone } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -9,6 +9,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MessageService } from 'primeng/api';
+import { environment } from '../../environments/environment';
 
 // This is necessary for TypeScript to recognize the 'google' object
 declare const google: any;
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private ngZone: NgZone
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,8 +48,7 @@ export class LoginComponent implements OnInit {
 
       google.accounts.id.initialize({
         // IMPORTANT: This should be your actual Client ID from Google Cloud Console
-        client_id:
-          '594089926182-nsq0trk9rmnvpcek7mmeukmjmgg5c3s9.apps.googleusercontent.com',
+        client_id:environment.GOOGLE_CLIENT_ID,
         callback: this.handleCredentialResponse.bind(this),
       });
 
@@ -72,7 +73,9 @@ export class LoginComponent implements OnInit {
           summary: 'Success',
           detail: 'Logged in with Google successfully!',
         });
-        this.router.navigate(['/']);
+        this.ngZone.run(() => {
+          this.router.navigate(['/']);
+        });
       },
       error: (err) => {
         this.messageService.add({

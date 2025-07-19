@@ -1,70 +1,76 @@
-<div class="shop-container">
-  <!-- Controls Section -->
-  <section class="controls-container">
-    <div class="controls-header">
-      <h2>Explore Our Books</h2>
-      <span class="total-results" *ngIf="totalRecords > 0"
-        >{{ totalRecords }} Books Found</span
+<div class="shop-layout">
+  <aside class="shop-sidebar">
+    <h4>Categories</h4>
+    <ul class="category-list">
+      <li
+        (click)="onCategorySelect('')"
+        [class.active]="selectedCategory === ''"
       >
-    </div>
-    <div class="controls">
-      <input
-        type="text"
-        placeholder="Search by title or author..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearchInput()"
-      />
-
-      <select
-        class="category-filter"
-        [(ngModel)]="selectedCategory"
-        (change)="onFilterChange()"
+        All Categories
+      </li>
+      <li
+        *ngFor="let cat of categories"
+        (click)="onCategorySelect(cat)"
+        [class.active]="cat === selectedCategory"
       >
-        <option value="">All Categories</option>
-        <option *ngFor="let cat of categories" [value]="cat">
-          {{ cat | titlecase }}
-        </option>
-      </select>
+        {{ cat | titlecase }}
+      </li>
+    </ul>
+  </aside>
 
-      <select
-        class="sort-filter"
-        [(ngModel)]="sortOption"
-        (change)="onFilterChange()"
+  <main class="main-content">
+    <section class="controls-container">
+      <div class="controls-header">
+        <h2>Explore Our Books</h2>
+        <span class="total-results" *ngIf="totalRecords > 0"
+          >{{ totalRecords }} Books Found</span
+        >
+      </div>
+      <div class="controls">
+        <input
+          type="text"
+          placeholder="Search by title or author..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
+        />
+
+        <select
+          class="sort-filter"
+          [(ngModel)]="sortOption"
+          (change)="onFilterChange()"
+        >
+          <option value="rating">Sort by Rating</option>
+          <option value="priceAsc">Price: Low to High</option>
+          <option value="priceDesc">Price: High to Low</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="books-grid">
+      <div *ngIf="books.length === 0 && totalRecords === 0" class="no-results">
+        <h3>Loading books or no results found...</h3>
+      </div>
+      <app-cardbook
+        *ngFor="let book of books"
+        [bookData]="book"
+        (addToCartEvent)="addToCart(book)"
+        (wishlistToggleEvent)="toggleWishlist(book)"
+        (showDetailsEvent)="openBookDetails(book)"
       >
-        <option value="rating">Sort by Rating</option>
-        <option value="priceAsc">Price: Low to High</option>
-        <option value="priceDesc">Price: High to Low</option>
-      </select>
-    </div>
-  </section>
-  <!-- Books Grid -->
-  <section class="books-grid">
-    <div *ngIf="books.length === 0" class="no-results">
-      <h3>Loading books or no results found...</h3>
-    </div>
-    <app-cardbook
-      *ngFor="let book of books"
-      [bookData]="book"
-      (addToCartEvent)="addToCart(book)"
-      (wishlistToggleEvent)="toggleWishlist(book)"
-      (showDetailsEvent)="openBookDetails(book)"
-    >
-    </app-cardbook>
-  </section>
+      </app-cardbook>
+    </section>
 
-  <!-- Paginator -->
-  <div class="paginator-container" *ngIf="totalRecords > rows">
-    <p-paginator
-      (onPageChange)="onPageChange($event)"
-      [rows]="rows"
-      [totalRecords]="totalRecords"
-      [rowsPerPageOptions]="[12, 24, 36]"
-    >
-    </p-paginator>
-  </div>
+    <div class="paginator-container" *ngIf="totalRecords > rows">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [rows]="rows"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[12, 24, 36]"
+      ></p-paginator>
+    </div>
+  </main>
 </div>
 
-<!-- Details Dialog -->
 <p-dialog
   [(visible)]="showBookDetails"
   [modal]="true"

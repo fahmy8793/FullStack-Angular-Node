@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './not-found/not-found.component';
 import { Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
@@ -18,7 +19,7 @@ import { ProfileComponent } from './users/profile/profile.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
 
-import { VerifyOtpComponent } from './verify-otp/verify-otp.component';
+import { VerifyOtpComponent } from './auth/verify-otp.component';
 
 import { WishlistComponent } from './wish-list/wish-list.component';
 import { SuccessComponent } from './users/success/success.component';
@@ -53,13 +54,14 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'home' },
   { path: 'register', component: RegisterComponent },
+  { path: 'verify-otp', loadComponent: () => import('./auth/verify-otp.component').then(m => m.VerifyOtpComponent) },
   { path: 'login', component: LoginComponent },
 
   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
   { path: 'checkout', component: CheckoutComponent, title: 'checkout', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, title: 'profile', canActivate: [authGuard] },
   { path: 'wish', component: WishlistComponent, title: 'wish list', canActivate: [authGuard] },
-  { path: 'success', component: SuccessComponent, canActivate: [authGuard] },
+  { path: 'success', loadComponent: () => import('./users/success/success.component').then(m => m.SuccessComponent) },
 
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
@@ -69,6 +71,7 @@ export const routes: Routes = [
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
+  { path: '**', component: NotFoundComponent }
 
 
  {

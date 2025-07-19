@@ -5,11 +5,7 @@
     <h5 class="book-title">{{ bookData.title }}</h5>
     <p class="book-author">{{ bookData.author }}</p>
 
-    <p-tag
-      [value]="bookData.inventoryStatus"
-      [severity]="getSeverity(bookData)"
-      >{{ bookData.category }}</p-tag
-    >
+    <p-tag [value]="bookData.inventoryStatus" [severity]="getSeverity(bookData)">{{ bookData.category }}</p-tag>
 
     <div class="book-price-rating">
       <span class="price">
@@ -24,32 +20,21 @@
     </div>
 
     <div class="book-actions">
-      <button
-        pButton
-        type="button"
-        icon="pi pi-shopping-cart"
-        label="Add to Cart"
-        (click)="onAddToCart(); $event.stopPropagation()"
-        [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'"
-      ></button>
+      <button pButton type="button" class="p-button-sm" (click)="onAddToCart(); $event.stopPropagation()"
+        [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Add to Cart</span>
+      </button>
 
-      <button
-        pButton
-        type="button"
-        class="p-button-outlined"
-        (click)="onWishlistToggle(); $event.stopPropagation()"
-        [ngClass]="{
+      <button pButton type="button" class="p-button-outlined p-button-sm"
+        (click)="onWishlistToggle(); $event.stopPropagation()" [ngClass]="{
           'p-button-danger': !isWishlisted,
           'wishlist-active': isWishlisted
-        }"
-      >
-        <i
-          class="pi"
-          [ngClass]="{
+        }">
+        <i class="pi" [ngClass]="{
             'pi-heart': !isWishlisted,
             'pi-heart-fill': isWishlisted
-          }"
-        ></i>
+          }"></i>
       </button>
     </div>
   </div>

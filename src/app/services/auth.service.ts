@@ -29,9 +29,7 @@ export class AuthService {
   // --- Core Authentication Methods ---
 
   register(data: RegisterRequest): Observable<any> {
-    return this.http
-      .post<any>(`${this.apiUrl}/auth/register`, data)
-      .pipe(tap((response) => this.setSession(response)));
+    return this.http.post<any>(`${this.apiUrl}/auth/register`, data);
   }
 
   login(data: LoginRequest): Observable<any> {
@@ -42,7 +40,7 @@ export class AuthService {
 
   loginWithGoogle(googleToken: string): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}/auth/google`, { token: googleToken })
+      .post<any>(`${this.apiUrl}/auth/google-login`, { tokenId: googleToken })
       .pipe(tap((response) => this.setSession(response)));
   }
 
@@ -53,13 +51,21 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  // --- Password Reset Methods ---
+  // OTP methods 
+  verifyRegisterOtp(email: string, otpCode: string) {
+    console.log("🟢 VERIFY REGISTER OTP CALLED");
+    return this.http.post<any>(`${this.apiUrl}/auth/verify-register-otp`, {
+      email,
+      otpCode,
+    });
+  }
 
   requestPasswordReset(email: string) {
     return this.http.post<any>(`${this.apiUrl}/auth/send-otp`, { email });
   }
 
   verifyOtp(email: string, otpCode: string) {
+    console.log("🔴 VERIFY OTP (RESET) CALLED");
     return this.http.post<any>(`${this.apiUrl}/auth/verify-otp`, {
       email,
       otpCode,

@@ -60,4 +60,12 @@ export class BookService {
       .get<any>(`${this.apiUrl}/${id}`)
       .pipe(map((response) => response.data));
   }
+  submitReview(
+    bookId: string,
+    rating: number,
+    comment: string
+  ): Observable<any> {
+    const reviewData = { rating, comment };
+    return this.http.post(`${this.apiUrl}/${bookId}/reviews`, reviewData);
+  }
 }

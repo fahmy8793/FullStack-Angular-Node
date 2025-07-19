@@ -1,0 +1,21 @@
+<div class="otp-container">
+    <div class="otp-box">
+        <h2>Email Verification</h2>
+        <p>Please enter the 6-digit OTP sent to your email:</p>
+
+        <form [formGroup]="otpForm" (ngSubmit)="handleVerify()">
+            <input type="text" formControlName="otpCode" maxlength="6" placeholder="Enter OTP" class="otp-input" />
+            <div *ngIf="otpForm.get('otpCode')?.touched && otpForm.get('otpCode')?.invalid" class="text-danger">
+                OTP is required and must be 6 digits.
+            </div>
+
+            <button type="submit" class="verify-btn" [disabled]="otpForm.invalid">
+                Verify
+            </button>
+        </form>
+
+        <div class="back-link">
+            <a routerLink="/register">Go back to Register</a>
+        </div>
+    </div>
+</div>
