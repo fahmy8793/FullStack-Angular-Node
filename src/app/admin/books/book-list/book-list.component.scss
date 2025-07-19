@@ -1,178 +1,226 @@
-// Common styles for list and detail pages
-.list-container, .detail-container {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+:host {
+  display: block;
+  background-color: var(--page-bg, #f8f7f2);
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* يمنع أي تمرير أفقي على مستوى المكون كله */
+}
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
-  h1 {
-    color: #333;
+/* الحاوية الرئيسية الجديدة:
+  - هي المسؤولة عن كل شيء: العرض الأقصى، التوسيط، الهوامش، وتقسيم الشبكة.
+*/
+.shop-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr; /* عمود للـ sidebar وعمود للمحتوى */
+  gap: 30px;
+  max-width: var(--container-width, 1300px);
+  margin: 0 auto; /* للتوسيط في الصفحة */
+  padding: 40px 20px;
+  width: 100%;
+  box-sizing: border-box; /* لضمان أن الـ padding لا يزيد من العرض */
+}
+
+/* 1. الشريط الجانبي (Sidebar) */
+.shop-sidebar {
+  background-color: var(--bg-white, #ffffff);
+  padding: 25px;
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+  height: fit-content; /* مهم جداً لجعل ارتفاعه مناسباً للمحتوى */
+
+  h4 {
+    margin-top: 0;
     margin-bottom: 20px;
-    font-size: 2em;
-    text-align: center;
+    font-family: var(--font-primary, "Playfair Display");
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
+    padding-bottom: 15px;
   }
 }
 
-.list-header {
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 12px 15px;
+    border-radius: var(--border-radius, 8px);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-family: var(--font-secondary, "Inter");
+    font-weight: 500;
+    color: var(--text-light, #6c757d);
+
+    &:hover {
+      background-color: rgba(185, 151, 111, 0.1);
+    }
+
+    /* تنسيق الفئة النشطة */
+    &.active {
+      background-color: var(--accent-color, #b9976f);
+      color: var(--bg-white, #ffffff);
+      font-weight: bold;
+    }
+  }
+}
+
+/* 2. المحتوى الرئيسي (Main Content) */
+.main-content {
+  /* خاصية حاسمة جداً لمنع المحتوى الداخلي (مثل حقل البحث) من تمديد الحاوية */
+  min-width: 0;
+}
+
+.controls-container {
+  background-color: var(--bg-white, #ffffff);
+  padding: 25px;
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+  margin-bottom: 40px;
+}
+
+.controls-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 
-  .add-btn {
-    background-color: #28a745; // Green
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    &:hover {
-      background-color: #218838;
-      transform: translateY(-1px);
-    }
-    &:active {
-      transform: translateY(0);
-    }
+  h2 {
+    margin: 0;
+    font-family: var(--font-primary, "Playfair Display");
+    font-size: 2rem;
+    color: var(--text-color, #1a1a1a);
+  }
+
+  .total-results {
+    font-family: var(--font-secondary, "Inter");
+    color: var(--text-light, #6c757d);
   }
 }
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+.controls {
+  display: flex;
+  gap: 20px;
 
-  th, td {
-    border: 1px solid #ddd;
+  input,
+  select {
     padding: 12px 15px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f2f2f2;
-    color: #555;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9em;
-  }
-
-  tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-
-  .actions {
-    white-space: nowrap; // Keep buttons on one line
-    button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      font-size: 0.9em;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-
-    .edit-btn {
-      background-color: #007bff; // Blue
-      color: white;
-      &:hover {
-        background-color: #0056b3;
-        transform: translateY(-1px);
-      }
-    }
-
-    .delete-btn {
-      background-color: #dc3545; // Red
-      color: white;
-      &:hover {
-        background-color: #c82333;
-        transform: translateY(-1px);
-      }
-    }
-  }
-}
-
-.no-data {
-  text-align: center;
-  padding: 30px;
-  color: #777;
-  font-style: italic;
-  font-size: 1.1em;
-}
-
-// Form styles (for detail components)
-.form-group {
-  margin-bottom: 15px;
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-
-  input[type="text"],
-  input[type="number"],
-  textarea {
-    width: calc(100% - 22px); // Account for padding and border
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-    box-sizing: border-box; // Include padding and border in the element's total width and height
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: var(--border-radius, 8px);
+    font-size: 16px;
+    font-family: var(--font-secondary, "Inter");
+    flex-grow: 1;
+    /* خاصية مهمة لمنع العناصر من التمدد بشكل غير مرغوب فيه */
+    min-width: 0;
 
     &:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       outline: none;
+      border-color: var(--accent-color, #b9976f);
+      box-shadow: 0 0 0 3px rgba(185, 151, 111, 0.25);
     }
-  }
-
-  textarea {
-    resize: vertical; // Allow vertical resizing
   }
 }
 
-.form-actions {
-  margin-top: 25px;
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 30px;
+  min-height: 400px;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-light, #6c757d);
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-family: var(--font-secondary, "Inter");
+  }
+}
+
+.paginator-container {
+  margin-top: 40px;
+}
+
+/* ================== */
+/* التصميم المتجاوب   */
+/* ================== */
+
+/* للشاشات الأصغر من 992px (Tablets) */
+@media (max-width: 992px) {
+  .shop-layout {
+    /* يتحول التخطيط إلى عمود واحد (الشريط الجانبي فوق المحتوى) */
+    grid-template-columns: 1fr;
+  }
+}
+
+/* للشاشات الأصغر من 768px (Mobiles) */
+@media (max-width: 768px) {
+  .controls-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .controls {
+    flex-direction: column;
+  }
+}
+
+/* تنسيقات الـ Dialog */
+.book-details-content {
   display: flex;
-  gap: 15px; // Space between buttons
-  justify-content: flex-end; // Align buttons to the right
+  gap: 25px;
 
-  button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.05em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  .dialog-image-container {
+    flex-shrink: 0;
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: var(--border-radius, 8px);
+      box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.08));
+    }
+  }
 
-    &.save-btn {
-      background-color: #007bff; // Primary blue
-      color: white;
-      &:hover {
-        background-color: #0056b3;
-        transform: translateY(-1px);
+  .dialog-info-container {
+    h4 {
+      font-size: 1.8rem;
+      margin: 0 0 10px 0;
+      font-family: var(--font-primary, "Playfair Display");
+      color: var(--text-color, #1a1a1a);
+    }
+    p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: var(--text-light, #6c757d);
+      strong {
+        color: var(--text-color, #1a1a1a);
       }
     }
+    .price-details {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-color, #b9976f);
+      margin-top: 15px;
+    }
+    .description {
+      line-height: 1.6;
+    }
+  }
 
-    &.cancel-btn {
-      background-color: #6c757d; // Grey
-      color: white;
-      &:hover {
-        background-color: #5a6268;
-        transform: translateY(-1px);
-      }
+  @media (max-width: 768px) {
+    & {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
   }
 }
