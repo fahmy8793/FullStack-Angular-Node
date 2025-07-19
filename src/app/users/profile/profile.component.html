@@ -16,15 +16,21 @@
           </div>
           <div class="order-books">
             <div *ngFor="let item of order.books" class="book-in-order">
-              <span class="book-title">{{ item.book.title }} (x{{ item.quantity }})</span>
+              <span class="book-title"
+                >{{ item.book.title }} (x{{ item.quantity }})</span
+              >
 
-              <ng-container *ngIf="!item.rating; else alreadyRated">
-                <button class="btn-rate" (click)="openRatingDialog(order, item)">
+              <ng-container *ngIf="!item.isReviewed; else alreadyRated">
+                <button
+                  class="btn-rate"
+                  (click)="openRatingDialog(order, item)"
+                >
                   Rate
                 </button>
               </ng-container>
+
               <ng-template #alreadyRated>
-                <span class="rated-text">Rated: {{ item.rating }} ★</span>
+                <span class="rated-text">Rated ✔</span>
               </ng-template>
             </div>
           </div>
@@ -41,7 +47,12 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="ratingVisible" [modal]="true" [closable]="true" header="Rate This Book">
+<p-dialog
+  [(visible)]="ratingVisible"
+  [modal]="true"
+  [closable]="true"
+  header="Rate This Book"
+>
   <ng-container *ngIf="selectedItem">
     <div class="rating-dialog-content">
       <p>How would you rate "{{ selectedItem.book.title }}"?</p>
