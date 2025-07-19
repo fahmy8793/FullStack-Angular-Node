@@ -71,7 +71,7 @@ export const routes: Routes = [
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
-  { path: '**', component: NotFoundComponent }
+  // { path: '**', component: NotFoundComponent }
 
 
  {
