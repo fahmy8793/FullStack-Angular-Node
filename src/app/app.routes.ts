@@ -22,6 +22,9 @@ import { VerifyOtpComponent } from './verify-otp/verify-otp.component';
 
 import { WishlistComponent } from './wish-list/wish-list.component';
 import { SuccessComponent } from './users/success/success.component';
+import { SettingsComponent } from './admin/settings/settings.component';
+import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
+import { UserListComponent } from './admin/users/user-list/user-list.component';
 // export const routes: Routes = [
 //   { path: '', redirectTo: 'home', pathMatch: 'full' },
 //   { path: 'home', component: HomeComponent, title: 'home ' },
@@ -66,4 +69,21 @@ export const routes: Routes = [
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
+
+
+ {
+   path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+       { path: 'book-detail', component: BookListsComponent },
+      { path: 'orders', component: OrderDetailComponent },
+       { path: 'order-list', component: OrderListComponent },
+       { path: 'settings', component: SettingsComponent },
+       { path: 'userssss', component: UserDetailComponent },
+        { path: 'users', component: UserListComponent },
+       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+     }
+
 ];
