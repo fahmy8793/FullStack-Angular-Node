@@ -65,15 +65,15 @@ export class RegisterComponent {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
-        console.log('✅ Registered successfully:', res);
-        this.router.navigate(['/']);
+        localStorage.setItem('registerEmail', this.registerForm.value.email);
+        this.router.navigate(['/verify-otp']);
       },
       error: (err) => {
         console.error('❌ Registration failed:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Registration Failed',
-          detail: err.error.message || 'An unknown error occurred.',
+          detail: err.error?.message || 'This email is already in use or another error occurred.',
         });
       },
     });
