@@ -13,6 +13,7 @@ import { Book } from '../interfaces/book-details';
 import { WishlistService } from './../services/wishlist.service';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { CartService } from '../services/cartService.service';
 
 @Component({
   selector: 'app-cardbook',
@@ -33,7 +34,9 @@ export class CardbookComponent implements OnInit, OnDestroy {
   isWishlisted = false;
   private wishlistSub!: Subscription;
 
-  constructor(private wishlistService: WishlistService, private messageService: MessageService) { }
+  constructor(private wishlistService: WishlistService, 
+    private messageService: MessageService,
+  private cartService: CartService) { }
 
   ngOnInit(): void {
     this.wishlistSub = this.wishlistService.wishlist$.subscribe((items) => {
@@ -81,28 +84,35 @@ export class CardbookComponent implements OnInit, OnDestroy {
   }
 
   toggleCart() {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    if (this.isInCart) {
-      // إزالة من السلة
-      cart = cart.filter((item: any) => item.id !== this.bookData._id);
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Removed',
-        detail: `${this.bookData.title} removed from cart`,
-      });
-    } else {
-      // إضافة للسلة
-      cart.push(this.bookData);
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Added',
-        detail: `${this.bookData.title} added to cart`,
-      });
-    }
+  if (this.isInCart) {
+    // إزالة من السلة
+    cart = cart.filter((item: any) => item.id !== this.bookData._id);
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Removed',
+      detail: `${this.bookData.title} removed from cart`,
+    });
+  } else {
+    // إضافة للسلة (محليًا)
+    cart.push(this.bookData);
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    this.isInCart = !this.isInCart;
+    // إرسال للباك إند
+    this.cartService.addItem({
+      bookId: this.bookData._id,
+      quantity: 1, // أو حسب ما تريده
+    });
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Added',
+      detail: `${this.bookData.title} added to cart`,
+    });
   }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  this.isInCart = !this.isInCart;
+}
 
 }
