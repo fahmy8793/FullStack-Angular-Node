@@ -111,6 +111,7 @@ export class AuthService {
         _id: authResponse._id,
         name: authResponse.name,
         email: authResponse.email,
+        role: authResponse.role,
       };
       localStorage.setItem('authToken', authResponse.token);
       localStorage.setItem('currentUser', JSON.stringify(userData));

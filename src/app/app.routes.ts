@@ -51,6 +51,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
        { path: 'book-list', component: BookListComponent },
