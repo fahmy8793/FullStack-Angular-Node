@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Order } from '../interfaces/order-data.interface';
@@ -10,7 +10,14 @@ import { Order } from '../interfaces/order-data.interface';
 export class OrderService {
   private apiUrl = `${environment.apiUrl}/order`;
 
-  constructor(private http: HttpClient) { }
+constructor(private http: HttpClient) { }
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   placeOrder(orderData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/checkout`, orderData);
@@ -20,6 +27,12 @@ export class OrderService {
     return this.http.get<{ data: Order[] }>(`${this.apiUrl}/my-orders`).pipe(
       map(res => res.data)
     );
+  }
+   // Get order details
+  getOrderById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`, {
+      headers: this.getHeaders()
+    });
   }
 
   rateBook(payload: {
