@@ -1,33 +1,23 @@
 <div class="book-card" (click)="onShowDetails()">
   <img [src]="getBookImagePath()" [alt]="bookData.title" class="book-image" />
-
   <div class="book-info" (click)="$event.stopPropagation()">
     <h5 class="book-title">{{ bookData.title }}</h5>
     <p class="book-author">{{ bookData.author }}</p>
-
-    <!-- <p-tag [value]="bookData.inventoryStatus" [severity]="getSeverity(bookData)">{{ bookData.category }}</p-tag> -->
-
     <div class="book-price-rating">
       <span class="price">
         {{ bookData.price | currency : "USD" : "symbol" : "1.2-2" }}
       </span>
-      <!-- check if rate greater than 0 and show it  -->
       <span class="rating" *ngIf="bookData.rate && bookData.rate > 0">
         <i class="pi pi-star-fill text-warning"></i>
-        <!-- The number pipe formats the rating to one decimal place (e.g., 4.7) -->
         {{ bookData.rate | number : "1.1-1" }}
       </span>
     </div>
-
     <div class="book-actions">
-      <button pButton type="button" class="p-button-sm" (click)="onAddToCart(); $event.stopPropagation()"
-        [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'">
-        <i class="pi pi-shopping-cart"></i>
-        <span>Add to Cart</span>
+      <button pButton type="button" class="p-button-sm" (click)="toggleCart(); $event.stopPropagation()" [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'">
+        <i class="pi" [ngClass]="isInCart ? 'pi-times' : 'pi-shopping-cart'"></i>
+        <span>{{isInCart ? 'Remove from Cart' : 'Add to Cart'}}</span>
       </button>
-
-      <button pButton type="button" class="p-button-outlined p-button-sm"
-        (click)="onWishlistToggle(); $event.stopPropagation()" [ngClass]="{
+      <button pButton type="button" class="p-button-outlined p-button-sm" (click)="onWishlistToggle(); $event.stopPropagation()" [ngClass]="{
           'p-button-danger': !isWishlisted,
           'wishlist-active': isWishlisted
         }">

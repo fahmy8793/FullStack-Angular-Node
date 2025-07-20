@@ -3,11 +3,7 @@
     <h1 class="hero-title">Online Book Store</h1>
     <p class="hero-subtitle">Featured Books</p>
     <div class="hero-books">
-      <div
-        class="hero-book-item"
-        *ngFor="let book of featuredBooks"
-        (click)="openBookDetails(book)"
-      >
+      <div class="hero-book-item" *ngFor="let book of featuredBooks" (click)="openBookDetails(book)">
         <img [src]="getBookImagePath(book)" [alt]="book.title" />
         <p class="hero-book-title">{{ book.title }}</p>
       </div>
@@ -22,28 +18,15 @@
     <p>Discover our most popular and highest-rated books.</p>
   </div>
   <div class="bestseller-grid" [@cardAnimation]>
-    <app-cardbook
-      *ngFor="let book of bestSellerBooks"
-      [bookData]="book"
-      (addToCartEvent)="addToCart(book)"
-      (wishlistToggleEvent)="toggleWishlist(book)"
-      (showDetailsEvent)="openBookDetails(book)"
-      class="book-item"
-    >
+    <app-cardbook *ngFor="let book of bestSellerBooks" [bookData]="book" [isInCart]="isBookInCart(book)"
+      (addToCartEvent)="addToCart(book)" (wishlistToggleEvent)="toggleWishlist(book)"
+      (showDetailsEvent)="openBookDetails(book)" class="book-item">
     </app-cardbook>
   </div>
 </section>
 
-<p-dialog
-  [(visible)]="showBookDetails"
-  [modal]="true"
-  [closable]="true"
-  header="Book Details"
-  [dismissableMask]="true"
-  (onHide)="closeBookDetails()"
-  [style]="{ width: '50vw' }"
-  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
->
+<p-dialog [(visible)]="showBookDetails" [modal]="true" [closable]="true" header="Book Details" [dismissableMask]="true"
+  (onHide)="closeBookDetails()" [style]="{ width: '50vw' }" [breakpoints]="{ '960px': '75vw', '640px': '90vw' }">
   <div *ngIf="selectedBook" class="book-details-content">
     <div class="dialog-image-container">
       <img [src]="getBookImagePath(selectedBook)" [alt]="selectedBook.title" />

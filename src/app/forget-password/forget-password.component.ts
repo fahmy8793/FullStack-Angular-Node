@@ -13,17 +13,14 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './forget-password.component.scss'
 })
 export class ForgetPasswordComponent {
-  // Initialize form name whose type is FormGroup
   forgotPasswordForm: FormGroup;
   successMessage = '';
   errorMessage = '';
 
-  // using FormBuilder to make the form with its form controls (inputs) and validation
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-
-    })
+    });
   }
 
   handleSubmitForm() {
@@ -36,15 +33,13 @@ export class ForgetPasswordComponent {
       next: (res) => {
         this.successMessage = res.message;
         this.errorMessage = '';
-        localStorage.setItem('resetEmail', email); // ⬅️ دي أهم خطوة
-        this.router.navigate(['/verify-otp'], { queryParams: { flow: 'reset' } }); // ⬅️ flow=reset
+        localStorage.setItem('resetEmail', email); // أهم خطوة
+        this.router.navigate(['/verify-otp'], { queryParams: { flow: 'reset' } }); // flow=reset
       },
       error: (err) => {
         this.successMessage = '';
         this.errorMessage = err.error.message || 'Something went wrong';
       },
     });
-
   }
-
 }

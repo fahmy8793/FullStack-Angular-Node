@@ -1,4 +1,4 @@
-<p-toast></p-toast>    <!-- very important to show toast alert-->
+<p-toast></p-toast> <!-- very important to show toast alert-->
 <div class="register-container">
   <div class="register-box">
     <!-- Header Tabs -->
@@ -8,23 +8,12 @@
     </div>
 
     <!-- The form starts here -->
-    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()" >
+    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
       <!-- Username Field -->
       <div class="form-group">
         <label for="name">Username</label>
-        <input
-          id="name"
-          type="text"
-          formControlName="name"
-          placeholder="Enter your name"
-        />
-        <div
-          *ngIf="
-            registerForm.get('name')?.invalid &&
-            registerForm.get('name')?.touched
-          "
-          class="text-danger"
-        >
+        <input id="name" type="text" formControlName="name" placeholder="Enter your name" />
+        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="text-danger">
           Username is required
         </div>
       </div>
@@ -32,22 +21,13 @@
       <!-- Email Field -->
       <div class="form-group">
         <label for="email">Email address</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="name@example.com"
-        />
-        <div
-          *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched"
-          class="text-danger"
-        >
+        <input id="email" type="email" formControlName="email" placeholder="name@example.com" />
+        <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched"
+          class="text-danger">
           Email is required
         </div>
-        <div
-          *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched"
-          class="text-danger"
-        >
+        <div *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched"
+          class="text-danger">
           Invalid email format
         </div>
       </div>
@@ -56,25 +36,17 @@
       <div class="form-group">
         <label for="password">Password</label>
         <div class="password-wrapper">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="********"
-          />
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="********" />
           <span class="toggle-password" (click)="showPassword = !showPassword">
             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
         </div>
-        <div
-          *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched"
-          class="text-danger"
-        >
+        <div *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched"
+          class="text-danger">
           Password is required
         </div>
-        <div
-          *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched"
-          class="text-danger"
-        >
+        <div *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched"
+          class="text-danger">
           Must contain uppercase, lowercase, number, and special character.
         </div>
       </div>
@@ -83,20 +55,14 @@
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
         <div class="password-wrapper">
-          <!-- ✅ CORRECTION: This now uses its own variable 'showConfirmPassword' -->
-             <input
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="confirmPassword"
-            placeholder="********"
-          />
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="********" />
           <span class="toggle-password" (click)="showPassword = !showPassword">
             <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
         </div>
         <div
           *ngIf="registerForm.get('confirmPassword')?.errors?.['required'] && registerForm.get('confirmPassword')?.touched"
-          class="text-danger"
-        >
+          class="text-danger">
           Please confirm password!
         </div>
         <div *ngIf="passwordsDoNotMatch" class="text-danger">

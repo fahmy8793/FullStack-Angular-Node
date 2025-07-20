@@ -13,12 +13,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserData | null>;
-  // public currentUser$: Observable<UserData | null>;
+  public currentUser$: Observable<UserData | null>;
   private apiUrl = environment.apiUrl;
-
-  private currentUserSource = new BehaviorSubject<any | null>(null);
-  public currentUser$ = this.currentUserSource.asObservable();
-
 
   constructor(private http: HttpClient, private router: Router) {
     const user = this.getUserFromLocalStorage();
@@ -77,19 +73,14 @@ export class AuthService {
   }
   public updateUserName(newName: string): void {
     const currentUser = this.currentUserValue;
-
     if (currentUser) {
       const updatedUser = { ...currentUser, name: newName };
-
       this.currentUserSubject.next(updatedUser);
-
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     }
   }
 
   resetPassword(resetToken: string, newPassword: string) {
-    // Note: The backend might not need the email here, only the token and new password.
-    // Adjust if necessary based on the backend implementation.
     return this.http.post<any>(`${this.apiUrl}/auth/reset-password`, {
       resetToken,
       newPassword,
@@ -137,19 +128,4 @@ export class AuthService {
     }
     return null;
   }
-
-
-  // public updateUserName(newName: string): void {
-  //   // 1. Get the current user object
-  //   const currentUser = this.currentUserSource.getValue();
-  //   // 2. If a user is logged in, update their name
-  //   if (currentUser) {
-  //     // 3. Create a new user object with the updated name
-  //     const updatedUser = { ...currentUser, name: newName };
-  //     // 4. Broadcast the updated user object to the rest of the app
-  //     this.currentUserSource.next(updatedUser);
-  //     // 5. Also update the user info in localStorage to keep it synced
-  //     localStorage.setItem('userInfo', JSON.stringify(updatedUser));
-  //   }
-  // }
 }

@@ -11,7 +11,6 @@ import { AuthService } from './auth.service';
 export class CartService {
   private cartItemsSource = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItemsSource.asObservable();
-
   private apiUrl = `${environment.apiUrl}/cart`;
 
   constructor(private http: HttpClient, private authService: AuthService) {
@@ -68,16 +67,23 @@ export class CartService {
   clearCart(): void {
     this.http.delete(`${this.apiUrl}/cart/clear`).subscribe({
       next: () => {
-        this.cartItemsSource.next([]);      },
+        this.cartItemsSource.next([]);
+      },
       error: () => {
         console.error('Failed to clear cart');
       }
     });
   }
 
-
-  //  This is what you need
   getCartSnapshot(): CartItem[] {
     return this.cartItemsSource.getValue();
+  }
+
+  isInCart(bookId: string): boolean {
+    return this.cartItemsSource.getValue().some(item => item.book._id === bookId);
+  }
+
+  getCart(): { bookId: string, quantity: number }[] {
+    return JSON.parse(localStorage.getItem('cart') || '[]');
   }
 }

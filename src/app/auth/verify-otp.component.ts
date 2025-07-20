@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MessageService } from 'primeng/api';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-verify-otp',
@@ -19,7 +18,6 @@ export class VerifyOtpComponent implements OnInit {
   otpForm: FormGroup;
   email!: string;
   isResetFlow = false;
-
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +34,6 @@ export class VerifyOtpComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const flow = params['flow'];
-
       if (flow === 'reset') {
         const resetEmail = localStorage.getItem('resetEmail');
         if (!resetEmail) {
@@ -57,15 +54,12 @@ export class VerifyOtpComponent implements OnInit {
     });
   }
 
-
   handleVerify() {
     if (this.otpForm.invalid) {
       this.otpForm.markAllAsTouched();
       return;
     }
-
     const { otpCode } = this.otpForm.value;
-
     if (this.isResetFlow) {
       this.authService.verifyOtp(this.email, otpCode).subscribe({
         next: (res) => {
@@ -124,5 +118,4 @@ export class VerifyOtpComponent implements OnInit {
       },
     });
   }
-
 }
