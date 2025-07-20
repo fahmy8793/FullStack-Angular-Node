@@ -1,5 +1,3 @@
-// src/app/home/home.component.ts
-
 import {
   AfterViewInit,
   Component,
@@ -84,7 +82,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private cartService: CartService,
     private wishlistService: WishlistService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.bookService.getAllBooks({ limit: 20 }).subscribe({
