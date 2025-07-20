@@ -3,4 +3,5 @@ export interface UserData {
   name: string;
   email: string;
   token?: string;
+  role: 'user' | 'admin';
 }

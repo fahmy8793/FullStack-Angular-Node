@@ -9,5 +9,5 @@ export const environment = {
   // baseApiUrl :'http://localhost:5000/api/',
   // authApiUrl :  'http://localhost:5000/api/auth',
 
-  apiUrl: 'http://localhost:5001/api',
+  apiUrl: 'http://localhost:5000/api',
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID,NgZone } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, NgZone } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 
       google.accounts.id.initialize({
         // IMPORTANT: This should be your actual Client ID from Google Cloud Console
-        client_id:environment.GOOGLE_CLIENT_ID,
+        client_id: environment.GOOGLE_CLIENT_ID,
         callback: this.handleCredentialResponse.bind(this),
       });
 
@@ -74,7 +74,13 @@ export class LoginComponent implements OnInit {
           detail: 'Logged in with Google successfully!',
         });
         this.ngZone.run(() => {
-          this.router.navigate(['/']);
+          const role = user.role;
+
+          if (role === 'admin') {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
         });
       },
       error: (err) => {
@@ -103,7 +109,13 @@ export class LoginComponent implements OnInit {
           summary: 'Success',
           detail: 'Login successful!',
         });
-        this.router.navigate(['/']);
+        const role = user.role;
+
+        if (role === 'admin') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (err: any) => {
         this.messageService.add({
