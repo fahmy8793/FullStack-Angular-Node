@@ -9,7 +9,6 @@ import { authGuard } from './guards/auth.guard';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { BookListsComponent } from './admin/books/book-list/book-list.component';
-import { BookDetailComponent } from './admin/books/book-detail/book-detail.component';
 import { OrderDetailComponent } from './admin/orders/order-detail/order-detail.component';
 import { OrderListComponent } from './admin/orders/order-list/order-list.component';
 
@@ -22,33 +21,9 @@ import { BookDetailsComponent } from './book-details/book-details.component';
 import { VerifyOtpComponent } from './auth/verify-otp.component';
 
 import { WishlistComponent } from './wish-list/wish-list.component';
-import { SuccessComponent } from './users/success/success.component';
 import { SettingsComponent } from './admin/settings/settings.component';
 import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
 import { UserListComponent } from './admin/users/user-list/user-list.component';
-// export const routes: Routes = [
-//   { path: '', redirectTo: 'home', pathMatch: 'full' },
-//   { path: 'home', component: HomeComponent, title: 'home ' },
-//   { path: 'register', component: RegisterComponent },
-//   { path: 'login', component: LoginComponent },
-//   { path: 'cart', component: CartComponent, canActivate: [authGuard] },
-
-//   { path: 'password/reset', component: ForgetPasswordComponent },
-
-//   { path: 'verify-otp', component: VerifyOtpComponent },
-//   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
-
-//   { path: 'shop', component: BookListComponent, title: 'shop' },
-//   { path: 'shop/:id', component: BookDetailsComponent },
-//   { path: 'wish', component: WishlistComponent, title: 'wish list' },
-
-//   { path: 'admin', component: AdminLayoutComponent },
-//   { path: 'profile', component: ProfileComponent, title: 'profile' },
-//   { path: 'checkout', component: CheckoutComponent, title: 'checkout' },
-//   {
-//     path: 'success', component: SuccessComponent
-//   }
-// ];
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -61,7 +36,6 @@ export const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, title: 'checkout', canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, title: 'profile', canActivate: [authGuard] },
   { path: 'wish', component: WishlistComponent, title: 'wish list', canActivate: [authGuard] },
-  { path: 'success', loadComponent: () => import('./users/success/success.component').then(m => m.SuccessComponent) },
 
   { path: 'password/reset', component: ForgetPasswordComponent },
   { path: 'password/reset/done', component: ResetPasswordDoneComponent },
@@ -71,22 +45,27 @@ export const routes: Routes = [
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
-  // { path: '**', component: NotFoundComponent }
 
 
- {
-   path: 'admin',
+  {
+    path: 'admin',
     component: AdminLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
-       { path: 'book-detail', component: BookListsComponent },
+      { path: 'book-detail', component: BookListsComponent },
       { path: 'orders', component: OrderDetailComponent },
-       { path: 'order-list', component: OrderListComponent },
-       { path: 'settings', component: SettingsComponent },
-       { path: 'userssss', component: UserDetailComponent },
-        { path: 'users', component: UserListComponent },
-       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: 'order-list', component: OrderListComponent },
+      { path: 'settings', component: SettingsComponent },
+      { path: 'userssss', component: UserDetailComponent },
+      { path: 'users', component: UserListComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
-     }
+  },
+
+
+
+  // must be last route
+  { path: '**', component: NotFoundComponent }
+
 
 ];

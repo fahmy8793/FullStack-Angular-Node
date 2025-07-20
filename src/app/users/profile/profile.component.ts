@@ -19,6 +19,8 @@ import { DialogModule } from 'primeng/dialog';
 import { RatingModule } from 'primeng/rating';
 import { MessageService } from 'primeng/api';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -53,7 +55,8 @@ export class ProfileComponent implements OnInit {
     private orderService: OrderService,
     private messageService: MessageService,
     private bookService: BookService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {

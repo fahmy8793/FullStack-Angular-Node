@@ -26,6 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideToastr({
       positionClass: 'toast-bottom-right',
       timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
     }),
   ],
 };
