@@ -1,3 +1,4 @@
+<p-toast></p-toast>    <!-- very important to show toast alert-->
 <div class="register-container">
   <div class="register-box">
     <!-- Header Tabs -->
@@ -7,7 +8,7 @@
     </div>
 
     <!-- The form starts here -->
-    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
+    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()" >
       <!-- Username Field -->
       <div class="form-group">
         <label for="name">Username</label>
@@ -56,17 +57,12 @@
         <label for="password">Password</label>
         <div class="password-wrapper">
           <input
-            id="password"
             [type]="showPassword ? 'text' : 'password'"
             formControlName="password"
             placeholder="********"
           />
-          <!-- This icon toggles the 'showPassword' variable -->
           <span class="toggle-password" (click)="showPassword = !showPassword">
-            <i
-              class="pi"
-              [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"
-            ></i>
+            <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
         </div>
         <div
@@ -88,21 +84,13 @@
         <label for="confirmPassword">Confirm Password</label>
         <div class="password-wrapper">
           <!-- ✅ CORRECTION: This now uses its own variable 'showConfirmPassword' -->
-          <input
-            id="confirmPassword"
-            [type]="showConfirmPassword ? 'text' : 'password'"
-            formControlName="confirmPassword"
+             <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
             placeholder="********"
           />
-          <!-- This icon now toggles its own variable -->
-          <span
-            class="toggle-password"
-            (click)="showConfirmPassword = !showConfirmPassword"
-          >
-            <i
-              class="pi"
-              [ngClass]="showConfirmPassword ? 'pi-eye-slash' : 'pi-eye'"
-            ></i>
+          <span class="toggle-password" (click)="showPassword = !showPassword">
+            <i [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
           </span>
         </div>
         <div
@@ -116,13 +104,7 @@
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="submit-btn"
-        [disabled]="registerForm.invalid"
-      >
-        Register
-      </button>
+      <button type="submit" class="submit-btn"> Register</button>
     </form>
 
     <div class="auth-links">

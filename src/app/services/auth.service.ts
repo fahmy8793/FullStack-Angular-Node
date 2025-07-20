@@ -118,12 +118,34 @@ export class AuthService {
       this.currentUserSubject.next(userData);
     }
   }
-
-  private getUserFromLocalStorage(): UserData | null {
-    if (typeof window !== 'undefined' && localStorage) {
-      const user = localStorage.getItem('currentUser');
-      return user ? JSON.parse(user) : null;
+private getUserFromLocalStorage(): UserData | null {
+  if (typeof window !== 'undefined' && localStorage) {
+    const user = localStorage.getItem('currentUser');
+    if (!user || user === 'undefined') {
+      return null;
     }
-    return null;
+    try {
+      return JSON.parse(user);
+    } catch (error) {
+      console.error('Invalid JSON in localStorage:', error);
+      return null;
+    }
   }
+  return null;
+}
+
+
+  // public updateUserName(newName: string): void {
+  //   // 1. Get the current user object
+  //   const currentUser = this.currentUserSource.getValue();
+  //   // 2. If a user is logged in, update their name
+  //   if (currentUser) {
+  //     // 3. Create a new user object with the updated name
+  //     const updatedUser = { ...currentUser, name: newName };
+  //     // 4. Broadcast the updated user object to the rest of the app
+  //     this.currentUserSource.next(updatedUser);
+  //     // 5. Also update the user info in localStorage to keep it synced
+  //     localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+  //   }
+  // }
 }

@@ -9,6 +9,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast'; // ✅ جديد
 import { environment } from '../../environments/environment';
 
 // This is necessary for TypeScript to recognize the 'google' object
@@ -17,7 +18,7 @@ declare const google: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule,ToastModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   providers: [MessageService],
@@ -104,6 +105,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (user) => {
+        console.log('LOGIN RESPONSE:', user);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -118,10 +120,11 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (err: any) => {
+        console.log('LOGIN ERROR:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Login Failed',
-          detail: err.error.message || 'Invalid credentials',
+          detail: err.error.message || 'invalid email or password',
         });
       },
     });
@@ -134,4 +137,8 @@ export class LoginComponent implements OnInit {
   goToRegister() {
     this.router.navigate(['/register']);
   }
+
+
+
+
 }
