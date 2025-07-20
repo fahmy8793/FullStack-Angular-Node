@@ -11,7 +11,7 @@ import { DashboardComponent } from './admin/dashboard/dashboard.component';
 // import { BookListsComponent } from './admin/books/book-list/book-list.component';
 import { BookDetailComponent } from './admin/books/book-add/book-detail.component';
 import { OrderDetailComponent } from './admin/orders/order-detail/order-detail.component';
-import { OrderListComponent } from './admin/orders/order-list/order-list.component';
+import { OrdersListComponent } from './admin/orders/order-list/order-list.component';
 
 import { CheckoutComponent } from './users/checkout/checkout.component';
 import { HomeComponent } from './home/home.component';
@@ -52,7 +52,7 @@ export const routes: Routes = [
       { path: 'book-list', component: BookListComponent },
       { path: 'book-add', component: BookDetailComponent },
       { path: 'orders', component: OrderDetailComponent },
-      { path: 'order-list', component: OrderListComponent },
+      { path: 'order-list', component: OrdersListComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'user-add', component: UserDetailComponent },
       { path: 'users', component: UserListComponent },
