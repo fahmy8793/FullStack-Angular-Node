@@ -1,3 +1,4 @@
+<p-toast></p-toast>    <!-- very important to show toast alert-->
 <div class="register-container">
   <div class="register-box">
     <!-- Header Tabs -->
@@ -7,7 +8,7 @@
     </div>
 
     <!-- The form starts here -->
-    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()">
+    <form [formGroup]="registerForm" (ngSubmit)="handleSubmitForm()" >
       <!-- Username Field -->
       <div class="form-group">
         <label for="name">Username</label>
@@ -116,13 +117,7 @@
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="submit-btn"
-        [disabled]="registerForm.invalid"
-      >
-        Register
-      </button>
+      <button type="submit" class="submit-btn"> Register</button>
     </form>
 
     <div class="auth-links">

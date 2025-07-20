@@ -108,14 +108,29 @@ export class AuthService {
       this.currentUserSubject.next(userData);
     }
   }
-
-  private getUserFromLocalStorage(): UserData | null {
-    if (typeof window !== 'undefined' && localStorage) {
-      const user = localStorage.getItem('currentUser');
-      return user ? JSON.parse(user) : null;
+private getUserFromLocalStorage(): UserData | null {
+  if (typeof window !== 'undefined' && localStorage) {
+    const user = localStorage.getItem('currentUser');
+    if (!user || user === 'undefined') {
+      return null;
     }
-    return null;
+    try {
+      return JSON.parse(user);
+    } catch (error) {
+      console.error('Invalid JSON in localStorage:', error);
+      return null;
+    }
   }
+  return null;
+}
+
+  // private getUserFromLocalStorage(): UserData | null {
+  //   if (typeof window !== 'undefined' && localStorage) {
+  //     const user = localStorage.getItem('currentUser');
+  //     return user ? JSON.parse(user) : null;
+  //   }
+  //   return null;
+  // }
   public updateUserName(newName: string): void {
     // 1. Get the current user object
     const currentUser = this.currentUserSource.getValue();
