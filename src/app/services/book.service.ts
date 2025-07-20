@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Book } from '../interfaces/book-details';
@@ -31,14 +30,8 @@ export interface PaginatedBookResponse {
 export class BookService {
   private apiUrl = `${environment.apiUrl}/book`;
 
-constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
   getAllBooks(
     options: BookQueryOptions = {}
   ): Observable<PaginatedBookResponse> {
@@ -67,28 +60,6 @@ constructor(private http: HttpClient) { }
       .get<any>(`${this.apiUrl}/${id}`)
       .pipe(map((response) => response.data));
   }
-  // Upload new book
-  uploadBook(bookData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/upload`, bookData, {
-      headers: this.getHeaders()
-    });
-  }
-
-  // Update book
-  updateBook(id: string, updates: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}`, updates, {
-      headers: this.getHeaders()
-    });
-  }
-
-  // Delete book
-  deleteBook(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
-      headers: this.getHeaders()
-     });
-
-      }
-  
   submitReview(
     bookId: string,
     rating: number,

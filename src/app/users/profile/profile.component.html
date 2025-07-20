@@ -5,61 +5,6 @@
   </div>
   <div class="profile-content">
     <div class="profile-card">
-      <h3>Update Information</h3>
-      <form (ngSubmit)="updateName()">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            [(ngModel)]="updateNameData.name"
-            name="name"
-            required
-          />
-        </div>
-        <button type="submit" class="btn-primary">Save Name</button>
-      </form>
-    </div>
-
-    <div class="profile-card">
-      <h3>Change Password</h3>
-      <form (ngSubmit)="changePassword()">
-        <div class="form-group">
-          <label for="currentPassword">Current Password</label>
-          <input
-            id="currentPassword"
-            type="password"
-            [(ngModel)]="updatePasswordData.currentPassword"
-            name="currentPassword"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="newPassword">New Password</label>
-          <input
-            id="newPassword"
-            type="password"
-            [(ngModel)]="updatePasswordData.newPassword"
-            name="newPassword"
-            required
-            minlength="6"
-          />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm New Password</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            [(ngModel)]="updatePasswordData.confirmPassword"
-            name="confirmPassword"
-            required
-          />
-        </div>
-        <button type="submit" class="btn-primary">Change Password</button>
-      </form>
-    </div>
-
-    <div class="profile-card">
       <h3>My Orders</h3>
       <ng-container *ngIf="userOrders.length > 0; else noOrders">
         <div *ngFor="let order of userOrders" class="order-item">
