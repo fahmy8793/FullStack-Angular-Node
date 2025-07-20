@@ -133,4 +133,9 @@ export class HomeComponent implements OnInit {
     if (book.image.startsWith('http')) return book.image;
     return `assets/books_Imgs/${book.image}`;
   }
+
+  // New
+  isBookInCart(book: Book): boolean {
+    return this.cartService.isInCart(book._id);
+  }
 }

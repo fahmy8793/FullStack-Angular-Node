@@ -25,6 +25,7 @@
     <app-cardbook
       *ngFor="let book of bestSellerBooks"
       [bookData]="book"
+      [isInCart]="isBookInCart(book)"
       (addToCartEvent)="addToCart(book)"
       (wishlistToggleEvent)="toggleWishlist(book)"
       (showDetailsEvent)="openBookDetails(book)"

@@ -139,7 +139,19 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.fetchBooks(1);
   }
 
+
+  // ِAbdelrahman
   addToCart(book: Book): void {
+  const isInCart = this.cartService.isInCart(book._id);
+
+  if (isInCart) {
+    this.cartService.removeItem(book._id);
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Removed',
+      detail: `"${book.title}" removed from your cart.`,
+    });
+  } else {
     this.cartService.addItem({ bookId: book._id, quantity: 1 });
     this.messageService.add({
       severity: 'success',
@@ -147,6 +159,16 @@ export class BookListComponent implements OnInit, OnDestroy {
       detail: `"${book.title}" added to your cart!`,
     });
   }
+}
+
+  // addToCart(book: Book): void {
+  //   this.cartService.addItem({ bookId: book._id, quantity: 1 });
+  //   this.messageService.add({
+  //     severity: 'success',
+  //     summary: 'Success',
+  //     detail: `"${book.title}" added to your cart!`,
+  //   });
+  // }
 
   toggleWishlist(book: Book): void {
     this.wishlistService.toggleWishlist(book);

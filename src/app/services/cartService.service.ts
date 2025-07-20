@@ -80,4 +80,17 @@ export class CartService {
   getCartSnapshot(): CartItem[] {
     return this.cartItemsSource.getValue();
   }
+
+  isInCart(bookId: string): boolean {
+    return this.cartItemsSource.getValue().some(item => item.book._id === bookId);
+  }
+
+  getCart(): { bookId: string, quantity: number }[] {
+    return JSON.parse(localStorage.getItem('cart') || '[]');
+  }
+ 
+  // removeItem(bookId: string): void {
+  //   const cart = this.getCart().filter(item => item.bookId !== bookId);
+  //   localStorage.setItem('cart', JSON.stringify(cart));
+  // }
 }

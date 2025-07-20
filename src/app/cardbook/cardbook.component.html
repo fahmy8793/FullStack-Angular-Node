@@ -20,10 +20,10 @@
     </div>
 
     <div class="book-actions">
-      <button pButton type="button" class="p-button-sm" (click)="onAddToCart(); $event.stopPropagation()"
+      <button pButton type="button" class="p-button-sm" (click)="toggleCart(); $event.stopPropagation()"
         [disabled]="bookData.inventoryStatus === 'OUTOFSTOCK'">
-        <i class="pi pi-shopping-cart"></i>
-        <span>Add to Cart</span>
+        <i class="pi" [ngClass]="isInCart ? 'pi-times' : 'pi-shopping-cart'"></i>
+        <span>{{isInCart ? 'Remove from Cart' : 'Add to Cart'}}</span>
       </button>
 
       <button pButton type="button" class="p-button-outlined p-button-sm"
