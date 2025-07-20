@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private cartService: CartService,
     private wishlistService: WishlistService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.bookService.getAllBooks({ limit: 20 }).subscribe({
@@ -132,5 +132,9 @@ export class HomeComponent implements OnInit {
     if (!book || !book.image) return 'assets/books_Imgs/default-book.png';
     if (book.image.startsWith('http')) return book.image;
     return `assets/books_Imgs/${book.image}`;
+  }
+
+  isBookInCart(book: Book): boolean {
+    return this.cartService.isInCart(book._id);
   }
 }

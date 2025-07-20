@@ -68,7 +68,7 @@ export class BookListComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchBooks(1); // Fetch the first page on component load
@@ -105,9 +105,6 @@ export class BookListComponent implements OnInit, OnDestroy {
       category: this.selectedCategory || undefined,
       sort: this.sortOption || undefined,
       searchQuery: this.searchQuery || undefined,
-
-      // The current backend doesn't support search by title (author only)
-      // author: this.searchQuery || undefined,
     };
 
     this.bookService
@@ -140,12 +137,22 @@ export class BookListComponent implements OnInit, OnDestroy {
   }
 
   addToCart(book: Book): void {
-    this.cartService.addItem({ bookId: book._id, quantity: 1 });
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: `"${book.title}" added to your cart!`,
-    });
+    const isInCart = this.cartService.isInCart(book._id);
+    if (isInCart) {
+      this.cartService.removeItem(book._id);
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Removed',
+        detail: `"${book.title}" removed from your cart.`,
+      });
+    } else {
+      this.cartService.addItem({ bookId: book._id, quantity: 1 });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: `"${book.title}" added to your cart!`,
+      });
+    }
   }
 
   toggleWishlist(book: Book): void {

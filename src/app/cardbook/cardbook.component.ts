@@ -12,6 +12,8 @@ import { TagModule } from 'primeng/tag';
 import { Book } from '../interfaces/book-details';
 import { WishlistService } from './../services/wishlist.service';
 import { Subscription } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { CartService } from '../services/cartService.service';
 
 @Component({
   selector: 'app-cardbook',
@@ -22,6 +24,8 @@ import { Subscription } from 'rxjs';
 })
 export class CardbookComponent implements OnInit, OnDestroy {
   @Input() bookData!: Book;
+  @Input() isInCart: boolean = false;
+  @Output() removeFromCartEvent = new EventEmitter<Book>();
   @Output() addToCartEvent = new EventEmitter<Book>();
   @Output() addToWishlistEvent = new EventEmitter<Book>();
   @Output() showDetailsEvent = new EventEmitter<Book>();
@@ -30,7 +34,11 @@ export class CardbookComponent implements OnInit, OnDestroy {
   isWishlisted = false;
   private wishlistSub!: Subscription;
 
-  constructor(private wishlistService: WishlistService) { }
+  constructor(
+    private wishlistService: WishlistService,
+    private messageService: MessageService,
+    private cartService: CartService
+  ) { }
 
   ngOnInit(): void {
     this.wishlistSub = this.wishlistService.wishlist$.subscribe((items) => {
@@ -75,5 +83,30 @@ export class CardbookComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
+  }
+
+  toggleCart() {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (this.isInCart) {
+      cart = cart.filter((item: any) => item.id !== this.bookData._id);
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Removed',
+        detail: `${this.bookData.title} removed from cart`,
+      });
+    } else {
+      cart.push(this.bookData);
+      this.cartService.addItem({
+        bookId: this.bookData._id,
+        quantity: 1,
+      });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Added',
+        detail: `${this.bookData.title} added to cart`,
+      });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.isInCart = !this.isInCart;
   }
 }
