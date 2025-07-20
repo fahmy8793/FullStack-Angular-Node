@@ -9,16 +9,20 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule,ToastModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   providers: [MessageService],
 })
 export class RegisterComponent {
+
+
   registerForm: FormGroup;
   passwordsDoNotMatch: boolean = false;
 
@@ -48,7 +52,13 @@ export class RegisterComponent {
     });
   }
 
+
+
   handleSubmitForm() {
+
+    console.log(this.registerForm);
+    console.log("Form Submitted");
+
     this.passwordsDoNotMatch = false;
 
     if (this.registerForm.invalid) {
@@ -65,20 +75,45 @@ export class RegisterComponent {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Registration successful! OTP sent to your email.',
+          });
         localStorage.setItem('registerEmail', this.registerForm.value.email);
-        this.router.navigate(['/verify-otp']);
+        setTimeout(() => {
+            this.router.navigate(['/verify-otp']);
+          }, 2000); // wait 2 sec to let toast alert appear
       },
       error: (err) => {
-        console.error('❌ Registration failed:', err);
+         console.error('❌ Registration failed:', err);
+          let errorMessage = 'Registration failed. Please try again.';
+
+          if (err.status === 400 && err.error?.message === 'User already exists') {
+            errorMessage = 'This email is already registered. Please log in instead.';
+          }
+
+
         this.messageService.add({
           severity: 'error',
           summary: 'Registration Failed',
-          detail: err.error?.message || 'This email is already in use or another error occurred.',
+          detail: errorMessage,
         });
+
+        // console.error('❌ Registration failed:', err);
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Registration Failed',
+        //   detail: err.error?.message || 'This email is already in use or another error occurred.',
+        // });
       },
     });
   }
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
+
+
+
+
 }
