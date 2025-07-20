@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'; //
 export class AdminLayoutComponent {
  adminLinks = [
     { path: '/admin/dashboard', name: 'Dashboard', icon: '📊' },
-    { path: 'books', name: 'Books', icon: '📚' },
+    { path: '/admin/book-list', name: 'Books', icon: '📚' },
     { path: '/admin/orders', name: 'Orders', icon: '📦' },
     { path: '/admin/users', name: 'Users', icon: '👥' },
     { path: '/admin/settings', name: 'Settings', icon: '⚙️' }

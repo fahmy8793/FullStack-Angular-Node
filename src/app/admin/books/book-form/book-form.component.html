@@ -1,0 +1,143 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ book ? 'Edit Book' : 'Add New Book' }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required>
+          <mat-error *ngIf="bookForm.get('title')?.hasError('required')">
+            Title is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Author</mat-label>
+          <input matInput formControlName="author" required>
+          <mat-error *ngIf="bookForm.get('author')?.hasError('required')">
+            Author is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" rows="4" required></textarea>
+        <mat-error *ngIf="bookForm.get('description')?.hasError('required')">
+          Description is required
+        </mat-error>
+        <mat-error *ngIf="bookForm.get('description')?.hasError('minlength')">
+          Description must be at least 10 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category" required>
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="bookForm.get('category')?.hasError('required')">
+            Category is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" formControlName="price" required>
+          <mat-error *ngIf="bookForm.get('price')?.hasError('required')">
+            Price is required
+          </mat-error>
+          <mat-error *ngIf="bookForm.get('price')?.hasError('min')">
+            Price must be positive
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Stock</mat-label>
+          <input matInput type="number" formControlName="stock" required>
+          <mat-error *ngIf="bookForm.get('stock')?.hasError('required')">
+            Stock is required
+          </mat-error>
+          <mat-error *ngIf="bookForm.get('stock')?.hasError('min')">
+            Stock must be positive
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="file-upload-section">
+        <div class="image-upload">
+          <h4>Book Cover Image</h4>
+          <div class="image-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Book cover preview">
+          </div>
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onImagePicked($event)"
+            #imageInput
+          >
+          <button 
+            mat-stroked-button 
+            type="button" 
+            (click)="imageInput.click()"
+          >
+            Choose Image
+          </button>
+          <mat-error *ngIf="bookForm.get('image')?.invalid && bookForm.get('image')?.touched">
+            Image is required
+          </mat-error>
+        </div>
+
+        <div class="pdf-upload">
+          <h4>Book PDF (Optional)</h4>
+          <div class="file-name" *ngIf="pdfFileName">
+            {{ pdfFileName }}
+          </div>
+          <input 
+            type="file" 
+            accept=".pdf" 
+            (change)="onPdfPicked($event)"
+            #pdfInput
+          >
+          <button 
+            mat-stroked-button 
+            type="button" 
+            (click)="pdfInput.click()"
+          >
+            Choose PDF
+          </button>
+        </div>
+      </div>
+
+      <mat-progress-bar 
+        mode="indeterminate" 
+        *ngIf="isSubmitting"
+      ></mat-progress-bar>
+
+      <div class="form-actions">
+        <button 
+          mat-button 
+          type="button" 
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+        >
+          Cancel
+        </button>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit"
+          [disabled]="bookForm.invalid || isSubmitting"
+        >
+          {{ book ? 'Update Book' : 'Add Book' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
