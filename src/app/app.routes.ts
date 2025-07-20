@@ -4,7 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { CartComponent } from './users/cart/cart.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
-import { ResetPasswordDoneComponent } from './reset-password-done/reset-password-done.component';
+// import { ResetPasswordDoneComponent } from './reset-password-done/reset-password-done.component';
 import { authGuard } from './guards/auth.guard';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
@@ -45,15 +45,16 @@ export const routes: Routes = [
   { path: 'wish', component: WishlistComponent, title: 'wish list', canActivate: [authGuard] },
 
   { path: 'password/reset', component: ForgetPasswordComponent },
-  { path: 'password/reset/done', component: ResetPasswordDoneComponent },
+  // { path: 'password/reset/done', component: ResetPasswordDoneComponent },
   { path: 'verify-otp', component: VerifyOtpComponent },
+  { path: 'reset-password', loadComponent: () => import('./reset-password-done/reset-password-done.component').then(m => m.ResetPasswordDoneComponent) },
 
   { path: 'shop', component: BookListComponent, title: 'shop' },
   { path: 'shop/:id', component: BookDetailsComponent },
 
   { path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard] },
 
-
+ 
   {
     path: 'admin',
     component: AdminLayoutComponent,

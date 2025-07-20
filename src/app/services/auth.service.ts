@@ -13,8 +13,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserData | null>;
-  public currentUser$: Observable<UserData | null>;
+  // public currentUser$: Observable<UserData | null>;
   private apiUrl = environment.apiUrl;
+
+  private currentUserSource = new BehaviorSubject<any | null>(null);
+  public currentUser$ = this.currentUserSource.asObservable();
+
 
   constructor(private http: HttpClient, private router: Router) {
     const user = this.getUserFromLocalStorage();
@@ -118,21 +122,21 @@ export class AuthService {
       this.currentUserSubject.next(userData);
     }
   }
-private getUserFromLocalStorage(): UserData | null {
-  if (typeof window !== 'undefined' && localStorage) {
-    const user = localStorage.getItem('currentUser');
-    if (!user || user === 'undefined') {
-      return null;
+  private getUserFromLocalStorage(): UserData | null {
+    if (typeof window !== 'undefined' && localStorage) {
+      const user = localStorage.getItem('currentUser');
+      if (!user || user === 'undefined') {
+        return null;
+      }
+      try {
+        return JSON.parse(user);
+      } catch (error) {
+        console.error('Invalid JSON in localStorage:', error);
+        return null;
+      }
     }
-    try {
-      return JSON.parse(user);
-    } catch (error) {
-      console.error('Invalid JSON in localStorage:', error);
-      return null;
-    }
+    return null;
   }
-  return null;
-}
 
 
   // public updateUserName(newName: string): void {
