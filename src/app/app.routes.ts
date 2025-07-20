@@ -29,6 +29,12 @@ import { UserListComponent } from './admin/users/user-list/user-list.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'home' },
+  //{
+//   path: 'register',
+//   loadComponent: () =>
+//     import('./register/register.component').then((m) => m.RegisterComponent),
+// },
+
   { path: 'register', component: RegisterComponent },
   { path: 'verify-otp', loadComponent: () => import('./auth/verify-otp.component').then(m => m.VerifyOtpComponent) },
   { path: 'login', component: LoginComponent },
