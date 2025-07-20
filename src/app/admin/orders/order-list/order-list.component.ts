@@ -1,32 +1,62 @@
+// admin/orders/orders-list.component.ts
 import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../../../services/order.service';
+import { MessageService } from 'primeng/api';
+import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
-interface Order {
-  id: number;
-  customerName: string;
-  orderDate: string;
-  totalAmount: number;
-  status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
-}
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-order-list',
+  selector: 'app-orders-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, TableModule, TagModule, ButtonModule, RouterModule],
   templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.scss'] // Reusing common list styles
+  styleUrls: ['./order-list.component.scss'],
+  providers: [MessageService]
 })
-export class OrderListComponent implements OnInit {
-  orders: Order[] = [];
+export class OrdersListComponent implements OnInit {
+  orders: any[] = [];
+  loading = true;
+
+  constructor(
+    private orderService: OrderService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
-    // Mock data
-    this.orders = [
-      { id: 1001, customerName: 'Alice Johnson', orderDate: '2025-06-28', totalAmount: 120.50, status: 'Pending' },
-      { id: 1002, customerName: 'Bob Williams', orderDate: '2025-06-27', totalAmount: 75.00, status: 'Shipped' },
-      { id: 1003, customerName: 'Charlie Brown', orderDate: '2025-06-26', totalAmount: 210.75, status: 'Delivered' },
-      { id: 1004, customerName: 'Diana Prince', orderDate: '2025-06-25', totalAmount: 45.99, status: 'Pending' },
-    ];
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
+    this.loading = true;
+    this.orderService.getAllOrders().subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load orders'
+        });
+        this.loading = false;
+      }
+    });
+  }
+
+  getSeverity(status: string) {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'cancelled':
+        return 'danger';
+      default:
+        return 'info';
+    }
   }
 }

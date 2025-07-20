@@ -22,4 +22,24 @@ export class UserService {
   updatePassword(data: any): Observable<any> {
     return this.http.patch(`${this.apiUrl}/change-password`, data);
   }
+
+   getUser(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+  
+  createUser(userData: any): Observable<any> {
+    return this.http.post(this.apiUrl, userData);
+  }
+
+  updateUser(id: string, userData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}`, userData);
+  }
+  
+  deleteUser(id: string, userData: any): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, userData);
+}
+getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
 }

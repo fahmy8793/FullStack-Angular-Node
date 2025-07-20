@@ -1,38 +1,54 @@
-<div class="list-container">
-  <div class="list-header">
-    <h1>Orders Management</h1>
-    <!-- No "Add New Order" button as orders are typically created by customers -->
-  </div>
-
-  @if (orders.length > 0) {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Order Date</th>
-          <th>Total Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (order of orders; track order.id) {
-          <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.customerName }}</td>
-            <td>{{ order.orderDate }}</td>
-            <td>${{ order.totalAmount | number:'1.2-2' }}</td>
-            <td><span class="status-badge status-{{ order.status | lowercase }}">{{ order.status }}</span></td>
-            <td class="actions">
-              <!-- <button class="edit-btn" [routerLink]="order.id">View Details</button> -->
-              <button class="delete-btn">Cancel Order</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  } @else {
-    <p class="no-data">No orders found.</p>
-  }
+<!-- admin/orders/orders-list.component.html -->
+<div class="card">
+  <h1>All Orders</h1>
+  <p-table 
+    [value]="orders" 
+    [loading]="loading"
+    [paginator]="true" 
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[10,25,50]">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>{{ order._id | slice:0:8 }}...</td>
+        <td>{{ order.user?.name || 'Guest' }}</td>
+        <td>{{ order.createdAt | date }}</td>
+        <td>{{ order.total | currency }}</td>
+        <td>
+          <p-tag 
+            [value]="order.status" 
+            [severity]="getSeverity(order.status)">
+          </p-tag>
+        </td>
+        <td>
+          <button 
+            pButton 
+            pRipple 
+            icon="pi pi-eye" 
+            class="p-button-rounded p-button-info mr-2"
+            [routerLink]="['/admin/orders', order._id]">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">No orders found</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

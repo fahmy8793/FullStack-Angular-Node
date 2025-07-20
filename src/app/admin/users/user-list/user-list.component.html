@@ -1,37 +1,70 @@
-<div class="list-container">
-  <div class="list-header">
-    <h1>Users Management</h1>
-<button class="add-btn" routerLink="/admin/user-add">Add New User</button>  </div>
+<div class="card">
+  <div class="flex justify-content-between align-items-center mb-4">
+    <h1>User Management</h1>
+    <button 
+      pButton 
+      icon="pi pi-plus" 
+      label="Add User" 
+      routerLink="/admin/user-add"
+      class="p-button-success">
+    </button>
+  </div>
 
-  @if (users.length > 0) {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Registered Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (user of users; track user.id) {
-          <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td><span class="role-badge role-{{ user.role | lowercase }}">{{ user.role }}</span></td>
-            <td>{{ user.registeredDate }}</td>
-            <td class="actions">
-              <!-- <button class="edit-btn" [routerLink]="user.id">Edit</button> -->
-              <button class="delete-btn">Delete</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  } @else {
-    <p class="no-data">No users found.</p>
-  }
+  <p-confirmDialog></p-confirmDialog>
+
+  <p-table 
+    [value]="users" 
+    [loading]="loading"
+    [paginator]="true" 
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[10,25,50]">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Joined</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <p-tag 
+            [value]="user.role" 
+            [severity]="getRoleSeverity(user.role)">
+          </p-tag>
+        </td>
+        <td>{{ user.createdAt | date }}</td>
+        <td>
+          <button 
+            pButton 
+            pRipple 
+            icon="pi pi-pencil" 
+            class="p-button-rounded p-button-info mr-2"
+            [routerLink]="['/admin/users', user._id]">
+          </button>
+          <button 
+            pButton 
+            pRipple 
+            icon="pi pi-trash" 
+            class="p-button-rounded p-button-danger"
+            (click)="confirmDelete(user._id)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">No users found</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

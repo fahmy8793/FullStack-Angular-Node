@@ -10,7 +10,7 @@ import { Order } from '../interfaces/order-data.interface';
 export class OrderService {
   private apiUrl = `${environment.apiUrl}/order`;
 
-constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
@@ -28,7 +28,8 @@ constructor(private http: HttpClient) { }
       map(res => res.data)
     );
   }
-   // Get order details
+
+  // Get order details
   getOrderById(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`, {
       headers: this.getHeaders()
@@ -47,6 +48,44 @@ constructor(private http: HttpClient) { }
     }).pipe(
       catchError(error => {
         console.error('Error submitting rating:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // NEW METHOD: Get all orders (for admin dashboard)
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<{ data: Order[] }>(`${this.apiUrl}/admin`, {
+      headers: this.getHeaders()
+    }).pipe(
+      map(res => res.data),
+      catchError(error => {
+        console.error('Error fetching all orders:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Optional: Get orders with pagination and filters
+  getOrdersWithPagination(page: number = 1, limit: number = 10, filters?: any): Observable<{ data: Order[], total: number }> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        if (filters[key]) {
+          params = params.set(key, filters[key]);
+        }
+      });
+    }
+
+    return this.http.get<{ data: Order[], total: number }>(`${this.apiUrl}/admin`, {
+      headers: this.getHeaders(),
+      params
+    }).pipe(
+      catchError(error => {
+        console.error('Error fetching paginated orders:', error);
         return throwError(() => error);
       })
     );

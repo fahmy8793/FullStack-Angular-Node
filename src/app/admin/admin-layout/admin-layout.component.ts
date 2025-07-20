@@ -13,7 +13,7 @@ export class AdminLayoutComponent {
  adminLinks = [
     { path: '/admin/dashboard', name: 'Dashboard', icon: '📊' },
     { path: '/admin/book-list', name: 'Books', icon: '📚' },
-    { path: '/admin/orders', name: 'Orders', icon: '📦' },
+    { path: '/admin/order-list', name: 'Orders', icon: '📦' },
     { path: '/admin/users', name: 'Users', icon: '👥' },
     { path: '/admin/settings', name: 'Settings', icon: '⚙️' }
   ];

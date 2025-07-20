@@ -1,32 +1,99 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: 'Customer' | 'Admin';
-  registeredDate: string;
-}
+import { UserService } from '../../../services/user.service';
+import { RouterModule } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TableModule,
+    ButtonModule,
+    TagModule,
+    ConfirmDialogModule
+  ],
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss'] // Reusing common list styles
+  styleUrls: ['./user-list.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class UserListComponent implements OnInit {
-  users: User[] = [];
+  users: any[] = [];
+  loading = true;
+
+  constructor(
+    private userService: UserService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnInit(): void {
-    // Mock data
-    this.users = [
-      { id: 1, name: 'John Doe', email: 'john.doe@example.com', role: 'Customer', registeredDate: '2024-01-15' },
-      { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', role: 'Customer', registeredDate: '2024-02-20' },
-      { id: 3, name: 'Admin User', email: 'admin@example.com', role: 'Admin', registeredDate: '2023-11-01' },
-      { id: 4, name: 'Peter Jones', email: 'peter.j@example.com', role: 'Customer', registeredDate: '2024-05-10' },
-    ];
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
+    this.loading = true;
+    this.userService.getAllUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load users'
+        });
+        this.loading = false;
+      }
+    });
+  }
+
+  getRoleSeverity(role: string) {
+    switch (role) {
+      case 'admin':
+        return 'success';
+      case 'customer':
+        return 'info';
+      default:
+        return 'warning';
+    }
+  }
+
+  confirmDelete(userId: string) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this user?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteUser(userId);
+      }
+    });
+  }
+
+  deleteUser(userId: string) {
+    this.userService.deleteUser(userId, {}).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'User deleted successfully'
+        });
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to delete user'
+        });
+      }
+    });
   }
 }
