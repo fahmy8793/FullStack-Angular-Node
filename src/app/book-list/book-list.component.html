@@ -100,6 +100,21 @@
       <p class="description">
         <strong>Description:</strong> {{ selectedBook.description }}
       </p>
+      
+<!-- summary button -->
+<button (click)="generateSummary(selectedBook._id)" 
+class="summary-btn">
+  <i class="bi bi-stars"></i>
+  <span>Generate Summary</span>
+</button>
+
+<!-- summary loading and display -->
+<div *ngIf="isLoadingSummary">Generating summary...</div>
+<div *ngIf="summary && !isLoadingSummary">
+  <h4>Summary:</h4>
+  <p>{{ summary }}</p>
+</div>
+
     </div>
   </div>
 </p-dialog>

@@ -46,6 +46,8 @@ import { CardbookComponent } from '../cardbook/cardbook.component';
 export class BookListComponent implements OnInit, OnDestroy {
   books: Book[] = [];
   categories: string[] = [];
+  summary: string = '';
+  isLoadingSummary = false;
 
   // Pagination Properties
   totalRecords = 0;
@@ -161,6 +163,10 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   openBookDetails(book: Book): void {
     this.selectedBook = book;
+     this.summary = '';
+  this.isLoadingSummary = false;
+
+
     this.showBookDetails = true;
   }
 
@@ -168,4 +174,35 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.showBookDetails = false;
     this.selectedBook = null;
   }
+
+  generateSummary(bookId: string) {
+    if (this.isLoadingSummary) return;
+    
+  this.summary = '';
+  this.isLoadingSummary = true;
+
+  // brevent multiple clicks while loading
+  this.isLoadingSummary = true;
+
+  this.bookService.generateSummary(bookId).subscribe({
+    next: (res) => {
+      this.summary = res.summary;
+      this.isLoadingSummary = false;
+    },
+    error: (err) => {
+      console.error('Error fetching summary:', err);
+      //this.summary = 'Failed to load summary.';
+      this.isLoadingSummary = false;
+
+  if (err.status === 401) {
+    this.summary = 'you need to login to generate summary.';
+  } else if (err.status === 429) {
+    this.summary = 'there is too many reqests, please wait';
+  } else {
+    this.summary = 'Failed to load summary.';
+  }
+    }
+  });
+}
+
 }

@@ -68,4 +68,13 @@ export class BookService {
     const reviewData = { rating, comment };
     return this.http.post(`${this.apiUrl}/${bookId}/reviews`, reviewData);
   }
+
+
+generateSummary(bookId: string): Observable<{ summary: string }> {
+  return this.http.get<{ summary: string }>(
+    `${this.apiUrl}/summarize/${bookId}`
+  );
+}
+
+
 }

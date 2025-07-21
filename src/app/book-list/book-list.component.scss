@@ -224,3 +224,38 @@ body {
     }
   }
 }
+
+// styling summarize button
+.summary-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background: white;
+  color: #8B4513; // بني شيك
+  border: 2px solid #8B4513;
+  border-radius: 30px;
+  padding: 10px 20px;
+
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  i {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    background-color: #8B4513;
+    color: white;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+
